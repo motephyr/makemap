@@ -1,0 +1,16 @@
+{
+  "name": "wikimap_20140903",
+  "version": "0.0.0",
+  "homepage": "https://github.com/motephyr/wikimap",
+  "authors": [
+    "motephyr <motephyr@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
