@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-tw" >
+<head>
+  <%= render_page_title_tag %>
+  <%= render_page_description_meta_tag %>
+  <%= render_page_keywords_meta_tag %>
+  <%= render_page_image_link_tag %>
+  <%= csrf_meta_tags %>
+  <meta name="google-site-verification" content="YyegJu17j_pD7oCTI2Zk4N9eLcTQFh-CcWVQqueIXao" />
+  <%= yield :og_tag %>
+  
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= yield :stylesheets %>
+
+</head>
+<%= render_body_tag %>
+<%= render :partial => "common/menu" %>
+<div class="container">
+  <%= notice_message %>
+ 
+  <%= yield %>
+  <%= render :partial => "common/footer" %>
+</div>
+
+
+<%= render :partial => "common/facebook_js" %>
+<%= yield :javascripts %>
+</body>
+</html>
