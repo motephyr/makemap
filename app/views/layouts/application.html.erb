@@ -10,6 +10,7 @@
   <%= yield :og_tag %>
   
   <%= stylesheet_link_tag "application", media: "all" %>
+  <%= stylesheet_link_tag params[:controller] %>
   <%= javascript_include_tag "application" %>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +28,7 @@
 
 
 <%= render :partial => "common/facebook_js" %>
+<%= javascript_include_tag params[:controller] %>
 <%= yield :javascripts %>
 </body>
 </html>

@@ -1,0 +1,89 @@
+<% content_for :stylesheets do %>
+<style type="text/css">
+
+html, body, .container, #map {
+  width: 100%;
+  height: 100%;
+}
+
+
+</style>
+<% end %>
+
+<div id="map"></div>
+<button id="button">submit</button>
+
+<div id="over_map_form" style="position: fixed;left: 100px;top: 150px;background-color: #b0c4de;opacity:0.9;padding:50px;width:500px;display:none">
+
+</div>
+<div id="content" style="display:none"></div>
+
+<% content_for :javascripts do %> 
+
+<script type='text/javascript'>
+(function(scope){
+
+  $.ajax({
+    url: "/assets/shifus.json",
+    dataType: "json",
+    success: function (data) {
+      var keysArray = Object.keys(data);
+      for (var i=0; i<keysArray.length; i++){
+      // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
+      //   color: 'red',
+      //   fillColor: '#f03',
+      //   fillOpacity: 0.5
+      // }).addTo(map);
+      // circle.bindPopup(data[keysArray[i]][2]);
+      //console.log(data[keysArray[i]]);
+      var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["id"]} ).addTo(map);
+
+      marker.on('click',function(event){
+        var alatlng = event.latlng;
+        $.ajax({
+          url: '/shifus/' +event.target.options.title ,
+          dataType:'script'
+        }).success(function(data){
+          event.target.bindPopup($('#content').html());
+          event.target.openPopup();
+
+        });
+      });
+    }
+  }
+});
+
+
+  var mapApp = new MapApp(map,myMarker);
+
+  $("#button").click(function(){
+    alert(mapApp.getPoint().lat);
+  });
+
+  $( "#new_shifu" ).submit(function( event ) {
+
+    if(this.onsubmit && !this.onsubmit()){
+      return;
+    }
+
+    var params = {"shifu[lat]":mapApp.getPoint().lat, "shifu[lng]":mapApp.getPoint().lng};
+    
+    for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", params[key]);
+
+        this.appendChild(hiddenField);
+      }
+    }
+
+    this.submit();
+  });
+
+})(window);
+
+</script>
+<% end %>
+
