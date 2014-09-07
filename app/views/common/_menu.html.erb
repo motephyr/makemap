@@ -10,17 +10,43 @@
       <%= link_to(Setting.app_name, "/" , :class => "navbar-brand" )%>   
     </div>
     <div class="navbar-collapse collapse">
-      <%= render_list :class => "nav navbar-nav" do |li|
-        #li << link_to("首頁","/")
-        #li << link_to("二手嬰兒用品交流團","/homes/index_products")
-        end %>
-
-        <%#= render :partial => "common/search_form" %>
-
-        <%= render :partial => "common/user_nav"%>
-      </div><!--/.nav-collapse -->
-    </div>
-
-    <%= yield :submenu %>
-
+      <ul class="nav navbar-nav">
+        <li>nbsp;nbsp;nbsp;nbsp;</li>
+        <li class="dropdown">
+          <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
+          地圖列表 (你是管理者)
+          <% end %>
+          <ul class="dropdown-menu">
+            <% if @maps.present? %>
+            <% @maps.each do |map| %>
+            <li><%= link_to(map.title, map_path(map) ) %></li>
+            <% end %>
+            <% end %>
+            <li><%= link_to("新增地圖",new_map_path) %></li> 
+          </ul>
+        </li>
+        <% if @map.present? && @map.id? %>
+          <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
+        <% end %>
+        <li>nbsp;nbsp;nbsp;nbsp;</li>
+      </ul>
+      <%= render :partial => "common/search_form" %>
+      <ul class="nav navbar-nav">
+        <li>nbsp;nbsp;nbsp;nbsp;</li>
+        <li>
+          <% if @map.present? && @map.id? %>
+            <% if request.path == map_path(@map) %>
+              <%= link_to("Pin",new_map_location_path(@map),:class => "btn btn-default" ) %>
+            <% elsif request.path == new_map_location_path(@map)%>
+              <%= link_to("Show",map_path(@map),:class => "btn btn-default" ) %>
+            <% end %>
+          <% end %>
+        </li>
+      </ul>
+      <%= render :partial => "common/user_nav"%>
+    </div><!--/.nav-collapse -->
   </div>
+
+  <%= yield :submenu %>
+
+</div>

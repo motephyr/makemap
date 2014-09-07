@@ -6,7 +6,7 @@
 (function(scope){
 
   $.ajax({
-    url: "/assets/shifus.json",
+    url: "/maps/<%= @map.id %>/locations.json",
     dataType: "json",
     success: function (data) {
       var keysArray = Object.keys(data);
@@ -23,7 +23,7 @@
       marker.on('click',function(event){
         var alatlng = event.latlng;
         $.ajax({
-          url: '/shifus/' +event.target.options.title ,
+          url: '/maps/<%= @map.id %>/locations/' +event.target.options.title ,
           dataType:'script'
         }).success(function(data){
           event.target.bindPopup($('#content').html());

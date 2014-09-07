@@ -21,6 +21,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_maps
+    if current_user
+      @permissions = Permission.where(user_id: current_user.id)
+      @maps = Map.where(id: @permissions)
+    else
+      @maps = Map.where(private: false) 
+    end
+  end
+
   protected
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << [:name,:fb_id,:token]

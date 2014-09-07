@@ -22,7 +22,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :maps
+  resources :maps do
+    resources :locations
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

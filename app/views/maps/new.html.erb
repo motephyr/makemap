@@ -1,31 +1,20 @@
 <%= render :partial => "maps/map" %>
 
-<div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;height:500px">
-  <%= simple_form_for(@shifu) do |f| %>
-  <% if @shifu.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@shifu.errors.count, "error") %> prohibited this shifu from being saved:</h2>
-
-    <ul>
-      <% @shifu.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-  <% end %>
+<div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;">
+  <h3>新增地圖</h3>
+  
+  <%= simple_form_for(@map) do |f| %>
 
   <div class="field">
-    <%= f.input_field :name ,placeholder: '師父姓名',:required => true, maxlength: 20 %>
+    <%= f.input_field :title ,placeholder: '名稱',:required => true, maxlength: 25 %>
   </div>
   <br>
   <div class="field">
-    <%= f.input_field :phone,placeholder: '電話',:required => true,maxlength: 20 %>
+    <%= f.input_field :description,placeholder: '說明',:required => true,style: "width:185px;height:130px" %>
   </div>
-  <br>
   <div class="field">
-    <%= f.input_field :address,placeholder: '地址',maxlength: 20 %>
+    <%= f.input_field :private,inline_label: "設為私人",style: "margin-left:0px",as: :boolean %>
   </div>
-  <br>
   <div class="actions">
     <%= f.submit '送出' %>
   </div>
@@ -52,8 +41,7 @@
       //console.log(data[keysArray[i]]);
       var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
 
-      var text = "<h2>"+data[keysArray[i]]["name"]+"</h2>"
-      +"<h3>"+data[keysArray[i]]["address"]+"</h3>"
+      var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
       marker.bindPopup(text);
     }
   }
@@ -61,32 +49,6 @@
 
 
   var mapApp = new MapApp(map,myMarker);
-
-  $("#button").click(function(){
-    alert(mapApp.getPoint().lat);
-  });
-
-  $( "#new_shifu" ).submit(function( event ) {
-
-    if(this.onsubmit && !this.onsubmit()){
-      return;
-    }
-
-    var params = {"shifu[lat]":mapApp.getPoint().lat, "shifu[lng]":mapApp.getPoint().lng};
-    
-    for(var key in params) {
-      if(params.hasOwnProperty(key)) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", params[key]);
-
-        this.appendChild(hiddenField);
-      }
-    }
-
-    this.submit();
-  });
 
 })();
 

@@ -20,15 +20,16 @@
 <%= render_body_tag %>
 <%= render :partial => "common/menu" %>
 <div class="container">
+
   <%= notice_message %>
- 
+
   <%= yield %>
   <%= render :partial => "common/footer" %>
 </div>
 
 
 <%= render :partial => "common/facebook_js" %>
-<%= javascript_include_tag params[:controller] %>
+<%= javascript_include_tag "maps" %>
 <%= yield :javascripts %>
 </body>
 </html>

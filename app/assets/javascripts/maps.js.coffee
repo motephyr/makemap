@@ -1,7 +1,5 @@
 ((scope) ->
   scope.layer = L.tileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg",
-    
-    # attribution: 'Tiles by <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     subdomains: "1234"
   )
   scope.map = new L.Map("map",
@@ -33,7 +31,10 @@
   )
   scope.otherMarker = new LeafIcon(iconUrl: "/assets/people/teacher.png")
   scope.myMarker = new LeafIcon(iconUrl: "/assets/people/Pope.png")
-  scope.MapApp = (map, icon) ->
+  scope.MapApp = (map, icon, callback) ->
+    marker = undefined
+    point = undefined
+    setMarkerOnMapArea = undefined
     marker = undefined
     point = undefined
     setMarkerOnMapArea = undefined
@@ -48,9 +49,12 @@
 
       map.panTo thePosition
       point = thePosition
+      callback.call this, point  unless typeof callback is "undefined"
       return
 
     marker.on "dragend", (event) ->
+      eventTarget = undefined
+      position = undefined
       eventTarget = undefined
       position = undefined
       eventTarget = event.target
