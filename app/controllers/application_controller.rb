@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
   def set_maps
     if current_user
       @permissions = Permission.where(user_id: current_user.id)
-      @maps = Map.where(id: @permissions)
+      ids = @permissions.map {|x| x.map_id}
+      @maps = Map.where(id: ids)
     else
       @maps = Map.where(private: false) 
     end

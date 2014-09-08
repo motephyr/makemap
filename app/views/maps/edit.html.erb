@@ -1,0 +1,127 @@
+<%= render :partial => "maps/map" %>
+
+<div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;">
+  <div class="row">
+    <div class="col-md-6">
+      <h3>設定地圖</h3>
+
+      <%= simple_form_for(@map) do |f| %>
+
+      <div class="field">
+        <%= f.input_field :title ,placeholder: '名稱',:required => true, maxlength: 25 %>
+      </div>
+      <br>
+      <div class="field">
+        <%= f.input_field :description,placeholder: '說明',:required => true,style: "width:185px;height:130px" %>
+      </div>
+      <div class="field">
+        <%= f.input_field :private,inline_label: "設為私人",style: "margin-left:0px",as: :boolean %>
+      </div>
+      <div class="actions">
+        <%= f.submit '送出' %>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <h3>邀請</h3>
+      <input id="permission_email" maxlength="20" placeholder="輸入E-mail" size="20" type="text" value="">
+      <%= link_to "Go", "#" ,id:"permission_submit",class: "btn btn-default btn-xs" %>
+      <h3>設定權限</h3>
+
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>權限</th>
+            <th>admin</th> 
+            <th>invitee</th>
+            <th>other</th>   
+          </tr>
+        </thead>
+        <tbody>
+          <% @admin_users.each do |u| %>
+          <tr>
+            <td><%= u.name %></td>
+            <td>V</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <% end %>
+          <% @invitee_users.each do |u| %>
+          <tr>
+            <td><%= u.name %></td>
+            <td></td>
+            <td>V</td>
+            <td></td>
+          </tr>
+          <% end %>
+          <% @other_users.each do |u| %>
+          <tr>
+            <td><%= u.name %></td>
+            <td></td>
+            <td></td>
+            <td>V</td>
+          </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<% content_for :javascripts do %> 
+<script type='text/javascript'>
+(function(){
+
+  $.ajax({
+    url: "/maps/<%= @map.id %>/locations",
+    dataType: "json",
+    success: function (data) {
+      var keysArray = Object.keys(data);
+      for (var i=0; i<keysArray.length; i++){
+        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5
+        // }).addTo(map);
+        // circle.bindPopup(data[keysArray[i]][2]);
+        //console.log(data[keysArray[i]]);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
+
+        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        marker.bindPopup(text);
+      }
+    }
+  });
+
+
+  var mapApp = new MapApp(map,myMarker);
+
+  $("#button").click(function(){
+    alert(mapApp.getPoint().lat);
+  });
+
+  $('#permission_submit').click(function(){
+    $.ajax({
+      url: '/maps/<%= @map.id %>/permissions',
+      type:'post',
+      dataType: "json",
+      data: { email: $('#permission_email').val() },
+      success: function(data) {
+        //console.log(data);
+        location.reload();
+      },
+      error: function(e){
+        alert(e.statusText);
+      }
+    });
+    
+  });
+
+})();
+
+</script>
+<% end %>
+

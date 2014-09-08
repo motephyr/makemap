@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   resources :maps do
     resources :locations
+    resources :permissions
   end
 
   # Example of regular route:

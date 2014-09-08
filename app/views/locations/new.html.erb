@@ -37,7 +37,7 @@
 (function(){
 
   $.ajax({
-    url: "/maps/<%= @map.id %>/locations.json",
+    url: "/maps/<%= @map.id %>/locations",
     dataType: "json",
     success: function (data) {
       var keysArray = Object.keys(data);

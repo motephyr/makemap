@@ -13,6 +13,12 @@ class MapsController < ApplicationController
 
   def edit
     @map = Map.find(params[:id])
+    @permissions = @map.permissions
+
+    @admin_users = @permissions.select {|x| x.state == "admin"}.map {|x| x.user}
+    @invitee_users = @permissions.select {|x| x.state == "invitee"}.map {|x| x.user}
+    @other_users = @permissions.select {|x| x.state == "other"}.map {|x| x.user}
+  
   end
 
   def show
