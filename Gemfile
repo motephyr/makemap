@@ -12,6 +12,9 @@ gem "omniauth"
 gem "omniauth-facebook"
 gem "auto-facebook", git: 'https://github.com/motephyr/auto-facebook.git'
 
+gem 'carrierwave'
+gem "mini_magick"
+
 group :production do
   gem 'rails_12factor'
   gem "pg"

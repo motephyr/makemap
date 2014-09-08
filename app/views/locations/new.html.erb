@@ -14,11 +14,11 @@
   </div>
   <br>
   <div class="field">
-    <%= f.input_field :photo, maxlength: 25 %>
+    <%= f.input_field :photo %>
   </div>
   <br>
   <div class="field">
-    <%= f.input_field :attach, maxlength: 25 %>
+    <%= f.input :link_url, maxlength: 25 %>
   </div>
   <div class="field">
     <%= f.input :lat,input_html: {value: "25"},readonly: true %>

@@ -40,6 +40,6 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:title,:content,:photo,:attach,:lat,:lng,:map_id)
+    params.require(:location).permit(:title,:content,:photo,:link_url,:lat,:lng,)
   end
 end
