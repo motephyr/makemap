@@ -14,7 +14,7 @@
         <li>nbsp;nbsp;nbsp;nbsp;</li>
         <li class="dropdown">
           <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
-          地圖列表 (你是管理者)
+          <%= render_user_role_for_map(@map) %>
           <% end %>
           <ul class="dropdown-menu">
             <% if @maps.present? %>
@@ -26,7 +26,7 @@
           </ul>
         </li>
         <% if @map.present? && @map.id? %>
-          <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
+        <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
         <% end %>
         <li>nbsp;nbsp;nbsp;nbsp;</li>
       </ul>
@@ -35,11 +35,11 @@
         <li>nbsp;nbsp;nbsp;nbsp;</li>
         <li>
           <% if @map.present? && @map.id? %>
-            <% if request.path == map_path(@map) %>
-              <%= link_to("Pin",new_map_location_path(@map),:class => "btn btn-default" ) %>
-            <% elsif request.path == new_map_location_path(@map)%>
-              <%= link_to("Show",map_path(@map),:class => "btn btn-default" ) %>
-            <% end %>
+          <% if request.path == map_path(@map) %>
+          <%= link_to("Pin",new_map_location_path(@map),:class => "btn btn-default" ) %>
+          <% elsif request.path == new_map_location_path(@map)%>
+          <%= link_to("Show",map_path(@map),:class => "btn btn-default" ) %>
+          <% end %>
           <% end %>
         </li>
       </ul>

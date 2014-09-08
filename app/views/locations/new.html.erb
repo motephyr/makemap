@@ -24,6 +24,7 @@
     <%= f.input :lat,input_html: {value: "25"},readonly: true %>
     <%= f.input :lng,input_html: {value: "122"},readonly: true %>
   </div>
+  <br>
   <div class="actions">
     <%= f.submit '送出' %>
   </div>
@@ -41,20 +42,20 @@
     success: function (data) {
       var keysArray = Object.keys(data);
       for (var i=0; i<keysArray.length; i++){
-      // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
-      //   color: 'red',
-      //   fillColor: '#f03',
-      //   fillOpacity: 0.5
-      // }).addTo(map);
-      // circle.bindPopup(data[keysArray[i]][2]);
-      //console.log(data[keysArray[i]]);
-      var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
+        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5
+        // }).addTo(map);
+        // circle.bindPopup(data[keysArray[i]][2]);
+        //console.log(data[keysArray[i]]);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
 
-      var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
-      marker.bindPopup(text);
+        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        marker.bindPopup(text);
+      }
     }
-  }
-});
+  });
 
 
   var mapApp = new MapApp(map,myMarker,function(point){
@@ -64,28 +65,6 @@
 
   $("#button").click(function(){
     alert(mapApp.getPoint().lat);
-  });
-
-  $( "#new_shifu" ).submit(function( event ) {
-
-    if(this.onsubmit && !this.onsubmit()){
-      return;
-    }
-
-    var params = {"shifu[lat]":mapApp.getPoint().lat, "shifu[lng]":mapApp.getPoint().lng};
-    
-    for(var key in params) {
-      if(params.hasOwnProperty(key)) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", params[key]);
-
-        this.appendChild(hiddenField);
-      }
-    }
-
-    this.submit();
   });
 
 })();
