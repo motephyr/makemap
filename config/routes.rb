@@ -24,7 +24,12 @@ Rails.application.routes.draw do
 
   resources :maps do
     resources :locations
-    resources :permissions
+
+    member do
+      post 'assign_manager_role'
+      post 'assign_invitee_role'
+      post 'assign_other_role'
+    end
   end
 
   # Example of regular route:

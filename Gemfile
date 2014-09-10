@@ -15,6 +15,9 @@ gem "auto-facebook", git: 'https://github.com/motephyr/auto-facebook.git'
 gem 'carrierwave'
 gem "mini_magick"
 
+gem 'cancancan'
+gem 'rolify'
+
 group :production do
   gem 'rails_12factor'
   gem "pg"

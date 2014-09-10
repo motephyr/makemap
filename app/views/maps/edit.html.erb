@@ -22,6 +22,7 @@
       </div>
       <% end %>
     </div>
+    <% if can?(:manage, @map) %>
     <div class="col-md-6">
       <h3>邀請</h3>
       <input id="permission_email" maxlength="20" placeholder="輸入E-mail" size="20" type="text" value="">
@@ -39,7 +40,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @admin_users.each do |u| %>
+          <% @manager_users.each do |u| %>
           <tr>
             <td><%= u.name %></td>
             <td>V</td>
@@ -67,6 +68,7 @@
         </tbody>
       </table>
     </div>
+    <% end %>
   </div>
 </div>
 
@@ -105,7 +107,7 @@
 
   $('#permission_submit').click(function(){
     $.ajax({
-      url: '/maps/<%= @map.id %>/permissions',
+      url: '/maps/<%= @map.id %>/assign_invitee_role',
       type:'post',
       dataType: "json",
       data: { email: $('#permission_email').val() },

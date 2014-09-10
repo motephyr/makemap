@@ -3,6 +3,7 @@ class LocationsController < ApplicationController
 
   before_action :login_required, :only => [:new,:create]
   before_action :set_maps
+  authorize_resource #cancan's setting
 
 
   # GET /maps/1/locations.json

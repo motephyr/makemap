@@ -37,7 +37,7 @@
           <% if @map.present? && @map.id? %>
           <% if request.path == map_path(@map) %>
           <%= link_to("Pin",new_map_location_path(@map),:class => "btn btn-default" ) %>
-          <% elsif request.path == new_map_location_path(@map)%>
+          <% else %>
           <%= link_to("Show",map_path(@map),:class => "btn btn-default" ) %>
           <% end %>
           <% end %>

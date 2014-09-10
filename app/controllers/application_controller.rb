@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  def current_ability
+    mapid = params[:map_id] || params[:id]
+    map = (!mapid.nil?) ? Map.find(mapid) : nil
+    @current_ability = Ability.new(current_user, map)
+  end
+
   def login_required
     if current_user.blank?
       respond_to do |format|
@@ -23,9 +29,7 @@ class ApplicationController < ActionController::Base
 
   def set_maps
     if current_user
-      @permissions = Permission.where(user_id: current_user.id)
-      ids = @permissions.map {|x| x.map_id}
-      @maps = Map.where(id: ids)
+      @maps =  Map.with_role([:manager,:invitee],current_user)
     else
       @maps = Map.where(private: false) 
     end

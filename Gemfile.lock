@@ -56,6 +56,7 @@ GEM
       debugger-linecache (~> 1.2)
       slop (~> 3.6)
     callsite (0.0.11)
+    cancancan (1.9.2)
     capistrano (2.15.5)
       highline
       net-scp (>= 1.0.0)
@@ -228,6 +229,7 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.1.1)
       json (~> 1.4)
+    rolify (3.4.1)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -299,6 +301,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-sass (~> 3.1.1)
   bootstrap_helper (>= 4.2.2.1)
+  cancancan
   capistrano (~> 2.15.5)
   carrierwave
   coffee-rails (~> 4.0.0)
@@ -323,6 +326,7 @@ DEPENDENCIES
   pry-stack_explorer
   rails (= 4.1.0)
   rails_12factor
+  rolify
   rspec-rails (~> 2.14.1)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
