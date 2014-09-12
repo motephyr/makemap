@@ -17,6 +17,7 @@ class LocationsController < ApplicationController
 
   # GET /maps/1/locations/1.js
   def show
+    @map = Map.find(params[:map_id])
     @location = Location.find(params[:id])
     respond_to do |format|
       format.js
@@ -26,6 +27,11 @@ class LocationsController < ApplicationController
   def new
     @map = Map.find(params[:map_id])
     @location = @map.locations.new
+  end
+
+  def edit
+    @map = Map.find(params[:map_id])
+    @location = Location.find(params[:id])
   end
 
   def create
@@ -39,6 +45,16 @@ class LocationsController < ApplicationController
     end
   end
 
+  def update
+    @map = Map.find(params[:map_id])
+    @location = Location.find(params[:id])
+    if @location.update(location_params)
+      redirect_to map_path(@map)
+    else
+      render :edit
+    end
+  end
+  
   private
   def location_params
     params.require(:location).permit(:title,:content,:photo,:link_url,:lat,:lng,)
