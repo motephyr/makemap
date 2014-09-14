@@ -23,7 +23,13 @@ Rails.application.routes.draw do
   end
 
   resources :maps do
-    resources :locations
+    resources :locations do
+      collection do 
+        get 'upload_page'
+        post 'upload'
+      end
+    end
+
 
     member do
       post 'assign_manager_role'

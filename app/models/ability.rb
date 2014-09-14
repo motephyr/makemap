@@ -5,6 +5,8 @@ class Ability
 
   def initialize(user,resource)
     # cannot :manage, :all  #default設置無法管理任何資源
+    alias_action :create,:read, :to => :starter
+    alias_action :create,:update,:read, :to => :change_location
     if !resource.respond_to?(:private) || !resource.private
       if user.blank? 
         # not logged in 如果user沒登入
@@ -42,7 +44,7 @@ class Ability
 
 
   def basic_read_only
-    can :read,    Map
+    can :starter,   Map
     can :read,    Location
   end
 
@@ -52,9 +54,7 @@ class Ability
   end
 
   def map_invitee_only(user)
-    alias_action :create,:read,:update, :to => :change
-    can :change, Map, :id => Map.with_role(:invitee, user).pluck(:id)
-    can :change, Location, :map_id => Map.with_role(:invitee, user).pluck(:id)
+    can :change_location, Location, :map_id => Map.with_role(:invitee, user).pluck(:id)
   end
 
 

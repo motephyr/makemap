@@ -55,8 +55,19 @@ class LocationsController < ApplicationController
     end
   end
   
+  def upload_page
+    @map = Map.find(params[:map_id])
+    @location = @map.locations.new
+  end
+
+  def upload
+    csv_file = CSV.read(params[:file].tempfile)
+
+    redirect_to map_path(@map)
+  end
+
   private
   def location_params
-    params.require(:location).permit(:title,:content,:photo,:link_url,:lat,:lng,)
+    params.require(:location).permit(:title,:content,:photo,:link_url,:lat,:lng)
   end
 end
