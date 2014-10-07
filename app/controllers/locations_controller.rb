@@ -5,11 +5,15 @@ class LocationsController < ApplicationController
   before_action :set_maps
   authorize_resource #cancan's setting
 
-
   # GET /maps/1/locations.json
   def index
     @map = Map.find(params[:map_id])
-    @locations =  @map.locations
+
+    # factories = Factories.where(:lat.exists => true).limit(500).to_a
+    # @locations = factories.map do |factory|
+    #   mapping_attribute(factory)
+    # end
+
     respond_to do |format|
       format.json { render :json => @locations }
     end
@@ -18,9 +22,13 @@ class LocationsController < ApplicationController
   # GET /maps/1/locations/1.js
   def show
     @map = Map.find(params[:map_id])
-    @location = Location.find(params[:id])
+    #@location = Location.find(params[:id])
+    factory = Factories.find(params[:id])
+    
+    @location = mapping_attribute(factory)
+    @location.link_url = ""
     respond_to do |format|
-      format.js
+      format.js 
     end
   end
 
@@ -69,5 +77,12 @@ class LocationsController < ApplicationController
   private
   def location_params
     params.require(:location).permit(:title,:content,:photo,:link_url,:lat,:lng)
+  end
+
+  def mapping_attribute(factory)
+    mapping = { :title => "工廠名稱",:content => "產業類別" }.to_a
+    factory[mapping[0][0]] = factory[mapping[0][1]]
+    factory[mapping[1][0]] = factory[mapping[1][1]]
+    factory
   end
 end

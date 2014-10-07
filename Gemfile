@@ -15,8 +15,14 @@ gem "auto-facebook", git: 'https://github.com/motephyr/auto-facebook.git'
 gem 'carrierwave'
 gem "mini_magick"
 
+#permission
 gem 'cancancan'
 gem 'rolify'
+
+#mongodb
+gem 'mongoid', github: 'mongoid/mongoid'
+gem 'bson_ext'
+gem 'bson'
 
 group :production do
   gem 'rails_12factor'

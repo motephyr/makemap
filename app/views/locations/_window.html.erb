@@ -9,12 +9,16 @@
   <div class="note-media">
     <div class="note-media-object">
       <figure>
+        <% if !@location.photo.nil?  %>
         <%= image_tag(@location.photo.send("thumb").url, :class => "thumbnail") %>
+        <% end %>
       </figure>
     </div>
   </div>
   <div class="note-message ">
     <p><%= @location.content %></p>
   </div>
+  <% if !@location.user.nil?  %>
   <h6 class="note-author">Steper: <%= @location.user.name %></h6>
+  <% end %>
 </div>

@@ -18,7 +18,7 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["id"]} ).addTo(map);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["_id"]["$oid"]} ).addTo(map);
 
         marker.on('click',function(event){
           var alatlng = event.latlng;
