@@ -6,12 +6,6 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'maps#index'
 
-  resources :welcome do
-    collection do
-      get 'demo'
-    end
-  end 
-
   arrayMap = (1..6).map { |x| %Q(get 'index#{x}'\n)}
   arrayMapReduce = arrayMap.reduce { |x,y| x+y }
 

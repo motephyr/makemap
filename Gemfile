@@ -44,6 +44,7 @@ end
 group :test do
   gem 'guard-rspec', require: false
   gem 'rspec-rails', '~> 2.14.1'
+  gem 'rails_best_practices'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

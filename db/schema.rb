@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912065113) do
+ActiveRecord::Schema.define(version: 20140926025513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 20140912065113) do
     t.datetime "updated_at"
     t.integer  "map_id"
   end
+
+  add_index "locations", ["map_id"], name: "index_locations_on_map_id", using: :btree
+  add_index "locations", ["user_id"], name: "index_locations_on_user_id", using: :btree
 
   create_table "maps", force: true do |t|
     t.string   "title"
