@@ -1,0 +1,33 @@
+<%= render :partial => "maps/map" %>
+
+<% content_for :javascripts do %> 
+
+<script src='/assets/KML.js'></script>
+
+<script type='text/javascript'>
+(function(scope){
+
+  var kmlLayer = new L.KML("/assets/counties.kml", {async: true});
+
+  kmlLayer.on("loaded", function(e) { 
+    map.fitBounds(e.target.getBounds());
+  });
+
+  map.addLayer(kmlLayer);
+
+  kmlLayer.on('click',function(e){
+        console.log(e);
+  });
+
+
+  var mapApp = new MapApp(map,myMarker);
+
+  $("#button").click(function(){
+    alert(mapApp.getPoint().lat);
+  });
+
+})(window);
+
+</script>
+<% end %>
+
