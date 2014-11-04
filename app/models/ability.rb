@@ -54,6 +54,7 @@ class Ability
   end
 
   def map_invitee_only(user)
+    can :read, Map, :id => Map.with_role(:invitee, user).pluck(:id)
     can :change_location, Location, :map_id => Map.with_role(:invitee, user).pluck(:id)
   end
 

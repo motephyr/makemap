@@ -32,7 +32,6 @@
       </ul>
       <%= render :partial => "common/search_form" %>
       <ul class="nav navbar-nav">
-        <li>nbsp;nbsp;nbsp;nbsp;</li>
         <% if @map.present? && @map.id? %>
         <% if request.path == map_path(@map) %>
         <li><%= link_to("Pin",new_map_location_path(@map),:class => "btn btn-default" ) %></li>
