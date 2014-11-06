@@ -5,13 +5,13 @@ development:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: laibaishi
+      database: map
       # Provides the hosts the default session can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - ds063439.mongolab.com:63439
-      username: yan
-      password: yanyan
+        - localhost:27017
+      # username: ''
+      # password: ''
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:

@@ -29,7 +29,7 @@
       -86
     ]
   )
-  scope.otherMarker = new LeafIcon(iconUrl: "/assets/people/teacher.png")
+  scope.otherMarker = new LeafIcon(iconUrl: "/assets/coal-power-plant-icon.png")
   scope.myMarker = new LeafIcon(iconUrl: "/assets/people/Pope.png")
   scope.MapApp = (map, icon, callback) ->
     marker = undefined

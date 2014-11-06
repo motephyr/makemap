@@ -48,7 +48,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
-    awesome_print (1.2.0)
     bcrypt (3.1.7)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
@@ -83,8 +82,6 @@ GEM
       mime-types (>= 1.16)
     celluloid (0.16.0)
       timers (~> 4.0.0)
-    code_analyzer (0.4.5)
-      sexp_processor
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -93,7 +90,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
-    colored (1.2)
     columnize (0.8.9)
     connection_pool (2.0.0)
     debug_inspector (0.0.2)
@@ -240,16 +236,6 @@ GEM
     rails_12factor (0.0.2)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_best_practices (1.15.4)
-      activesupport
-      awesome_print
-      code_analyzer (>= 0.4.3)
-      colored
-      erubis
-      i18n
-      json
-      require_all
-      ruby-progressbar
     rails_serve_static_assets (0.0.2)
     rails_stdout_logging (0.0.3)
     railties (4.1.0)
@@ -263,7 +249,6 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.1.2)
       json (~> 1.4)
-    require_all (1.3.2)
     rolify (3.4.1)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -281,7 +266,6 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    ruby-progressbar (1.6.0)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -293,7 +277,6 @@ GEM
       rdoc (~> 4.0)
     seo_helper (1.0.2)
     settingslogic (2.0.9)
-    sexp_processor (4.4.4)
     simple_form (3.0.2)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -367,7 +350,6 @@ DEPENDENCIES
   pry-stack_explorer
   rails (= 4.1.0)
   rails_12factor
-  rails_best_practices
   rolify
   rspec-rails (~> 2.14.1)
   sass-rails (~> 4.0.3)

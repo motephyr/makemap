@@ -9,10 +9,16 @@ class LocationsController < ApplicationController
   def index
     @map = Map.find(params[:map_id])
 
-    # factories = Factories.where(:lat.exists => true).limit(500).to_a
-    # @locations = factories.map do |factory|
-    #   mapping_attribute(factory)
-    # end
+    factories_has_lat = Factories.where(:lat.exists => true)
+    factories = factories_has_lat.map do |i| 
+      if(rand > 0.99) 
+        i 
+      end
+    end.compact.to_a
+
+    @locations = factories.map do |factory|
+      mapping_attribute(factory)
+    end
 
     respond_to do |format|
       format.json { render :json => @locations }
