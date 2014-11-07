@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def current_ability
     mapid = params[:map_id] || params[:id]
-    map = (!mapid.nil?) ? Map.find(mapid) : nil
+    map = (mapid.class != String && !mapid.nil?) ? Map.find(mapid) : nil
     @current_ability = Ability.new(current_user, map)
   end
 
