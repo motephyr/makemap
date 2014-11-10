@@ -25,10 +25,14 @@ end
 
 group :development do
   gem "guard-livereload"
-  gem 'capistrano', '~> 2.15.5'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem "capistrano", '~> 3.2.1'
+  gem "capistrano-rails"
+  gem "capistrano-rvm"
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
   gem "magic_encoding"
+
   gem "pry-stack_explorer"
   gem "pry-byebug"
   gem "pry-rescue"
