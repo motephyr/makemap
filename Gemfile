@@ -29,6 +29,7 @@ group :development do
   gem "capistrano", '~> 3.2.1'
   gem "capistrano-rails"
   gem "capistrano-rvm"
+  gem 'capistrano-bower'
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
   gem "magic_encoding"
