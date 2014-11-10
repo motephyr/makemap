@@ -19,7 +19,8 @@ gem 'cancancan'
 gem 'rolify'
 
 group :production do
-  gem 'rails_12factor'
+  #gem 'rails_12factor'
+  gem "non-stupid-digest-assets"
   gem "pg"
 end
 
