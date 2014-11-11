@@ -1,12 +1,13 @@
 <%= render :partial => "maps/map" %>
-
+<input type="text" id="query"></input>
+<input type="submit"></input>
 <% content_for :javascripts do %> 
 
 <script type='text/javascript'>
 (function(scope){
 
   $.ajax({
-    url: "/maps/<%= @map.id %>/locations",
+    url: "/factories.json",
     dataType: "json",
     success: function (data) {
       var keysArray = Object.keys(data);
@@ -18,12 +19,12 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["id"]} ).addTo(map);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["_id"]["$oid"]} ).addTo(map);
 
         marker.on('click',function(event){
           var alatlng = event.latlng;
           $.ajax({
-            url: '/maps/<%= @map.id %>/locations/' +event.target.options.title ,
+            url: "/factories/" +event.target.options.title +'.js',
             dataType:'script'
           }).success(function(data){
             event.target.bindPopup($('#content').html());
@@ -35,7 +36,8 @@
     }
   });
 
-  var mapApp = new MapApp(map,myMarker);
+var mapApp = new MapApp(map,myMarker);
+
 
 })(window);
 

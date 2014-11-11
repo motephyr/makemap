@@ -32,6 +32,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :factories  do
+    collection do 
+      get 'demo1'
+    end
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

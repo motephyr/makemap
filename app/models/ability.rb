@@ -5,6 +5,8 @@ class Ability
 
   def initialize(user,resource)
     # cannot :manage, :all  #default設置無法管理任何資源
+    can :manage, :all
+
     alias_action :create,:read, :to => :starter
     alias_action :create,:update,:read, :to => :change_location
     if !resource.respond_to?(:private) || !resource.private
