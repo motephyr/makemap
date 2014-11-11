@@ -24,7 +24,7 @@
         marker.on('click',function(event){
           var alatlng = event.latlng;
           $.ajax({
-            url: "/factories/" +event.target.options.title ,
+            url: "/factories/" +event.target.options.title +'.js',
             dataType:'script'
           }).success(function(data){
             event.target.bindPopup($('#content').html());
