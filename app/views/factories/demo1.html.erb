@@ -1,10 +1,15 @@
 <%= render :partial => "maps/map" %>
-<input type="text" id="query"></input>
-<input type="submit"></input>
+<%= render :partial => "common/sidebar" %>
 <% content_for :javascripts do %> 
 
 <script type='text/javascript'>
 (function(scope){
+  var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+  });
+
+map.addControl(sidebar);
+sidebar.show();
 
   $.ajax({
     url: "/factories.json",

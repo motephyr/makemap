@@ -11,7 +11,7 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>nbsp;nbsp;nbsp;nbsp;</li>
+        <li><%= ("&nbsp;"*50).html_safe %></li>
         <li class="dropdown">
           <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
           <%= render_user_role_for_map(@map) %>
@@ -28,7 +28,7 @@
         <% if @map.present? && @map.id? %>
         <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
         <% end %>
-        <li>nbsp;nbsp;nbsp;nbsp;</li>
+        <li><%= ("&nbsp;"*50).html_safe %></li>
       </ul>
       <%= render :partial => "common/search_form" %>
       <ul class="nav navbar-nav">
