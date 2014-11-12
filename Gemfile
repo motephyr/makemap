@@ -39,7 +39,6 @@ group :development do
   gem 'capistrano-bower'
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
-  gem "magic_encoding"
 
   gem "pry-stack_explorer"
   gem "pry-byebug"
