@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :factories  do
     collection do 
       get 'demo1'
+      get 'demo2'
     end
   end
 

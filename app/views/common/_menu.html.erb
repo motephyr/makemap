@@ -11,7 +11,7 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><%= ("&nbsp;"*50).html_safe %></li>
+        <li><%= ("&nbsp;"*25).html_safe %></li>
         <li class="dropdown">
           <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
           <%= render_user_role_for_map(@map) %>

@@ -17,6 +17,7 @@
     "leaflet": "0.7.3",
     "leaflet-plugins": "1.2.0",
     "leaflet-sidebar": "~0.1.6",
-    "leaflet.markercluster": "~0.4.0"
+    "leaflet.markercluster": "~0.4.0",
+    "trumbowyg": "~1.1.7"
   }
 }

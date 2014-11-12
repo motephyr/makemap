@@ -2,15 +2,14 @@ class FactoriesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   before_action :login_required, :only => [:new,:create]
-  authorize_resource #cancan's setting
 
   # GET /maps/1/locations.json
   def index
     factories_has_lat = nil;
     if !params[:catagory].nil? 
-      factories_has_lat = Factories.where(:lat.exists => true, :產業類別 => params[:catagory] )
+      factories_has_lat = Factory.where(:lat.exists => true, :產業類別 => params[:catagory] )
     else
-      factories_has_lat = Factories.where(:lat.exists => true)
+      factories_has_lat = Factory.where(:lat.exists => true)
     end
     factories = factories_has_lat.map do |i| 
       if(rand > 0.99) 
@@ -30,7 +29,7 @@ class FactoriesController < ApplicationController
   # GET /maps/1/locations/1.js
   def show
     #@location = Location.find(params[:id])
-    factory = Factories.find(params[:id])
+    factory = Factory.find(params[:id])
     
     @location = mapping_attribute(factory)
     @location.link_url = ""
@@ -76,8 +75,6 @@ class FactoriesController < ApplicationController
     redirect_to map_path(@map)
   end
 
-  def demo1
-  end
 
   private
   def location_params

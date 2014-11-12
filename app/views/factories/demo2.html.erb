@@ -1,0 +1,64 @@
+<%= render :partial => "maps/map" %>
+<%= render :partial => "common/sidebar" %>
+<% content_for :stylesheets do %>
+
+<%= stylesheet_link_tag "Leaflet.markercluster/dist/MarkerCluster.Default.css" %>
+<%= stylesheet_link_tag "trumbowyg/dist/ui/trumbowyg.min.css" %>
+<% end %>
+<% content_for :javascripts do %> 
+<%= javascript_include_tag "trumbowyg/dist/trumbowyg.min.js" %>
+
+<script type='text/javascript'>
+(function(scope){
+  var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+  });
+
+map.addControl(sidebar);
+sidebar.show();
+
+$('#trumbowyg').trumbowyg();
+
+var markers = new L.MarkerClusterGroup();
+
+
+  $.ajax({
+    url: "/factories.json",
+    dataType: "json",
+    success: function (data) {
+      var keysArray = Object.keys(data);
+      for (var i=0; i<keysArray.length; i++){
+        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5
+        // }).addTo(map);
+        // circle.bindPopup(data[keysArray[i]][2]);
+        //console.log(data[keysArray[i]]);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["_id"]["$oid"]} );
+        markers.addLayer(marker);
+
+        marker.on('click',function(event){
+          var alatlng = event.latlng;
+          $.ajax({
+            url: "/factories/" +event.target.options.title +'.js',
+            dataType:'script'
+          }).success(function(data){
+            event.target.bindPopup($('#content').html());
+            event.target.openPopup();
+
+          });
+        });
+      }
+      map.addLayer(markers);
+    }
+  });
+
+var mapApp = new MapApp(map,myMarker);
+
+
+})(window);
+
+</script>
+<% end %>
+

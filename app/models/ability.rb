@@ -5,7 +5,6 @@ class Ability
 
   def initialize(user,resource)
     # cannot :manage, :all  #default設置無法管理任何資源
-    can :manage, :all
 
     alias_action :create,:read, :to => :starter
     alias_action :create,:update,:read, :to => :change_location
@@ -15,7 +14,8 @@ class Ability
         basic_read_only #呼叫基本權限設定 Medthod 
       elsif user.has_role?(:admin,resource) #如果role 為 admin'
         # admin
-        can :manage, :all #管理所有資源
+        # can :manage, :all #管理所有資源
+        map_manager_only(user)
       elsif user.has_role?(:manager,resource) #如果role 為 manager
         map_manager_only(user)
       elsif user.has_role?(:invitee,resource)
