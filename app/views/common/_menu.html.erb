@@ -37,7 +37,7 @@
         <li><%= link_to("Pin",new_map_location_path(@map),:class => "label" ) %></li>
         <li><%= link_to("Upload csv",upload_page_map_locations_path(@map),:class => "label" ) %></li>
         <% else %>
-        <li><%= link_to("Show",map_path(@map),:class => "btn btn-default" ) %></li>
+        <li><%= link_to("Show",map_path(@map),:class => "label" ) %></li>
         <% end %>
         <% end %>
       </ul>

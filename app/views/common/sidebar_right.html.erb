@@ -4,14 +4,14 @@
 
 
 <% end %>
-<div id="sidebar">
+<div id="sidebar_right">
 <%= yield :sidebar_content %>
 </div>
 
 <% content_for :javascripts do %> 
 <script type='text/javascript'>
 (function(scope){
-  var sidebar = L.control.sidebar('sidebar', {
+  var sidebar = L.control.sidebar('sidebar_right', {
     position: 'right',
     closeButton: false
   });

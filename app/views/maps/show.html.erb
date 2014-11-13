@@ -1,9 +1,22 @@
 <%= render :partial => "maps/map" %>
+<% content_for :sidebar_content do %>
+
+
+<% end %>
+<%= render template: "common/sidebar" %>
+
 
 <% content_for :javascripts do %> 
 
 <script type='text/javascript'>
 (function(scope){
+
+  var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+  });
+  
+  map.addControl(sidebar);
+
 
   $.ajax({
     url: "/maps/<%= @map.id %>/locations",
@@ -20,22 +33,25 @@
         //console.log(data[keysArray[i]]);
         var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["id"]} ).addTo(map);
 
+        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        marker.bindPopup(text);
+
         marker.on('click',function(event){
           var alatlng = event.latlng;
           $.ajax({
             url: '/maps/<%= @map.id %>/locations/' +event.target.options.title ,
             dataType:'script'
           }).success(function(data){
-            event.target.bindPopup($('#content').html());
-            event.target.openPopup();
-
+            // event.target.bindPopup($('#content').html());
+            // event.target.openPopup();
+            sidebar.show();
           });
         });
       }
     }
   });
 
-  var mapApp = new MapApp(map,myMarker);
+var mapApp = new MapApp(map,myMarker);
 
 })(window);
 

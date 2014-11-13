@@ -1,9 +1,5 @@
 <header class="note-header">
-  <h1 class="note-heading"><%= link_to @location.title , @location.link_url  %>
-    <% if can?(:update, @map) %>
-    <%= link_to "修改", edit_map_location_path(@map,@location), class: "btn btn-info pull-right"  %>
-    <% end %>
-  </h1>
+  <h1 class="note-heading"><%= link_to @location.title , @location.link_url  %></h1>
 </header>
 <div class="note-contents">
   <div class="note-media">
@@ -20,5 +16,8 @@
   </div>
   <% if !@location.user.nil?  %>
   <h6 class="note-author">Steper: <%= @location.user.name %></h6>
+  <% end %>
+  <% if can?(:update, @map) %>
+  <%= link_to "修改", edit_map_location_path(@map,@location), class: "btn btn-info"  %>
   <% end %>
 </div>

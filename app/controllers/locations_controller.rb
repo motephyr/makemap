@@ -9,7 +9,7 @@ class LocationsController < ApplicationController
   # GET /maps/1/locations.json
   def index
     @map = Map.find(params[:map_id])
-    @locations =  @map.locations
+    @locations =  @map.locations.select(:id,:title,:lat,:lng)
 
     respond_to do |format|
       format.json { render :json => @locations }

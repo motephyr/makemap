@@ -36,7 +36,12 @@
 
 <script type='text/javascript'>
 (function(scope){
-
+    var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+  });
+  
+  map.addControl(sidebar);
+  sidebar.show();
   var markers = new L.MarkerClusterGroup();
 
 
