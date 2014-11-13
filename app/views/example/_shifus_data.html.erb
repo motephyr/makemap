@@ -1,0 +1,20 @@
+  $.ajax({
+    url: "/assets/shifus.json",
+    dataType: "json",
+    success: function (data) {
+      var keysArray = Object.keys(data);
+      for (var i=0; i<keysArray.length; i++){
+        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5
+        // }).addTo(map);
+        // circle.bindPopup(data[keysArray[i]][2]);
+        //console.log(data[keysArray[i]]);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
+
+        var text = "<h6>"+data[keysArray[i]]["address"]+"</h6>";
+        marker.bindPopup(text);
+      }
+    }
+  });

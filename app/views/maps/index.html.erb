@@ -5,35 +5,7 @@
 <script type='text/javascript'>
 (function(scope){
 
-  $.ajax({
-    url: "/assets/shifus.json",
-    dataType: "json",
-    success: function (data) {
-      var keysArray = Object.keys(data);
-      for (var i=0; i<keysArray.length; i++){
-      // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
-      //   color: 'red',
-      //   fillColor: '#f03',
-      //   fillOpacity: 0.5
-      // }).addTo(map);
-      // circle.bindPopup(data[keysArray[i]][2]);
-      //console.log(data[keysArray[i]]);
-      var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["id"]} ).addTo(map);
-
-      marker.on('click',function(event){
-        var alatlng = event.latlng;
-        $.ajax({
-          url: '/shifus/' +event.target.options.title ,
-          dataType:'script'
-        }).success(function(data){
-          event.target.bindPopup($('#content').html());
-          event.target.openPopup();
-
-        });
-      });
-    }
-  }
-});
+  <%= render :partial => "example/shifus_data" %>
 
 var mapApp = new MapApp(map,myMarker);
 
