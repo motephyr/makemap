@@ -20,13 +20,13 @@
 <%= render_body_tag %>
 <%= render :partial => "common/menu" %>
 
-
+<%= yield :map %>
+<div class="container">
   <%#= notice_message %>
-
   <%= yield %>
-<!-- <div class="container">
-  <%= render :partial => "common/footer" %>
-</div> -->
+
+  <%#= render :partial => "common/footer" %>
+</div> 
 
 
 <%= render :partial => "common/facebook_js" %>

@@ -1,5 +1,9 @@
 <%= render :partial => "maps/map" %>
-<%= render :partial => "common/sidebar" %>
+<% content_for :sidebar_content do %>
+
+<%= render :partial => "common/sidebar_example" %>
+<% end %>
+<%= render template: "common/sidebar" %>
 <% content_for :stylesheets do %>
 
 <%= stylesheet_link_tag "Leaflet.markercluster/dist/MarkerCluster.Default.css" %>
@@ -9,12 +13,7 @@
 
 <script type='text/javascript'>
 (function(scope){
-  var sidebar = L.control.sidebar('sidebar', {
-    position: 'left'
-  });
 
-map.addControl(sidebar);
-sidebar.show();
 
 
 var markers = new L.MarkerClusterGroup();

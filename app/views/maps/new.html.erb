@@ -1,28 +1,17 @@
 <%= render :partial => "maps/map" %>
 
-<div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;">
-  <h3>新增地圖</h3>
-  
-  <%= simple_form_for(@map) do |f| %>
+<% content_for :sidebar_content do %>
 
-  <div class="field">
-    <%= f.input_field :title ,placeholder: '名稱',:required => true, maxlength: 25 %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.input_field :description,placeholder: '說明',:required => true,style: "width:185px;height:130px" %>
-  </div>
-  <div class="field">
-    <%= f.input_field :private,inline_label: "設為私人",style: "margin-left:0px",as: :boolean %>
-  </div>
-  <div class="actions">
-    <%= f.submit '送出' %>
-  </div>
-  <% end %>
-</div>
+<h3>新增地圖</h3>
+  <%= render :partial => "maps/form" %>
+
+<% end %>
+<%= render template: "common/sidebar_right" %>
 
 
-<% content_for :javascripts do %> 
+<% content_for :javascripts do %>
+
+
 <script type='text/javascript'>
 (function(){
 
@@ -30,8 +19,8 @@
     url: "/assets/shifus.json",
     dataType: "json",
     success: function (data) {
-        var keysArray = Object.keys(data);
-        for (var i=0; i<keysArray.length; i++){
+      var keysArray = Object.keys(data);
+      for (var i=0; i<keysArray.length; i++){
         // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
         //   color: 'red',
         //   fillColor: '#f03',

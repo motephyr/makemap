@@ -1,29 +1,13 @@
 <%= render :partial => "maps/map" %>
 
-<div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;">
-  <div class="row">
-    <div class="col-md-6">
+<% content_for :sidebar_content do %>
+
+
       <h3>設定地圖</h3>
 
-      <%= simple_form_for(@map) do |f| %>
+    <%= render :partial => "maps/form" %>
 
-      <div class="field">
-        <%= f.input_field :title ,placeholder: '名稱',:required => true, maxlength: 25 %>
-      </div>
-      <br>
-      <div class="field">
-        <%= f.input_field :description,placeholder: '說明',:required => true,style: "width:185px;height:130px" %>
-      </div>
-      <div class="field">
-        <%= f.input_field :private,inline_label: "設為私人",style: "margin-left:0px",as: :boolean %>
-      </div>
-      <div class="actions">
-        <%= f.submit '送出' %>
-      </div>
-      <% end %>
-    </div>
     <% if can?(:manage, @map) %>
-    <div class="col-md-6">
       <h3>邀請</h3>
       <input id="permission_email" maxlength="20" placeholder="輸入E-mail" size="20" type="text" value="">
       <%= link_to "Go", "#" ,id:"permission_submit",class: "btn btn-default btn-xs" %>
@@ -67,10 +51,11 @@
 
         </tbody>
       </table>
-    </div>
     <% end %>
-  </div>
-</div>
+
+<% end %>
+<%= render template: "common/sidebar_right" %>
+
 
 
 <% content_for :javascripts do %> 

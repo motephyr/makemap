@@ -1,0 +1,22 @@
+<% content_for :stylesheets do %>
+
+<%= stylesheet_link_tag "leaflet-sidebar/src/L.Control.Sidebar.css" %>
+
+
+<% end %>
+<div id="sidebar">
+<%= yield :sidebar_content %>
+</div>
+
+<% content_for :javascripts do %> 
+<script type='text/javascript'>
+(function(scope){
+  var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+  });
+
+map.addControl(sidebar);
+sidebar.show();
+})(window);
+</script>
+<% end %>
