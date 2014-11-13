@@ -11,10 +11,11 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
-
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} );
+markers.addLayer(marker);
         var text = "<h6>"+data[keysArray[i]]["address"]+"</h6>";
         marker.bindPopup(text);
       }
+       map.addLayer(markers);
     }
   });
