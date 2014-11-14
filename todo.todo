@@ -14,3 +14,11 @@ location:
   ✔ 上傳圖片 @done (14-09-08 18:04)
   ☐ 寄通知信
   ☐ 權限設定
+
+安裝備註：
+graphicmageic
+bundle install
+bower install
+rake db:migrate
+
+mongodb

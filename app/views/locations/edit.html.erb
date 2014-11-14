@@ -14,11 +14,11 @@
 
 <% content_for :javascripts do %> 
 <script type='text/javascript'>
-(function(){
+(function(scope){
 
   map.setView([<%= @location.lat %>,<%= @location.lng %>]);
 
-})();
+})(window);
 
 </script>
 <% end %>
