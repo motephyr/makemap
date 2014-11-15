@@ -1,5 +1,5 @@
 <div id="over_map_form">
-  
+
   <%= simple_form_for([@map,@location]) do |f| %>
 
   <div class="field">
@@ -7,7 +7,11 @@
   </div>
   <br>
   <div class="field">
-    <%= f.input_field :content,placeholder: '內容',:required => true,style: "width:100%;height:130px" %>
+    <%= f.input_field :content,:required => true,style: "display:none" %>
+    <% content_for :trumbowyg_content do %>
+    <%= @location.content.html_safe %>
+    <% end %>
+    <%= render template: "common/trumbowyg" %>
   </div>
   <br>
   <div class="field">
@@ -23,7 +27,7 @@
   </div>
   <br>
   <div class="actions">
-    <%= f.submit '送出' %>
+    <input id="submit-button" name="commit" type="submit" value="送出">
   </div>
   <% end %>
 </div>
@@ -36,6 +40,13 @@
   var mapApp = new MapApp(map,myMarker,function(point){
     $('#location_lat').val(point.lat);
     $('#location_lng').val(point.lng);
+  });
+
+  $( "#submit-button" ).on('click',function() {
+    var form_id = $("form:eq(1)").attr("id");
+    alert(form_id);
+    $("#location_content").val($("#trumbowyg").html());
+    $( "#"+form_id ).submit();
   });
 
 

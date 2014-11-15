@@ -11,7 +11,16 @@
 <%= javascript_include_tag "trumbowyg/dist/trumbowyg.min.js" %>
 <script type='text/javascript'>
 (function(scope){
-$('#trumbowyg').trumbowyg();
+var btnsGrps = jQuery.trumbowyg.btnsGrps;
+$('#trumbowyg').trumbowyg({
+  fullscreenable: false,
+  btns: ['viewHTML',
+           '|', 'formatting',
+           '|', btnsGrps.design,
+           '|', 'link',
+           '|', btnsGrps.justify,
+           '|', btnsGrps.lists,
+           '|', 'insertHorizontalRule']});
 })(window);
 </script>
 <% end %>

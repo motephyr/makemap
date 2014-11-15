@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="note-message ">
-    <p><%= @location.content %></p>
+    <p><%= @location.content.html_safe %></p>
   </div>
   <% if !@location.user.nil?  %>
   <h6 class="note-author">Steper: <%= @location.user.name %></h6>
