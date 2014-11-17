@@ -5,8 +5,10 @@
   <div class="note-media">
     <div class="note-media-object">
       <figure>
-        <% if !@location.photo.nil?  %>
-        <%= image_tag(@location.photo.send("thumb").url, :class => "thumbnail") %>
+        <% if !@photos.nil?  %>
+        <% @photos.each do |photo| %>
+        <%= image_tag(photo.photo.send("thumb").url, :class => "thumbnail") %>
+        <% end %>
         <% end %>
       </figure>
     </div>

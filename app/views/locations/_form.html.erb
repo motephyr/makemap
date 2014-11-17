@@ -9,13 +9,11 @@
   <div class="field">
     <%= f.input_field :content,:required => true,style: "display:none" %>
     <% content_for :trumbowyg_content do %>
+    <% if !@location.content.nil? %>
     <%= @location.content.html_safe %>
     <% end %>
+    <% end %>
     <%= render template: "common/trumbowyg" %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.input :photo %>
   </div>
   <br>
   <div class="field">
@@ -27,7 +25,7 @@
   </div>
   <br>
   <div class="actions">
-    <input id="submit-button" name="commit" type="submit" value="送出">
+    <input name="commit" type="submit" value="送出">
   </div>
   <% end %>
 </div>
@@ -42,9 +40,8 @@
     $('#location_lng').val(point.lng);
   });
 
-  $( "#submit-button" ).on('click',function() {
+  $("input[type=submit]").on('click',function() {
     var form_id = $("form:eq(1)").attr("id");
-    alert(form_id);
     $("#location_content").val($("#trumbowyg").html());
     $( "#"+form_id ).submit();
   });

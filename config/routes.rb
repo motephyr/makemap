@@ -32,6 +32,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :locations do
+    resources :photos
+  end
+
+  resources :photos
+
   resources :factories  do
     collection do 
       get 'demo1'

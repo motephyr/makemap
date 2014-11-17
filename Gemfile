@@ -19,11 +19,6 @@ gem "mini_magick"
 gem 'cancancan'
 gem 'rolify'
 
-#mongodb
-gem 'mongoid', github: 'mongoid/mongoid'
-gem 'bson_ext'
-gem 'bson'
-
 group :production do
   #gem 'rails_12factor'
   gem "non-stupid-digest-assets"
@@ -51,6 +46,12 @@ group :development do
   gem 'meta_request'
   gem 'sqlite3'
 end
+
+#mongodb
+
+gem 'bson_ext'
+gem 'bson'
+#gem 'mongoid', github: 'mongoid/mongoid'
 
 group :test do
   gem 'guard-rspec', require: false

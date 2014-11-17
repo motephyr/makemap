@@ -9,8 +9,7 @@ class LocationsController < ApplicationController
   # GET /maps/1/locations.json
   def index
     @map = Map.find(params[:map_id])
-    @locations =  @map.locations.select(:id,:title,:lat,:lng)
-
+    @locations =  @map.locations
     respond_to do |format|
       format.json { render :json => @locations }
     end
@@ -20,6 +19,7 @@ class LocationsController < ApplicationController
   def show
     @map = Map.find(params[:map_id])
     @location = Location.find(params[:id])
+    @photos = @location.photos.all
 
     respond_to do |format|
       format.html
@@ -49,9 +49,10 @@ class LocationsController < ApplicationController
   end
 
   def update
+
     @map = Map.find(params[:map_id])
     @location = Location.find(params[:id])
-    if @location.update(location_params)
+    if @location.update(location_params) 
       redirect_to map_path(@map)
     else
       render :edit
@@ -71,7 +72,7 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:title,:content,:photo,:link_url,:lat,:lng)
+    params.require(:location).permit(:title,:content,:link_url,:lat,:lng)
   end
 
 end

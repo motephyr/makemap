@@ -1,0 +1,52 @@
+<% content_for :stylesheets do %>
+<%= stylesheet_link_tag "dropzone/downloads/css/dropzone.css" %>
+<% end %>
+
+<%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
+<% end %>
+
+<% content_for :javascripts do %> 
+<%= javascript_include_tag "dropzone.min.js" %>
+
+<script type='text/javascript'>
+
+(function(scope){
+
+
+  Dropzone.options.myAwesomeDropzone = {
+    url: '<%= location_photos_path(@location) %>', 
+    paramName: "photo",
+    previewsContainer: ".dropzone-previews",
+    uploadMultiple: false,
+    parallelUploads: 100,
+    maxFiles: 100,
+    init: function() {
+      var myDropzone = this;
+
+
+
+    // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
+    // of the sending event because uploadMultiple is set to true.
+    this.on("sending", function(file, xhr, formData) {
+      formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
+      formData.append("photoable_type", 'Location'); 
+      formData.append("photoable_id", <%= @location.id %>);
+
+      // Gets triggered when the form is actually being sent.
+      // Hide the success button or the complete form.
+    });
+    this.on("successmultiple", function(files, response) {
+      // Gets triggered when the files have successfully been sent.
+      // Redirect user or notify of success.
+    });
+    this.on("errormultiple", function(files, response) {
+      // Gets triggered when there was an error sending the files.
+      // Maybe show form again, and notify user of error
+    });
+  }
+
+};
+
+})(window);
+</script>
+<% end %>
