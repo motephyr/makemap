@@ -34,10 +34,10 @@
       <ul class="nav navbar-nav">
         <% if @map.present? && @map.id? %>
         <% if request.path == map_path(@map) %>
-        <li><%= link_to("Pin",new_map_location_path(@map),:class => "label" ) %></li>
-        <li><%= link_to("Upload csv",upload_page_map_locations_path(@map),:class => "label" ) %></li>
+        <li><%= link_to("新增地點",new_map_location_path(@map) ) %></li>
+        <li><%#= link_to("Upload csv",upload_page_map_locations_path(@map),:class => "label" ) %></li>
         <% else %>
-        <li><%= link_to("Show",map_path(@map),:class => "label" ) %></li>
+        <li><%= link_to("回地圖",map_path(@map)) %></li>
         <% end %>
         <% end %>
       </ul>

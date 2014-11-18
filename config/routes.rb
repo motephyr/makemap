@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :welcome do
     collection do
       get 'demo'
+      get 'search_location'
       eval(arrayMapReduce)
     end
   end

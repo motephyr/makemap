@@ -19,6 +19,8 @@ gem "mini_magick"
 gem 'cancancan'
 gem 'rolify'
 
+gem 'geocoder'
+
 group :production do
   #gem 'rails_12factor'
   gem "non-stupid-digest-assets"
@@ -51,7 +53,7 @@ end
 
 gem 'bson_ext'
 gem 'bson'
-#gem 'mongoid', github: 'mongoid/mongoid'
+gem 'mongoid', github: 'mongoid/mongoid'
 
 group :test do
   gem 'guard-rspec', require: false

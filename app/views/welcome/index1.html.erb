@@ -20,10 +20,9 @@
   });
 
 
-  var mapApp = new MapApp(map,myMarker);
 
   $("#button").click(function(){
-    alert(mapApp.getPoint().lat);
+    alert(map.getCenter().lat);
   });
 
 })(window);

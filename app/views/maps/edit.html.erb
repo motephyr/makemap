@@ -84,9 +84,6 @@
   });
 
 
-  var mapApp = new MapApp(map,myMarker);
-
-
   $('#permission_submit').click(function(){
     $.ajax({
       url: '/maps/<%= @map.id %>/assign_invitee_role',

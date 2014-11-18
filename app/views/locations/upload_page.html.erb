@@ -36,10 +36,8 @@
   });
 
 
-  var mapApp = new MapApp(map,myMarker,function(point){
-    $('#location_lat').val(point.lat);
-    $('#location_lng').val(point.lng);
-  });
+    $('#location_lat').val(map.getCenter().lat);
+    $('#location_lng').val(map.getCenter().lng);
 
 
 })();

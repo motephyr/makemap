@@ -23,7 +23,7 @@
     dataType: "json",
     success: function (data) {
       var keysArray = Object.keys(data);
-      for (var i=0; i<keysArray.length; i++){
+      for (var i in keysArray){
         // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
         //   color: 'red',
         //   fillColor: '#f03',
@@ -51,7 +51,6 @@
     }
   });
 
-var mapApp = new MapApp(map,myMarker);
 
 })(window);
 
