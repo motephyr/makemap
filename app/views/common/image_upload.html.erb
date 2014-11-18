@@ -3,7 +3,25 @@
 <% end %>
 
 <%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
+<% photos.each do |photo| %>
+<div class="dz-preview dz-image-preview">
+  <div class="dz-details">
+    <div class="dz-id"><%= photo[:id] %></div>
+    <div class="dz-filename"><span data-dz-name><%= photo[:photo] %></span></div>
+    <div class="dz-size" data-dz-size></div>
+    <img data-dz-thumbnail src="<%= "#{@fullpath}#{photo.photo}" %>"/>
+  </div>
+  <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+  <div class="dz-success-mark"><span>✔</span></div>
+  <div class="dz-error-mark"><span>✘</span></div>
+  <div class="dz-error-message"><span data-dz-errormessage></span></div>
+  <a class="dz-remove" href="javascript:undefined;" data-dz-remove="">Remove file</a>
+</div>
 <% end %>
+<% end %>
+
+
+
 
 <% content_for :javascripts do %> 
 <%= javascript_include_tag "dropzone.min.js" %>
@@ -12,40 +30,58 @@
 
 (function(scope){
 
+  $('.dz-remove').on('click',function(){
+    var id = this.parentNode.getElementsByClassName('dz-id')[0].innerText
+    deleteFile(id);
+    var mypreview = this.parentNode;
+    console.log(mypreview);
+    this.parentNode.parentNode.removeChild(mypreview);
+  });
+
+  var deleteFile = function(file_id){
+    $.ajax({
+      type: 'delete',
+      url: '<%= location_photos_path(@location) %>/'+file_id,
+      dataType: 'json'
+    });
+  }
 
   Dropzone.options.myAwesomeDropzone = {
     url: '<%= location_photos_path(@location) %>', 
     paramName: "photo",
     previewsContainer: ".dropzone-previews",
+    acceptedFiles: "image/*",
     uploadMultiple: false,
     parallelUploads: 100,
     maxFiles: 100,
+    addRemoveLinks: true,
+    removedfile: function(file) {
+      var _ref;
+      return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+    },
     init: function() {
       var myDropzone = this;
 
 
-
-    // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
-    // of the sending event because uploadMultiple is set to true.
-    this.on("sending", function(file, xhr, formData) {
-      formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
-      formData.append("photoable_type", 'Location'); 
-      formData.append("photoable_id", <%= @location.id %>);
+      this.on("sending", function(file, xhr, formData) {
+        formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
+        formData.append("photoable_type", 'Location'); 
+        formData.append("photoable_id", <%= @location.id %>);
 
       // Gets triggered when the form is actually being sent.
       // Hide the success button or the complete form.
     });
-    this.on("successmultiple", function(files, response) {
+      this.on("successmultiple", function(files, response) {
       // Gets triggered when the files have successfully been sent.
       // Redirect user or notify of success.
     });
-    this.on("errormultiple", function(files, response) {
+      this.on("errormultiple", function(files, response) {
       // Gets triggered when there was an error sending the files.
       // Maybe show form again, and notify user of error
     });
-  }
+    }
 
-};
+  };
 
 })(window);
 </script>

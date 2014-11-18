@@ -1,8 +1,4 @@
 class PhotosController < ApplicationController
-  
-  def index
-    @photo = Photo.new
-  end
 
   def create 
     @photo = Photo.create!(:photo => params[:photo], :photoable_id => params[:photoable_id], photoable_type: params[:photoable_type] )
@@ -21,5 +17,14 @@ class PhotosController < ApplicationController
     end 
   end 
 
+  def destroy
+    @location = Location.find(params[:location_id])
+    @photo = @location.photos.find(params[:id])
 
+    @photo.destroy 
+
+    respond_to do |format|
+      format.json { head :no_content }
+    end
+  end
 end
