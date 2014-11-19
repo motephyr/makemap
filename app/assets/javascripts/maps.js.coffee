@@ -31,45 +31,23 @@
     # ]
   )
   scope.otherMarker = new LeafIcon(iconUrl: "/assets/coal-power-plant-icon.png")
-  scope.myMarker = new LeafIcon(iconUrl: "/assets/people/Pope.png")
 
-  MapApp = (map, icon, callback) ->
-    point = undefined
-    point = map.getCenter()
-    @marker = L.marker(point,
-      icon: icon
+  scope.myIcon = new LeafIcon(iconUrl: "/assets/people/Pope.png")
+  scope.setMarkerOnMapArea = (marker, position, callback) ->
+    marker.setLatLng position,
       draggable: "true"
-    ).addTo(map)
-
-
-    @setMarkerOnMapArea = (theMarker, thePosition) ->
-      theMarker.setLatLng thePosition,
-        draggable: "true"
-
-      map.panTo thePosition
-      point = thePosition
-      callback.call this, point  unless typeof callback is "undefined"
-      return
-
-    @marker.on "dragend", (event) ->
-      eventTarget = undefined
-      position = undefined
-      eventTarget = event.target
-      position = eventTarget.getLatLng()
-      @setMarkerOnMapArea eventTarget, position
-      return
-
-    map.on "click", (e) ->
-      @setMarkerOnMapArea @marker, e.latlng
-      return
-
-    @getPoint = ->
-      point
-
+  
+    map.panTo position
+    callback.call this, position  unless typeof callback is "undefined"
     return
 
-  scope.mapApp = new MapApp(map, myMarker)
+  scope.setLocationNumfunction = (point) ->
+    obj = $("#location_lat")
+    if obj.length
+      $("#location_lat").val point.lat
+      $("#location_lng").val point.lng
+    return
 
-  return
+
 
 ) window

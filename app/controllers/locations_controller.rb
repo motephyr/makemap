@@ -30,6 +30,9 @@ class LocationsController < ApplicationController
   def new
     @map = Map.find(params[:map_id])
     @location = @map.locations.new
+    @location.lat = 23.974093
+    @location.lng = 120.979903
+    @location.photos.build
   end
 
   def edit
@@ -42,6 +45,7 @@ class LocationsController < ApplicationController
     @location = current_user.locations.build(location_params)
     @location.map_id = @map.id
     if @location.save
+
       redirect_to map_path(@map)
     else
       render :new
@@ -72,7 +76,7 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:title,:content,:link_url,:lat,:lng)
+    params.require(:location).permit(:title,:content,:link_url,:lat,:lng,photos_attributes: [:id, :photoable_id, :photoable_type, :photo])
   end
 
 end

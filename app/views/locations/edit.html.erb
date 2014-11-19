@@ -48,9 +48,21 @@
 <script type='text/javascript'>
 (function(scope){
 
-  mapApp.setMarkerOnMapArea(mapApp.marker,[<%= @location.lat %>,<%= @location.lng %>]);
-    $('#location_lat').val(<%= @location.lat %>);
-    $('#location_lng').val(<%= @location.lng %>);
+  scope.myMarker = L.marker({lat: <%= @location.lat %>, lng: <%= @location.lng %> }, {
+    icon: myIcon,
+    draggable: "true"
+  }).addTo(map);
+
+
+  myMarker.on("dragend", function(e) {
+    var position = e.target.getLatLng();
+    setMarkerOnMapArea(e.target, position,setLocationNumfunction);
+  });
+
+  map.on("click", function(e) {
+    setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
+  });
+
 
 })(window);
 

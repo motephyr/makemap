@@ -19,13 +19,12 @@
       url: "/welcome/search_location",
       dataType: "json",
       data: {q: queryString},
-      success: (function(s){
+      success: (function(m,s){
         return function (data) {
-          console.log(s);
-          s.setMarkerOnMapArea(s.marker,data);
+          setMarkerOnMapArea(m,{lat: data[0],lng:data[1]},s);
           map.setZoom(15);
         }
-      })(mapApp)
+      })(myMarker,setLocationNumfunction)
     });
   }
 
