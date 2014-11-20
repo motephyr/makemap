@@ -10,4 +10,7 @@ class User < ActiveRecord::Base
 
   has_many :locations
 
+  def skip_confirmation!
+  end
+
 end
