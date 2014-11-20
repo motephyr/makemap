@@ -6,10 +6,16 @@ class FactoriesController < ApplicationController
   # GET /maps/1/locations.json
   def index
     factories_has_lat = nil;
-    if !params[:catagory].nil? 
-      factories_has_lat = Factory.where(:lat.exists => true, :產業類別 => params[:catagory] )
+    session = Moped::Session.new([ "127.0.0.1:27017"])
+    session.use "map"
+    if params[:json].present? 
+      #factories_has_lat = Factory.where(:lat.exists => true, :產業類別 => params[:catagory] )
+      #{"lat":{"$exists":true}}
+      #%7B%22lat%22%3A%7B%22%24exists%22%3Atrue%7D%7D
+      factories_has_lat = session[:factories].find(JSON.parse(params[:json]))
     else
-      factories_has_lat = Factory.where(:lat.exists => true)
+      #factories_has_lat = Factory.where(:lat.exists => true)
+      factories_has_lat = session[:factories].find(lat: { "$exists" => true} )
     end
     factories = factories_has_lat.map do |i| 
       if(rand > 0.99) 

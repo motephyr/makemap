@@ -1,5 +1,16 @@
 <%= render :partial => "maps/map" %>
+Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"$exists":true}}' value='{"lat":{"$exists":true}}' />
 <% content_for :sidebar_content do %>
+<% content_for :stylesheets do %>
+<style type="text/css">
+
+#map {
+  width: 100%;
+  height: 97%;
+}
+
+</style>
+<% end %>
 
 <%= render :partial => "common/sidebar_example" %>
 <% end %>
@@ -54,6 +65,28 @@
       map.addLayer(markers);
     }
   });
+
+  $('#query_string').keypress(function(e){
+    code = (e.keyCode ? e.keyCode : e.which);
+    if(code == 13){
+      query_data($('#query_string').val(),function(data){$('#sidebar').text(data);}); 
+    }
+  });
+
+  var query_data = function(qStr,callback){
+    $.ajax({
+      url: "/factories.json",
+      dataType: "json",
+      data: {json: qStr},
+      success: function(data){
+        if (typeof callback !== "undefined"){
+          callback.call(this,JSON.stringify(data));
+        }     
+      }
+    })
+  };
+
+  
 
 
 
