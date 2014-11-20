@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem "settingslogic"
-gem 'bootstrap-sass', '~> 3.1.1'
+gem 'bootstrap-sass', '~> 3.3.1'
 gem "bootstrap_helper", ">= 4.2.2.1"
 gem 'seo_helper', '~> 1.0'
 
