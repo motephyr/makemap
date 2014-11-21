@@ -1,5 +1,5 @@
 Rails.application.config.assets.precompile << Proc.new do |path|
-  if path =~ /\.(css|js)\z/ && !path =~ /\.(bootstrap|jquery)\z/
+  if path =~ /\.(css|js)\z/ && !(path =~ /\.(bootstrap)\z/)
     full_path = Rails.application.assets.resolve(path).to_path
     count = Rails.application.config.assets.paths.select {|app_assets_path|  full_path.starts_with? app_assets_path.to_s }.length
     if count > 0
