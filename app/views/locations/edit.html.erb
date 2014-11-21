@@ -63,6 +63,13 @@
     setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
   });
 
+  $("input[type=submit]").on('click',function() {
+    var form_id = $("form:eq(1)").attr("id");
+    $("#location_content").val($("#trumbowyg").html());
+    $( "#"+form_id ).submit();
+  });
+
+
 
 })(window);
 
