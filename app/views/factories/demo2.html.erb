@@ -1,82 +1,85 @@
 <%= render :partial => "maps/map" %>
 
-<% content_for :sidebar_content do %>
 
-<% content_for :trumbowyg_content do %>
-<p>A responsive sidebar plugin for for <a href="http://leafletjs.com/">Leaflet</a>, a JS library for interactive maps.</p>
-
-<p><b>Click on the marker to show the sidebar again when you've closed it.</b></p>
-
-<p>Other examples:</p>
-
-<ul>
-  <li><a href="listing-markers.html">listing-markers example</a></li>
-  <li><a href="two-sidebars.html">two-sidebars example</a></li>
-</ul>
-
-<p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-<p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-<p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-<p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-<% end %>
-
-<%= render template: "common/trumbowyg" %>
-<% end %>
-<%= render template: "common/sidebar" %>
 
 <% content_for :stylesheets do %>
+<style>
 
-<%= stylesheet_link_tag "Leaflet.markercluster/dist/MarkerCluster.Default.css" %>
+svg {
+  position: relative;
+}
+
+path {
+  fill-opacity: 0.7;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.q0-9 { fill: #ccebd6; opacity:.5;}
+.q1-9 { fill:rgb(222,235,247); }
+.q2-9 { fill:rgb(198,219,239); }
+.q3-9 { fill:rgb(158,202,225); }
+.q4-9 { fill:rgb(107,174,214); }
+.q5-9 { fill:rgb(66,146,198); }
+.q6-9 { fill:rgb(33,113,181); }
+.q7-9 { fill:rgb(8,81,156); }
+.q8-9 { fill:rgb(8,48,107); }
+
+path:hover {
+  fill: brown;
+  fill-opacity: .7;
+}
+
+</style>
 <% end %>
 <% content_for :javascripts do %> 
-<%= javascript_include_tag "Leaflet.markercluster/dist/leaflet.markercluster.js" %>
+
+<%= javascript_include_tag "d3" %>
 
 <script type='text/javascript'>
 (function(scope){
-    var sidebar = L.control.sidebar('sidebar', {
-    position: 'left'
-  });
   
-  map.addControl(sidebar);
-  sidebar.show();
-  var markers = new L.MarkerClusterGroup();
 
+var quantize = d3.scale.quantize()
+            .domain([0, 500])
+            .range(d3.range(9).map(function(i) {
+              return "q" + i + "-9";
+            }));
 
-  $.ajax({
-    url: "/factories.json",
-    dataType: "json",
-    success: function (data) {
-      var keysArray = Object.keys(data);
-      for (var i=0; i<keysArray.length; i++){
-        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
-        //   color: 'red',
-        //   fillColor: '#f03',
-        //   fillOpacity: 0.5
-        // }).addTo(map);
-        // circle.bindPopup(data[keysArray[i]][2]);
-        //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["_id"]["$oid"]} );
-        markers.addLayer(marker);
+var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+    g   = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-        marker.on('click',function(event){
-          var alatlng = event.latlng;
-          $.ajax({
-            url: "/factories/" +event.target.options.title +'.js',
-            dataType:'script'
-          }).success(function(data){
-            event.target.bindPopup($('#content').html());
-            event.target.openPopup();
-
-          });
-        });
-      }
-      map.addLayer(markers);
+d3.json("https://dl.dropboxusercontent.com/u/16850414/taiwan/count_taiwn_towns.json", function(collection) {
+    function projectPoint(x, y) {
+      var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+      this.stream.point(point.x, point.y);
     }
-  });
 
+    var  transform = d3.geo.transform({point: projectPoint}),
+          path = d3.geo.path().projection(transform);
+
+    var feature = g.selectAll("path")
+          .data(collection.features)
+      .enter().append("path")
+          .attr("class", function(d) {
+            return quantize(d.properties.factoryCount);
+          });
+
+  map.on("viewreset", reset);
+  reset();
+  // Reposition the SVG to cover the features.
+  function reset() {
+    var bounds = path.bounds(collection),
+        topLeft = bounds[0],
+        bottomRight = bounds[1];
+    svg .attr("width", bottomRight[0] - topLeft[0])
+        .attr("height", bottomRight[1] - topLeft[1])
+        .style("left", topLeft[0] + "px")
+        .style("top", topLeft[1] + "px");
+    g   .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+    feature.attr("d", path);
+  }
+});
 
 
 })(window);

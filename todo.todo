@@ -22,3 +22,9 @@ bower install
 rake db:migrate
 
 mongodb
+
+postgres json postgis
+新增頁面上傳圖片
+fblogin
+圖示運作方式
+
