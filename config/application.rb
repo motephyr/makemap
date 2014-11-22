@@ -1,9 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require "bson"
-require "moped"
-Moped::BSON = BSON
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -22,5 +19,9 @@ module Wikimap20140903
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
+  
+    config.generators do |g|
+      g.orm :active_record
+    end
   end
 end
