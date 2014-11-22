@@ -5,9 +5,8 @@ class FactoriesController < ApplicationController
 
   # GET /maps/1/locations.json
   def index
+    session = set_mongo_connection
     factories_has_lat = nil;
-    session = Moped::Session.new([ "127.0.0.1:27017"])
-    session.use "map"
     if params[:json].present? 
       #factories_has_lat = Factory.where(:lat.exists => true, :產業類別 => params[:catagory] )
       #{"lat":{"$exists":true}}
@@ -34,13 +33,13 @@ class FactoriesController < ApplicationController
 
   # GET /maps/1/locations/1.js
   def show
+    session = set_mongo_connection
     #@location = Location.find(params[:id])
-    factory = Factory.find(params[:id])
-    
+    factory = session[:factories].find({ _id: Moped::BSON::ObjectId.from_string(params[:id])}).to_a[0]
     @location = mapping_attribute(factory)
-    @location.link_url = ""
+
     respond_to do |format|
-      format.js 
+      format.js
     end
   end
 
@@ -92,5 +91,11 @@ class FactoriesController < ApplicationController
     factory[mapping[0][0]] = factory[mapping[0][1]]
     factory[mapping[1][0]] = factory[mapping[1][1]]
     factory
+  end
+
+  def set_mongo_connection
+    session = Moped::Session.new([ "127.0.0.1:27017"])
+    session.use "map"
+    session
   end
 end

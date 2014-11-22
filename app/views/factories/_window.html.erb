@@ -1,22 +1,11 @@
 <header class="note-header">
-  <h1 class="note-heading"><%= link_to @location.title , @location.link_url  %>
+  <h1 class="note-heading"><%= link_to @location[:title] , '#'  %>
 
   </h1>
 </header>
 <div class="note-contents">
-  <div class="note-media">
-    <div class="note-media-object">
-      <figure>
-        <% if !@location.photo.nil?  %>
-        <%= image_tag(@location.photo.send("thumb").url, :class => "thumbnail") %>
-        <% end %>
-      </figure>
-    </div>
-  </div>
+
   <div class="note-message ">
-    <p><%= @location.content %></p>
+    <p><%= @location.to_json %></p>
   </div>
-  <% if !@location.user.nil?  %>
-  <h6 class="note-author">Steper: <%= @location.user.name %></h6>
-  <% end %>
 </div>

@@ -50,14 +50,17 @@ Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"
         var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["_id"]["$oid"]} );
         markers.addLayer(marker);
 
+        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        marker.bindPopup(text);
+
+
         marker.on('click',function(event){
           var alatlng = event.latlng;
           $.ajax({
             url: "/factories/" +event.target.options.title +'.js',
             dataType:'script'
           }).success(function(data){
-            event.target.bindPopup($('#content').html());
-            event.target.openPopup();
+            sidebar.show();
 
           });
         });
