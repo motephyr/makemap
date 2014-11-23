@@ -4,39 +4,18 @@
 <% content_for :sidebar_content do %>
 
 <h3>修改位置</h3>
-<div id="over_map_form">
 
-  <%= simple_form_for([@map,@location]) do |f| %>
-
-  <div class="field">
-    <%= f.input_field :title ,placeholder: '標題',:required => true, maxlength: 25 %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.input_field :content,:required => true,style: "display:none" %>
-    <% content_for :trumbowyg_content do %>
-    <%= @location.content.html_safe %>
-    <% end %>
-    <%= render template: "common/trumbowyg" %>
-  </div>
-  <br>
-  <div class="field">
-    <%= render template: "common/image_upload",locals: {f: f,photos: @location.photos} %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.input :link_url, maxlength: 25 %>
-  </div>
-  <div class="field">
-    <%= f.input :lat,input_html: {value: @location.lat},readonly: true %>
-    <%= f.input :lng,input_html: {value: @location.lng},readonly: true %>
-  </div>
-  <br>
-  <div class="actions">
-    <input name="commit" type="submit" value="送出">
-  </div>
-  <% end %>
+<% content_for :form_content do %>
+<br>
+<div class="field">
+  <label class="string optional control-label">圖片：</label>
+  <%= render template: "common/image_upload",locals: {photos: @location.photos} %>
 </div>
+<% end %>
+<%= render template: "locations/form" %>
+<br>
+<%= button_to('刪除此地點', map_location_path(@map,@location), method: :delete , data: { confirm: '你確定要刪除嗎？' } , class:"btn btn-danger",style: "float:right") %>
+
 
 <% end %>
 <%= render template: "common/sidebar_right" %>
@@ -62,14 +41,6 @@
   map.on("click", function(e) {
     setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
   });
-
-  $("input[type=submit]").on('click',function() {
-    var form_id = $("form:eq(1)").attr("id");
-    $("#location_content").val($("#trumbowyg").html());
-    $( "#"+form_id ).submit();
-  });
-
-
 
 })(window);
 

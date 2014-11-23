@@ -36,6 +36,16 @@ class MapsController < ApplicationController
     end
   end
 
+  def update
+    @map = Map.find(params[:id])
+    if @map.update(map_params)
+      redirect_to map_path(@map)
+    else
+      render :edit
+    end
+  end
+
+
 
   def assign_manager_role
     assign_role("manager")

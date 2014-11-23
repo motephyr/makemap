@@ -62,6 +62,15 @@ class LocationsController < ApplicationController
       render :edit
     end
   end
+
+  def destroy
+    @map = Map.find(params[:map_id])
+    @location = Location.find(params[:id])
+
+    @location.destroy
+
+    redirect_to map_path(@map)
+  end
   
   def upload_page
     @map = Map.find(params[:map_id])

@@ -1,0 +1,48 @@
+<div id="over_map_form">
+
+  <%= simple_form_for([@map,@location]) do |f| %>
+
+  <div class="field">
+    <%= f.input_field :title ,placeholder: '標題',:required => true, maxlength: 25 %>
+  </div>
+  <%= yield :form_content %>
+  <br>
+  <div class="field">
+    <%= f.label "描述：" %>
+    <%= f.input_field :content,:required => true,style: "display:none" %>
+    <% content_for :trumbowyg_content do %>
+    <% if !@location.content.nil? %>
+    <%= @location.content.html_safe %>
+    <% end %>
+    <% end %>
+    <%= render template: "common/trumbowyg" %>
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label "網址連結：" %>  
+    <%= f.input_field :link_url, maxlength: 48 %>
+  </div>
+  <div class="field">
+    <%= f.label "經緯度：" %>
+    <%= f.input_field :lat,readonly: true, maxlength: 20  %>
+    <%= f.input_field :lng,readonly: true, maxlength: 20  %>
+  </div>
+  <br>
+  <div class="actions">
+    <%= f.submit "送出" %>  
+  </div>
+  <% end %>
+</div>
+
+<% content_for :javascripts do %> 
+<script type='text/javascript'>
+(function(scope){
+  $("input[type=submit]").on('click',function() {
+    var form_id = $("form:eq(1)").attr("id");
+    $("#location_content").val($("#trumbowyg").html());
+    $( "#"+form_id ).submit();
+  });
+})(window);
+
+</script>
+<% end %>
