@@ -14,10 +14,10 @@
       <h3>設定權限</h3>
 
 
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <thead>
           <tr>
-            <th>權限</th>
+            <th>E-mail</th>
             <th>admin</th> 
             <th>invitee</th>
             <th>other</th>   
@@ -26,7 +26,7 @@
         <tbody>
           <% @manager_users.each do |u| %>
           <tr>
-            <td><%= u.name %></td>
+            <td><%= u.email %></td>
             <td>V</td>
             <td></td>
             <td></td>
@@ -34,7 +34,7 @@
           <% end %>
           <% @invitee_users.each do |u| %>
           <tr>
-            <td><%= u.name %></td>
+            <td><%= u.email %></td>
             <td></td>
             <td>V</td>
             <td></td>
@@ -42,7 +42,7 @@
           <% end %>
           <% @other_users.each do |u| %>
           <tr>
-            <td><%= u.name %></td>
+            <td><%= u.email %></td>
             <td></td>
             <td></td>
             <td>V</td>
