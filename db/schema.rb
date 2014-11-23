@@ -11,10 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141117050735) do
+ActiveRecord::Schema.define(version: 20141123141329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "json_test", force: true do |t|
+    t.json "data"
+  end
 
   create_table "locations", force: true do |t|
     t.string   "title"
@@ -26,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141117050735) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "map_id"
+    t.integer  "icon_number"
   end
 
   add_index "locations", ["map_id"], name: "index_locations_on_map_id", using: :btree
@@ -74,6 +79,7 @@ ActiveRecord::Schema.define(version: 20141117050735) do
     t.string   "fb_id",                  limit: 20
     t.string   "token"
     t.string   "name"
+    t.string   "image"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
