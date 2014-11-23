@@ -5,6 +5,8 @@ class Location < ActiveRecord::Base
   has_many :photos, as: :photoable, dependent: :destroy
   accepts_nested_attributes_for :photos
 
+  validates :title, :presence => {:message => '是必填欄位'}
+
   before_save :check_if_url_exist_http_or_add_prefix
 
   def check_if_url_exist_http_or_add_prefix

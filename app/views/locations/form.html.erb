@@ -1,7 +1,7 @@
 <div id="over_map_form">
 
   <%= simple_form_for([@map,@location]) do |f| %>
-
+  <%= render 'common/error_messages', object: f.object %>
   <div class="field">
     <%= f.input_field :title ,placeholder: '標題',:required => true, maxlength: 25 %>
   </div>
