@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 gem "settingslogic"
 gem 'bootstrap-sass', '~> 3.3.1'
@@ -13,7 +14,7 @@ gem "omniauth-facebook"
 gem "auto-facebook", git: 'https://github.com/motephyr/auto-facebook.git'
 
 gem 'carrierwave'
-gem "mini_magick"
+gem "mini_magick", '~> 4.0.1'
 
 #permission
 gem 'cancancan'
@@ -67,11 +68,18 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 
-group :assets do
   gem 'sass-rails', '~> 4.0.3'
   gem 'uglifier', '>= 1.3.0'
   gem 'coffee-rails', '~> 4.0.0'
-end
+  gem 'rails-assets-jquery-dropdown'
+  gem 'rails-assets-jQuery-Collapse'
+  gem 'rails-assets-leaflet'
+  gem 'rails-assets-leaflet-plugins'
+  gem 'rails-assets-leaflet-sidebar'
+  gem 'rails-assets-leaflet.markercluster'
+  gem 'rails-assets-trumbowyg'
+  gem 'rails-assets-dropzone'
+  gem 'rails-assets-d3'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
