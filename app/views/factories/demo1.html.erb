@@ -47,7 +47,7 @@ Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker,title:data[keysArray[i]]["_id"]["$oid"]} );
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,title:data[keysArray[i]]["_id"]["$oid"]} );
         markers.addLayer(marker);
 
         var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";

@@ -27,7 +27,7 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherMarker} ).addTo(map);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon} ).addTo(map);
 
         var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
         marker.bindPopup(text);

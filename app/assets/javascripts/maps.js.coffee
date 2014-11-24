@@ -30,9 +30,10 @@
     #   -86
     # ]
   )
-  scope.otherMarker = new LeafIcon(iconUrl: "/assets/coal-power-plant-icon.png")
+  scope.otherIcon = new LeafIcon(iconUrl: "/assets/singing.png")
+  scope.factoryIcon = new LeafIcon(iconUrl: "/assets/coal-power-plant-icon.png")
 
-  scope.myIcon = new LeafIcon(iconUrl: "/assets/people/Pope.png")
+  scope.myIcon = new L.Icon.Default() 
   scope.setMarkerOnMapArea = (marker, position, callback) ->
     marker.setLatLng position,
       draggable: "true"
