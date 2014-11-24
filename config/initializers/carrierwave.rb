@@ -19,8 +19,7 @@ CarrierWave.configure do |config|
       :provider              => 'AWS',
       :aws_access_key_id     => Setting.S3_KEY,
       :aws_secret_access_key => Setting.S3_SECRET,
-      :region                => Setting.S3_REGION,
-      :host                  => "#{Setting.domain}/#{Setting.S3_BUCKET_NAME}"
+      :region                => Setting.S3_REGION
     }
     config.cache_dir = "#{Rails.root}/tmp/uploads"                  # To let CarrierWave work on heroku
 
