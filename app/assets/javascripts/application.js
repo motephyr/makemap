@@ -15,4 +15,3 @@
 //= require bootstrap/collapse
 //= require bootstrap/dropdown
 //= require leaflet
-//= require leaflet-sidebar

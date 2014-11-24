@@ -68,18 +68,14 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 
-  gem 'sass-rails', '~> 4.0.3'
-  gem 'uglifier', '>= 1.3.0'
-  gem 'coffee-rails', '~> 4.0.0'
-  gem 'rails-assets-jquery-dropdown'
-  gem 'rails-assets-jQuery-Collapse'
-  gem 'rails-assets-leaflet'
-  gem 'rails-assets-leaflet-plugins'
-  gem 'rails-assets-leaflet-sidebar'
-  gem 'rails-assets-leaflet.markercluster'
-  gem 'rails-assets-trumbowyg'
-  gem 'rails-assets-dropzone'
-  gem 'rails-assets-d3'
+gem 'sass-rails', '~> 4.0.3'
+gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'rails-assets-leaflet-plugins'
+gem 'rails-assets-leaflet-sidebar'
+gem 'rails-assets-trumbowyg'
+gem 'rails-assets-dropzone'
+gem 'rails-assets-d3'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby

@@ -1,1 +1,0 @@
-exports.config={browser:!0,node:!0,predef:["L","define"],strict:!1,bitwise:!0,camelcase:!0,curly:!0,eqeqeq:!0,forin:!1,immed:!0,latedef:!0,newcap:!0,noarg:!0,noempty:!0,nonew:!0,undef:!0,unused:!0,indent:4,trailing:!0,white:!0,smarttabs:!0};

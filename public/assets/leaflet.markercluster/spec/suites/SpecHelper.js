@@ -1,1 +1,0 @@
-function noSpecs(){xit("has no specs")}Array.prototype.map||(Array.prototype.map=function(r){"use strict";if(void 0===this||null===this)throw new TypeError;var t=Object(this),n=t.length>>>0;if("function"!=typeof r)throw new TypeError;for(var o=new Array(n),e=arguments[1],i=0;n>i;i++)i in t&&(o[i]=r.call(e,t[i],i,t));return o});

@@ -1,1 +1,0 @@
-describe("distance grid",function(){it("addObject",function(){var e=new L.DistanceGrid(100),t={};expect(e.addObject(t,{x:0,y:0})).to.eql(void 0),expect(e.removeObject(t,{x:0,y:0})).to.eql(!0)}),it("eachObject",function(e){var t=new L.DistanceGrid(100),c={};expect(t.addObject(c,{x:0,y:0})).to.eql(void 0),t.eachObject(function(t){expect(t).to.eql(c),e()})})});

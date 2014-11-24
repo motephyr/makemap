@@ -5,7 +5,13 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
 (function(scope){
-
+  if(!scope.myMarker){
+    scope.myMarker = L.marker(map.getCenter(), {
+      icon: myIcon,
+      draggable: "true"
+    }).addTo(map);
+  }
+  
   $('#search_location').keypress(function(e){
     code = (e.keyCode ? e.keyCode : e.which);
     if(code == 13){
@@ -13,7 +19,7 @@
     }
   });
 
-  
+
   var search_location = function(queryString){
     $.ajax({
       url: "/welcome/search_location",

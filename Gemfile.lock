@@ -311,16 +311,11 @@ GEM
       sprockets-rails (~> 2.0)
     rails-assets-d3 (3.4.13)
     rails-assets-dropzone (3.11.1)
-    rails-assets-jQuery-Collapse (1.1.1)
-      rails-assets-jquery (~> 1.7)
-    rails-assets-jquery (1.8.3.1)
-    rails-assets-jquery-dropdown (1.0.5)
-      rails-assets-jquery (~> 1.8.0)
+    rails-assets-jquery (2.1.1)
     rails-assets-leaflet (0.7.3)
     rails-assets-leaflet-plugins (1.2.0)
     rails-assets-leaflet-sidebar (0.1.6)
       rails-assets-leaflet (~> 0.7.0)
-    rails-assets-leaflet.markercluster (0.4.0)
     rails-assets-trumbowyg (1.1.7)
       rails-assets-jquery (>= 1.7)
     rails_best_practices (1.15.4)
@@ -462,12 +457,8 @@ DEPENDENCIES
   rails (= 4.1.6)
   rails-assets-d3
   rails-assets-dropzone
-  rails-assets-jQuery-Collapse
-  rails-assets-jquery-dropdown
-  rails-assets-leaflet
   rails-assets-leaflet-plugins
   rails-assets-leaflet-sidebar
-  rails-assets-leaflet.markercluster
   rails-assets-trumbowyg
   rails_best_practices
   rolify

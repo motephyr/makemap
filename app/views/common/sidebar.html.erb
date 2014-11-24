@@ -8,3 +8,6 @@
   <%= notice_message %>
   <%= yield :sidebar_content %>
 </div>
+<% content_for :javascripts do %> 
+<%= javascript_include_tag "leaflet-sidebar" %>
+<% end %>

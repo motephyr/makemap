@@ -7,6 +7,7 @@
 </div>
 
 <% content_for :javascripts do %> 
+<%= javascript_include_tag "leaflet-sidebar" %>
 <script type='text/javascript'>
 (function(scope){
 var sidebar = L.control.sidebar('sidebar_right', {

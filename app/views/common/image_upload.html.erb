@@ -1,5 +1,5 @@
 <% content_for :stylesheets do %>
-<%= stylesheet_link_tag "dropzone" %>
+<%= stylesheet_link_tag "dropzone.css" %>
 <% end %>
 
 <%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
@@ -24,7 +24,7 @@
 
 
 <% content_for :javascripts do %> 
-<%= javascript_include_tag "dropzone" %>
+<%= javascript_include_tag "dropzone.min.js" %>
 
 <script type='text/javascript'>
 
