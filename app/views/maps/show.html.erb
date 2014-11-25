@@ -6,8 +6,12 @@
 <%= render template: "common/sidebar" %>
 
 
-<% content_for :javascripts do %> 
+<% content_for :stylesheets do %>
 
+<%= stylesheet_link_tag "MarkerCluster.Default.css" %>
+<% end %>
+<% content_for :javascripts do %> 
+<%= javascript_include_tag "leaflet.markercluster.js" %>
 <script type='text/javascript'>
 (function(scope){
 
@@ -17,7 +21,7 @@
   
   map.addControl(sidebar);
 
-
+  var markers = new L.MarkerClusterGroup();
   $.ajax({
     url: "/maps/<%= @map.id %>/locations",
     dataType: "json",
@@ -31,8 +35,8 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,title:data[keysArray[i]]["id"]} ).addTo(map);
-
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,title:data[keysArray[i]]["id"]} )
+        markers.addLayer(marker);
         var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
         marker.bindPopup(text);
 
@@ -48,6 +52,7 @@
           });
         });
       }
+      map.addLayer(markers);
     }
   });
 

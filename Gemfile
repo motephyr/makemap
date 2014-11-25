@@ -21,6 +21,8 @@ gem 'cancancan'
 gem 'rolify'
 
 gem 'geocoder'
+gem 'roo'
+gem 'iconv'
 
 group :production do
   #gem 'rails_12factor'

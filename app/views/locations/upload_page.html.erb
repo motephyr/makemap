@@ -1,11 +1,12 @@
 <%= render :partial => "maps/map" %>
 
 <div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;">
-  <h3>上傳</h3>
-    
-  <%= form_tag({action: :upload}, multipart: true) do %>
+  <h3>上傳CSV</h3>
+  <h6>欄位名稱分別對應 標題:title 內容:content 連結:link_url 地址:address 經度:lng 緯度:lat 外部圖片網址:outer_photo_url</h6>
+
+  <%= form_tag(import_map_locations_path(@map), multipart: true) do %>
   <%= file_field_tag 'file' %>
-  <%= submit_tag "Go" ,id:"upload_submit",class: "btn btn-default btn-xs" %>
+  <%= submit_tag "Import" %>
   <% end %>
 </div>
 
@@ -36,8 +37,8 @@
   });
 
 
-    $('#location_lat').val(map.getCenter().lat);
-    $('#location_lng').val(map.getCenter().lng);
+  $('#location_lat').val(map.getCenter().lat);
+  $('#location_lng').val(map.getCenter().lng);
 
 
 })();

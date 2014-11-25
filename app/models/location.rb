@@ -1,3 +1,5 @@
+require 'csv'
+require 'iconv'
 class Location < ActiveRecord::Base
   belongs_to :map
   belongs_to :user
@@ -10,11 +12,12 @@ class Location < ActiveRecord::Base
   before_save :check_if_url_exist_http_or_add_prefix
 
   def check_if_url_exist_http_or_add_prefix
-    temp_url = self.link_url
-    added_http_url = (temp_url.start_with?("http://","https://")) ? temp_url : "http://"+temp_url
+    if (!self.link_url.blank?)
+      temp_url = self.link_url
+      added_http_url = (temp_url.start_with?("http://","https://")) ? temp_url : "http://"+temp_url
 
-    self.link_url = url_is_valid?(added_http_url) ? added_http_url : ""
-
+      self.link_url = url_is_valid?(added_http_url) ? added_http_url : ""
+    end
   end
 
   def url_is_valid?(url)
@@ -22,6 +25,27 @@ class Location < ActiveRecord::Base
     uri.kind_of?(URI::HTTP)
   rescue URI::InvalidURIError
     false
+  end
+
+  def self.import(map_id,file)
+    allowed_attributes = [ "title","content","address","lng","lat","link_url","outer_photo_url"]
+    spreadsheet = open_spreadsheet(file)
+    header = spreadsheet.row(1)
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      product = find_by_id(row["id"]) || new(map_id: map_id)
+      product.attributes = row.to_hash.slice(*allowed_attributes)
+      product.save!
+    end
+  end
+
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename)
+    when ".csv" then Csv.new(file.path, nil, :ignore)
+    when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
+    when ".xlsx" then Roo::Excelx.new(file.path, nil, :ignore)
+    else raise "Unknown file type: #{file.original_filename}"
+    end
   end
 
 end

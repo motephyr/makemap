@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     resources :locations do
       collection do 
         get 'upload_page'
-        post 'upload'
+        post 'import'
       end
     end
 

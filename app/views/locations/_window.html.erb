@@ -10,6 +10,9 @@
         <%= image_tag(photo.photo.send("thumb").url, :class => "thumbnail") %>
         <% end %>
         <% end %>
+        <% if @location.outer_photo_url.present?  %>
+        <%= image_tag(@location.outer_photo_url, :class => "thumbnail",:style => "width:100%") %>
+        <% end %>
       </figure>
     </div>
   </div>

@@ -77,10 +77,10 @@ class LocationsController < ApplicationController
     @location = @map.locations.new
   end
 
-  def upload
-    csv_file = CSV.read(params[:file].tempfile)
-
-    redirect_to map_path(@map)
+  def import
+    @map = Map.find(params[:map_id])
+    Location.import(params[:map_id],params[:file])
+    redirect_to map_path(@map), notice: "位置已匯入。"
   end
 
   private

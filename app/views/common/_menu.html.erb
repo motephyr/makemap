@@ -35,7 +35,7 @@
         <% if is_existed_map(@map) %>
         <% if request.path == map_path(@map) %>
         <li><%= link_to("新增地點",new_map_location_path(@map) ) %></li>
-        <li><%#= link_to("Upload csv",upload_page_map_locations_path(@map),:class => "label" ) %></li>
+        <li><%= link_to("上傳工具",upload_page_map_locations_path(@map) ) %></li>
         <% else %>
         <li><%= link_to("回地圖",map_path(@map)) %></li>
         <% end %>
