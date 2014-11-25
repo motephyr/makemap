@@ -11,10 +11,9 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><%= ("&nbsp;"*15).html_safe %></li>
         <li class="dropdown">
           <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
-          <%= render_user_role_for_map(@map) %>
+          <%= render_map_title_for_map(@map) %>
           <% end %>
           <ul class="dropdown-menu">
             <% if @maps.present? %>
@@ -26,13 +25,12 @@
           </ul>
         </li>
         <% if is_existed_map(@map) && can?(:manage, @map) %>
-        <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
+        <li><%= link_to("設定",edit_map_path(@map) ) %></li>
         <% end %>
-        <li><%= ("&nbsp;"*20).html_safe %></li>
-      </ul>
-      <%= render :partial => "common/search_form" %>
-      <ul class="nav navbar-nav">
-        <% if is_existed_map(@map) %>
+        <li>
+          <%= render :partial => "common/search_form" %>
+        </li>
+        <% if is_existed_map(@map) && current_user %>
         <% if request.path == map_path(@map) %>
         <li><%= link_to("新增地點",new_map_location_path(@map) ) %></li>
         <li><%= link_to("上傳工具",upload_page_map_locations_path(@map) ) %></li>
