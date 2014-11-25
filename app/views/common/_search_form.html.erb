@@ -10,8 +10,18 @@
       icon: myIcon,
       draggable: "true"
     }).addTo(map);
+
+    myMarker.on("dragend", function(e) {
+      var position = e.target.getLatLng();
+      setMarkerOnMapArea(e.target, position);
+    });
+
+    map.on("click", function(e) {
+      setMarkerOnMapArea(myMarker, e.latlng);
+    });
+
   }
-  
+
   $('#search_location').keypress(function(e){
     code = (e.keyCode ? e.keyCode : e.which);
     if(code == 13){
