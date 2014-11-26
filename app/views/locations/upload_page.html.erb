@@ -1,14 +1,28 @@
 <%= render :partial => "maps/map" %>
+<% content_for :sidebar_content do %>
+<h2>匯入</h2>
+<h4>格式需求:CSV、Excel</h4>
+<ul>
+  <li>標題:title </li>
+  <li>內容:content </li>
+  <li>連結:link_url </li>
+  <li>地址:address </li>
+  <li>經度:lng </li>
+  <li>緯度:lat </li>
+  <li>外部圖片網址:outer_photo_url</li>
+</ul>
 
-<div id="over_map_form" style="position: fixed;right: 100px;top: 150px;background-color: #b0c4de;padding:50px;">
-  <h3>上傳CSV</h3>
-  <h6>欄位名稱分別對應 標題:title 內容:content 連結:link_url 地址:address 經度:lng 緯度:lat 外部圖片網址:outer_photo_url</h6>
+<%= form_tag(import_map_locations_path(@map), multipart: true) do %>
+<%= file_field_tag 'file' %>
+<br>
+<%= submit_tag "匯入" %>
+<% end %>
+<h2>匯出</h2>
+  <%= link_to "CSV", upload_page_map_locations_path(@map,format: "csv") %> |
+  <%= link_to "Excel", upload_page_map_locations_path(@map,format: "xls") %>
 
-  <%= form_tag(import_map_locations_path(@map), multipart: true) do %>
-  <%= file_field_tag 'file' %>
-  <%= submit_tag "Import" %>
-  <% end %>
-</div>
+<% end %>
+<%= render template: "common/sidebar_right" %>
 
 
 <% content_for :javascripts do %> 

@@ -24,16 +24,24 @@
             <li><%= link_to("新增地圖",new_map_path, class: "btn btn-link" ) %></li> 
           </ul>
         </li>
-        <% if is_existed_map(@map) && can?(:manage, @map) %>
-        <li><%= link_to("設定",edit_map_path(@map) ) %></li>
-        <% end %>
+        <li class="dropdown">
+          <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
+          設定
+          <% end %>
+          <ul class="dropdown-menu">
+            <% if is_existed_map(@map) && can?(:manage, @map) %>
+            <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
+            <li><%= link_to("數據管理",upload_page_map_locations_path(@map) ) %></li>
+            <% end %>
+          </ul>
+        </li>
+
         <li>
           <%= render :partial => "common/search_form" %>
         </li>
         <% if is_existed_map(@map) && current_user %>
         <% if request.path == map_path(@map) %>
         <li><%= link_to("新增地點",new_map_location_path(@map) ) %></li>
-        <li><%= link_to("上傳工具",upload_page_map_locations_path(@map) ) %></li>
         <% else %>
         <li><%= link_to("回地圖",map_path(@map)) %></li>
         <% end %>

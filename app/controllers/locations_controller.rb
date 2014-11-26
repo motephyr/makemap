@@ -74,7 +74,12 @@ class LocationsController < ApplicationController
   
   def upload_page
     @map = Map.find(params[:map_id])
-    @location = @map.locations.new
+    @locations = @map.locations
+    respond_to do |format|
+      format.html
+      format.csv { send_data @locations.to_csv }
+      format.xls { send_data @locations.to_csv(col_sep: "\t") }
+    end
   end
 
   def import
