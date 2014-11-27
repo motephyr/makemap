@@ -62,6 +62,7 @@
 <script type='text/javascript'>
 (function(){
 
+  var markers = new L.MarkerClusterGroup();
   $.ajax({
     url: "/maps/<%= @map.id %>/locations",
     dataType: "json",
@@ -75,11 +76,13 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon} ).addTo(map);
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon} );
+        markers.addLayer(marker);
 
         var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
         marker.bindPopup(text);
       }
+      map.addLayer(markers);
     }
   });
 

@@ -15,12 +15,8 @@ Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"
 <%= render :partial => "common/sidebar_example" %>
 <% end %>
 <%= render template: "common/sidebar" %>
-<% content_for :stylesheets do %>
 
-<%= stylesheet_link_tag "MarkerCluster.Default.css" %>
-<% end %>
 <% content_for :javascripts do %> 
-<%= javascript_include_tag "leaflet.markercluster.js" %>
 
 <script type='text/javascript'>
 (function(scope){

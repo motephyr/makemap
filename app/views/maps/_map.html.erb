@@ -1,5 +1,8 @@
 <% content_for :map do %>
 <% content_for :stylesheets do %>
+
+<%= stylesheet_link_tag "MarkerCluster.Default.css" %>
+
 <style type="text/css">
 
 #map {
@@ -12,4 +15,9 @@
 
 <div id="map"></div>
 <div id="content" style="display:none"></div>
+<% end %>
+
+
+<% content_for :javascripts do %> 
+<%= javascript_include_tag "leaflet.markercluster.js" %>
 <% end %>

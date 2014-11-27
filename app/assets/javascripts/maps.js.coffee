@@ -33,7 +33,8 @@
   scope.otherIcon = new LeafIcon(iconUrl: "/assets/singing.png")
   scope.factoryIcon = new LeafIcon(iconUrl: "/assets/coal-power-plant-icon.png")
 
-  scope.myIcon = new LeafIcon(iconUrl: "/assets/writing.png")
+  L.Icon.Default.imagePath = "/assets/leaflet/images"
+  scope.myIcon = new L.Icon.Default()
   scope.setMarkerOnMapArea = (marker, position, callback) ->
     marker.setLatLng position,
       draggable: "true"

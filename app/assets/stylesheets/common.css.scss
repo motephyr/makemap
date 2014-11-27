@@ -75,3 +75,19 @@ h4, .h4 {
     line-height: 20px;
     padding: 0 5px;
 }
+
+.ribbon {
+  position: absolute;
+  width: 140px;
+  top: 3px;
+  left: -50px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  background-color: #d7cbbb;
+  opacity: 0.5;
+}

@@ -20,6 +20,10 @@
 
   sidebar.show();
 
+  map.setView(new L.LatLng(<%= @location.lat %>, <%= @location.lng %>), 17);
+
+
+  var markers = new L.MarkerClusterGroup();
   $.ajax({
     url: "/maps/<%= @map.id %>/locations",
     dataType: "json",
@@ -33,8 +37,8 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,title:data[keysArray[i]]["id"]} ).addTo(map);
-
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,title:data[keysArray[i]]["id"]} );
+        markers.addLayer(marker);
         var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
         marker.bindPopup(text);
 
@@ -50,6 +54,7 @@
           });
         });
       }
+      map.addLayer(markers);
     }
   });
 
