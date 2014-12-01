@@ -1,10 +1,30 @@
 ((scope) ->
+
+  scope.params = []
+
+  strUrl = location.search
+  unless strUrl.indexOf("?") is -1
+    getPara = undefined
+    ParaVal = undefined
+    getSearch = strUrl.split("?")
+    getPara = getSearch[1].split("&")
+    i = 0
+    while i < getPara.length
+      ParaVal = getPara[i].split("=")
+      params.push ParaVal[0]
+      params[ParaVal[0]] = ParaVal[1]
+      i++
+
+
   layer = L.tileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg",
     subdomains: "1234"
   )
+
+  scope.taiwanCenter = new L.LatLng(23.974093,120.979903)
+
   scope.map = new L.Map("map",
     layers: layer
-    center: new L.LatLng(23.974093,120.979903)
+    center: taiwanCenter
     zoom: 8
     minZoom: 4
   )

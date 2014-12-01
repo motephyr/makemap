@@ -6,18 +6,31 @@
 <script type="text/javascript">
 (function(scope){
   if(!scope.myMarker){
-    scope.myMarker = L.marker(map.getCenter(), {
+
+    var location;
+
+    if (typeof params !== "undefined" && params != ''){
+      location = {lat: params.lat, lng: params.lng } 
+      map.setView(new L.LatLng(location.lat,
+        location.lng), 16);
+      setLocationNumfunction(location);
+    }else{
+      location = taiwanCenter
+    }
+    
+    scope.myMarker = L.marker( location , {
       icon: myIcon,
       draggable: "true"
     }).addTo(map);
 
+
     myMarker.on("dragend", function(e) {
       var position = e.target.getLatLng();
-      setMarkerOnMapArea(e.target, position);
+      setMarkerOnMapArea(e.target, position,setLocationNumfunction);
     });
 
     map.on("click", function(e) {
-      setMarkerOnMapArea(myMarker, e.latlng);
+      setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
     });
 
   }

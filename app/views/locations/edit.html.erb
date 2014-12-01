@@ -31,12 +31,7 @@
     draggable: "true"
   }).addTo(map);
 
-  map.setView(new L.LatLng(<%= @location.lat %>, <%= @location.lng %>), 17);
-
-  myMarker.on("click", function(e) {
-    var position = e.target.getLatLng();
-    setMarkerOnMapArea(e.target, position,setLocationNumfunction);
-  });
+  map.setView(new L.LatLng(<%= @location.lat %>, <%= @location.lng %>), 16);
 
 
   myMarker.on("dragend", function(e) {

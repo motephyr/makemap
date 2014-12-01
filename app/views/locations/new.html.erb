@@ -16,25 +16,6 @@
 <script type='text/javascript'>
 (function(scope){
 
-  scope.myMarker = L.marker(map.getCenter(), {
-    icon: myIcon,
-    draggable: "true"
-  }).addTo(map);
-
-  myMarker.on("dragend", function(e) {
-    var position = e.target.getLatLng();
-    setMarkerOnMapArea(e.target, position,setLocationNumfunction);
-  });
-
-  map.on("click", function(e) {
-    setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
-  });
-
-  var setLocationNumfunction = function(point) {
-    $("#location_lat").val(point.lat);
-    $("#location_lng").val(point.lng);
-  };
-
 
 var markers = new L.MarkerClusterGroup();
   $.ajax({

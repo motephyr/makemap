@@ -43,7 +43,7 @@
         </li>
         <% if is_existed_map(@map) && current_user %>
         <% if request.path == map_path(@map) %>
-        <li><%= link_to("新增地點",new_map_location_path(@map) ) %></li>
+        <li><%= link_to("新增地點","#",id: "new_location" ) %></li>
         <% else %>
         <li><%= link_to("回地圖",map_path(@map)) %></li>
         <% end %>
@@ -56,3 +56,18 @@
   <%= yield :submenu %>
 
 </div>
+
+<% content_for :javascripts do %>
+<% if is_existed_map(@map) && current_user %>
+        <% if request.path == map_path(@map) %>
+<script type="text/javascript">
+(function(scope){
+  $('#new_location').click(function(e){
+    e.preventDefault();
+    location.href = '<%= new_map_location_path(@map) %>?lat='+myMarker._latlng.lat + '&lng='+ myMarker._latlng.lng
+  });
+})(window)
+</script>
+<% end %>
+<% end %>
+<% end %>
