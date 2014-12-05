@@ -70,6 +70,11 @@
       $("#location_lng").val point.lng
     return
 
+  L.control.locate().addTo(map);
 
+  onLocationFound = (e) ->
+    setMarkerOnMapArea(myMarker,e.latlng,setLocationNumfunction);
+
+  map.on('locationfound',onLocationFound);
 
 ) window

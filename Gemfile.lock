@@ -314,6 +314,7 @@ GEM
     rails-assets-dropzone (3.11.1)
     rails-assets-jquery (2.1.1)
     rails-assets-leaflet (0.7.3)
+    rails-assets-leaflet-locatecontrol (0.30.0)
     rails-assets-leaflet-plugins (1.2.0)
     rails-assets-leaflet-sidebar (0.1.6)
       rails-assets-leaflet (~> 0.7.0)
@@ -467,6 +468,7 @@ DEPENDENCIES
   rails (= 4.1.6)
   rails-assets-d3
   rails-assets-dropzone
+  rails-assets-leaflet-locatecontrol
   rails-assets-leaflet-plugins
   rails-assets-leaflet-sidebar
   rails-assets-trumbowyg

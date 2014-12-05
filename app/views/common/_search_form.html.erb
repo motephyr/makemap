@@ -13,7 +13,6 @@
       location = {lat: params.lat, lng: params.lng } 
       map.setView(new L.LatLng(location.lat,
         location.lng), 16);
-      setLocationNumfunction(location);
     }else{
       location = taiwanCenter
     }
@@ -22,6 +21,8 @@
       icon: myIcon,
       draggable: "true"
     }).addTo(map);
+
+    setMarkerOnMapArea(myMarker,location,setLocationNumfunction);
 
 
     myMarker.on("dragend", function(e) {

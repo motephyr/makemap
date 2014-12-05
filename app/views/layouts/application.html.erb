@@ -12,6 +12,13 @@
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= stylesheet_link_tag params[:controller] %>
   <%= javascript_include_tag "application" %>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//rawgithub.com/domoritz/leaflet-locatecontrol/gh-pages/dist/L.Control.Locate.min.css" />
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="//rawgithub.com/domoritz/leaflet-locatecontrol/gh-pages/dist/L.Control.Locate.ie.min.css"/>
+  <![endif]-->
+
+  <script src="//rawgithub.com/domoritz/leaflet-locatecontrol/gh-pages/dist/L.Control.Locate.min.js" ></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= yield :stylesheets %>
