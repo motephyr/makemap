@@ -17,7 +17,7 @@
 
 
   layer = L.tileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg",
-    subdomains: "1234"
+    subdomains: "1234", detectRetina: true
   )
 
   scope.taiwanCenter = new L.LatLng(23.974093,120.979903)
