@@ -7,7 +7,7 @@
 <%= render template: "common/sidebar" %>
 
 
-<% content_for :javascripts do %> 
+<% content_for :javascripts do %>
 
 <script type='text/javascript'>
 (function(scope){
@@ -15,7 +15,7 @@
   var sidebar = L.control.sidebar('sidebar', {
     position: 'left'
   });
-  
+
   map.addControl(sidebar);
 
   sidebar.show();

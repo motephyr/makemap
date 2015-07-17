@@ -63,6 +63,9 @@ group :test do
   gem 'guard-rspec', require: false
   gem 'rspec-rails', '~> 2.14.1'
   gem 'rails_best_practices'
+  gem 'nokogiri'
+  gem 'capybara'
+  gem 'poltergeist'
 end
 
 
