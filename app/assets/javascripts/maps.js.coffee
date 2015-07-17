@@ -17,7 +17,7 @@
 
 
   layer = L.tileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg",
-    subdomains: "1234", detectRetina: true
+    subdomains: "1234"
   )
 
   scope.taiwanCenter = new L.LatLng(23.974093,120.979903)
@@ -58,7 +58,7 @@
   scope.setMarkerOnMapArea = (marker, position, callback) ->
     marker.setLatLng position,
       draggable: "true"
-  
+
     map.panTo position
     callback.call this, position  unless typeof callback is "undefined"
     return
