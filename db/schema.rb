@@ -11,10 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141125131813) do
+ActiveRecord::Schema.define(version: 20150720065827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "json_test", force: true do |t|
+    t.json "data"
+  end
 
   create_table "locations", force: true do |t|
     t.string   "title"
@@ -26,8 +30,11 @@ ActiveRecord::Schema.define(version: 20141125131813) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "map_id"
+    t.integer  "icon_number"
     t.string   "address"
     t.string   "outer_photo_url"
+    t.datetime "start_at"
+    t.datetime "end_at"
   end
 
   add_index "locations", ["map_id"], name: "index_locations_on_map_id", using: :btree

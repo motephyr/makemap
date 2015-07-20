@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap/collapse
 //= require bootstrap/dropdown
-//= require leaflet/leaflet.js
+//= require leaflet
+//= require sliderControl
+//= require jquery.ui.slider

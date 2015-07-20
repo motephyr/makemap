@@ -59,7 +59,6 @@
     marker.setLatLng position,
       draggable: "true"
 
-    map.panTo position
     callback.call this, position  unless typeof callback is "undefined"
     return
 

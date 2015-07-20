@@ -1,4 +1,9 @@
 namespace :get_kktix do
+  class String
+    def string_between_markers marker1, marker2
+      self[/#{Regexp.escape(marker1)}(.*?)#{Regexp.escape(marker2)}/m, 1]
+    end
+  end
   module JSON
     def self.parse_nil(json)
       JSON.parse(json) if json && json.length >= 2
@@ -39,21 +44,28 @@ namespace :get_kktix do
     method = :get
     url = ''
     params = {
-   }
-   option = {method: method, parent_url: parent_url, url: url,params: params }
-   results = conn.use_method_url_parsms_get_response option
-   results["entry"].each do |result|
+    }
+    option = {method: method, parent_url: parent_url, url: url,params: params }
+    results = conn.use_method_url_parsms_get_response option
+    results["entry"].each do |result|
 
-    title = "KKTIX #{result["name"]} #{result["title"]}"
-    content = "#{result["summary"]}_#{result["content"].split("地點：").first}"
-    p content
-    link_url = result["url"]
-    address = result["content"].split("地點：").last
+      title = "KKTIX #{result["name"]} #{result["title"]}"
+      content = "#{result["summary"]}_#{result["content"].split("地點：").first}"
+      start_at = Time.parse(result["published"])
+      end_at = "#{result["content"].string_between_markers("時間：","\n地點").split('~').last}"
+      if end_at.length <= 5
+        end_at = Time.parse(result["published"]).change(hour: end_at.split(":").first,minute: end_at.split(":").last)
+      else
+        end_at = Time.parse(end_at)
+      end
+      link_url = result["url"]
+      address = result["content"].split("地點：").last
 
-    location =  Location.create({ map_id: 6, title: title, content: content, link_url:link_url,address: address })
+      location = Location.find_or_create_by(link_url: link_url)
+      location.update({ map_id: 6, title: title, content: content, address: address, start_at: start_at, end_at: end_at })
 
 
-  end
+    end
       #1.送網址發request
       #2.request包含url method params
       #3.get response

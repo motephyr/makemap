@@ -56,9 +56,13 @@ namespace :get_meetup do
     address = result["venue"]["address_1"] + result["venue"]["name"]
     lng = result["venue"]["lon"]
     lat = result["venue"]["lat"]
-    p "#{title}_#{lng}_#{lat}"
 
-    location =  Location.create({ map_id: 6, title: title, content: content, link_url:link_url,address: address, lng: lng, lat: lat })
+    start_at = Time.at(result["time"]/1000)
+    end_at = result["duration"].present? ? Time.at((result["time"]+result["duration"])/1000) : nil
+
+
+    location = Location.find_or_create_by(link_url: link_url)
+    location.update({ map_id: 6, title: title, content: content, address: address, lng: lng, lat: lat, start_at: start_at, end_at: end_at })
 
 
   end

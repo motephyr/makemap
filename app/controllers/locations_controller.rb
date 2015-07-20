@@ -9,7 +9,7 @@ class LocationsController < ApplicationController
   # GET /maps/1/locations.json
   def index
     @map = Map.find(params[:map_id])
-    @locations =  @map.locations
+    @locations =  @map.locations.order('start_at desc')
     respond_to do |format|
       format.json { render :json => @locations }
     end
@@ -56,7 +56,7 @@ class LocationsController < ApplicationController
 
     @map = Map.find(params[:map_id])
     @location = Location.find(params[:id])
-    if @location.update(location_params) 
+    if @location.update(location_params)
       redirect_to map_path(@map)
     else
       render :edit
@@ -71,7 +71,7 @@ class LocationsController < ApplicationController
 
     redirect_to map_path(@map)
   end
-  
+
   def upload_page
     @map = Map.find(params[:map_id])
     @locations = @map.locations

@@ -16,4 +16,5 @@
 @import "bootstrap-setting";
 @import "bootstrap";
 @import "bootstrap-override";
-@import "common"
+@import "jquery.ui.slider.css";
+@import "common";

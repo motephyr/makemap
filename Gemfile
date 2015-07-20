@@ -1,5 +1,12 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
+source 'https://rails-assets.org' do
+  %w(
+    leaflet-plugins leaflet-sidebar leaflet.locatecontrol
+    leaflet-slider trumbowyg dropzone d3
+    ).each do |asset_source|
+  gem "rails-assets-#{asset_source}"
+end
+end
 
 gem "settingslogic"
 gem 'bootstrap-sass', '~> 3.3.1'
@@ -32,7 +39,6 @@ group :production do
 end
 
 group :development do
-  gem "guard-livereload"
   gem 'capistrano-bundler', '~> 1.1.2'
   gem "capistrano", '~> 3.2.1'
   gem "capistrano-rails"
@@ -41,7 +47,7 @@ group :development do
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
 
-  gem "pry-stack_explorer"
+  #gem "pry-stack_explorer"
   gem "pry-byebug"
   gem "pry-rescue"
   gem "pry-doc"
@@ -76,12 +82,8 @@ gem 'rails', '4.1.6'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'rails-assets-leaflet-plugins'
-gem 'rails-assets-leaflet-sidebar'
-gem 'rails-assets-leaflet-locatecontrol'
-gem 'rails-assets-trumbowyg'
-gem 'rails-assets-dropzone'
-gem 'rails-assets-d3'
+
+gem 'jquery-ui-rails'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
@@ -110,4 +112,4 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-ruby "2.1.2"
+ruby "2.2.1"

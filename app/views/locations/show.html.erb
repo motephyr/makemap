@@ -37,15 +37,15 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,title:data[keysArray[i]]["id"]} );
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon,location_id:data[keysArray[i]]["id"], title:data[keysArray[i]]["title"]} );
         markers.addLayer(marker);
-        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
-        marker.bindPopup(text);
+        // var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        // marker.bindPopup(text);
 
         marker.on('click',function(event){
           var alatlng = event.latlng;
           $.ajax({
-            url: '/maps/<%= @map.id %>/locations/' +event.target.options.title ,
+            url: '/maps/<%= @map.id %>/locations/' +event.target.options.location_id ,
             dataType:'script'
           }).success(function(data){
             // event.target.bindPopup($('#content').html());

@@ -10,10 +10,52 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
-
+/db/*.sql
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+*.swp
+
+#from https://github.com/github/gitignore/blob/master/Rails.gitignore
+*.rbc
+*.sassc
+.sass-cache
+capybara-*.html
+.rspec
+#/log
+#/tmp
+#/db/*.sqlite3
+/public/system
+/coverage/
+/spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
+#config/initializers/secret_token.rb
+config/secrets.yml
+
+## Environment normalisation:
+#/.bundle
+/vendor/bundle
+
+# these should all be checked in to normalise the environment:
+# Gemfile.lock, .ruby-version, .ruby-gemset
+
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
+
+*.sh
+
+# capitraro
+Capfile
+database.yml
+/config/deploy.rb
+/config/deploy/production.rb
+/config/deploy/staging.rb
+
+# carrierwave
 /public/uploads
 
-/vendor/assets/components
+# asset
+/public/assets
