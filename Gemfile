@@ -11,6 +11,7 @@ end
 gem "settingslogic"
 gem 'bootstrap-sass', '~> 3.3.1'
 gem "bootstrap_helper", ">= 4.2.2.1"
+gem "autoprefixer-rails"
 gem 'seo_helper', '~> 1.0'
 
 gem "simple_form"
