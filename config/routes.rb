@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   resources :maps do
     resources :locations do
-      collection do 
+      collection do
         get 'upload_page'
         post 'import'
       end
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   resources :photos
 
   resources :factories  do
-    collection do 
+    collection do
       get 'demo1'
       get 'demo2'
     end

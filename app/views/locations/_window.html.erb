@@ -1,6 +1,7 @@
 <header class="note-header">
-  <h1 class="note-heading"><%= link_to @location.title , @location.link_url  %></h1>
+  <h1 class="note-heading"><%= link_to @location.title , @location.link_url, target: '_blank'  %></h1>
 </header>
+ <hr>
 <div class="note-contents">
   <div class="note-media">
     <div class="note-media-object">
@@ -16,9 +17,12 @@
       </figure>
     </div>
   </div>
-  <div class="note-message ">
-    <p><%= @location.content.html_safe %></p>
+  <div class="note-message">
+    <p><%= sanitize @location.content %></p>
   </div>
+  <hr>
+  <h4>連結：</h4>
+  <h5><%= link_to @location.link_url , @location.link_url, target: '_blank'  %></h5>
   <% if !@location.user.nil?  %>
   <h6 class="note-author">Steper: <%= @location.user.name %></h6>
   <% end %>

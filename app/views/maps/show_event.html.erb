@@ -1,6 +1,6 @@
 <%= render :partial => "maps/map" %>
 <% content_for :sidebar_content do %>
-
+<%= render :partial => "common/sidebar_meetmap" %>
 
 <% end %>
 <%= render template: "common/sidebar" %>
@@ -15,6 +15,7 @@
     });
 
     map.addControl(sidebar);
+    sidebar.show();
 
     var markers = new L.MarkerClusterGroup();
     $.ajax({
@@ -32,23 +33,36 @@
         if(!data[keysArray[i]]["lat"] || !data[keysArray[i]]["start_at"]){
           continue;
         }
+        var title = data[keysArray[i]]["title"];
+        var location_id = data[keysArray[i]]["id"];
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{location_id:location_id, icon:otherIcon, title:title, start_at:data[keysArray[i]]["start_at"].replace('T', ' '), end_at:data[keysArray[i]]["end_at"]} );
 
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{location_id:data[keysArray[i]]["id"], icon:otherIcon, title:data[keysArray[i]]["title"], start_at:data[keysArray[i]]["start_at"].replace('T', ' '), end_at:data[keysArray[i]]["end_at"]} );
         markers.addLayer(marker);
-
-        // var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
-        // marker.bindPopup(text);
-
-        marker.on('click',function(event){
+        var callback = function(event,location_id){
           var alatlng = event.latlng;
           $.ajax({
-            url: '/maps/<%= @map.id %>/locations/' +event.target.options.location_id ,
+            url: '/maps/<%= @map.id %>/locations/' +location_id ,
             dataType:'script'
           }).success(function(data){
             // event.target.bindPopup($('#content').html());
             // event.target.openPopup();
             sidebar.show();
+            console.log(data);
+            map.panTo(alatlng);
+            map.zoomIn(6);
           });
+        };
+        $('#event_list').append('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+'><h4>'+title+'<h4></a></td></tr></table>');
+
+        $('#location_'+location_id).bind('click',function(event){
+          callback(event,$(this).attr('data-id'));
+        });
+
+        // var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        // marker.bindPopup(text);
+
+        marker.on('click',function(event){
+          callback(event,event.target.options.location_id);
         });
       }
 

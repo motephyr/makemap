@@ -8,7 +8,7 @@
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="YyegJu17j_pD7oCTI2Zk4N9eLcTQFh-CcWVQqueIXao" />
   <%= yield :og_tag %>
-  
+
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= stylesheet_link_tag params[:controller] %>
   <%= javascript_include_tag "application" %>
@@ -33,11 +33,22 @@
   <%= yield %>
 
   <%#= render :partial => "common/footer" %>
-</div> 
+</div>
 
 
 <%= render :partial => "common/facebook_js" %>
 <%= javascript_include_tag "maps" %>
 <%= yield :javascripts %>
+<script type="text/javascript">
+  $(document).keydown(function(e){
+    var t=e.target.type;
+    var kc=e.keyCode;
+    if ((kc != 8) || (t == 'textarea')){
+      return true
+    }else {
+      return false
+    }
+  });
+</script>
 </body>
 </html>

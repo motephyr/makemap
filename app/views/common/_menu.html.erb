@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar transparent navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -11,44 +11,6 @@
       <div class="ribbon">Beta</div>
     </div>
     <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
-          <%= render_map_title_for_map(@map) %>
-          <% end %>
-          <ul class="dropdown-menu">
-            <% if @maps.present? %>
-            <% @maps.each do |map| %>
-            <li><%= link_to(map.title, map_path(map) ) %></li>
-            <% end %>
-            <% end %>
-            <li><%= link_to("新增地圖",new_map_path, class: "btn btn-link" ) %></li>
-          </ul>
-        </li>
-
-        <% if is_existed_map(@map) && can?(:manage, @map) %>
-        <li class="dropdown">
-          <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
-          設定
-          <% end %>
-          <ul class="dropdown-menu">
-            <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
-            <li><%= link_to("數據管理",upload_page_map_locations_path(@map) ) %></li>
-          </ul>
-        </li>
-        <% end %>
-
-        <li>
-          <%= render :partial => "common/search_form" %>
-        </li>
-        <% if is_existed_map(@map) && current_user %>
-        <% if request.path == map_path(@map) %>
-        <li><%= link_to("新增地點","#",id: "new_location" ) %></li>
-        <% else %>
-        <li><%= link_to("回地圖",map_path(@map)) %></li>
-        <% end %>
-        <% end %>
-      </ul>
       <%= render :partial => "common/user_nav"%>
     </div><!--/.nav-collapse -->
   </div>

@@ -5,7 +5,11 @@ class MapsController < ApplicationController
   authorize_resource #cancan's setting
 
   def index
+    @map = Map.find(6)
 
+    if @map.kind == "activity"
+      render :show_event
+    end
   end
 
   def new
