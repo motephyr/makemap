@@ -16,3 +16,4 @@
 //= require leaflet
 //= require sliderControl
 //= require jquery.ui.slider
+//= require bootstrap/dropdown

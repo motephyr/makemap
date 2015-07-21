@@ -23,6 +23,10 @@ class MapsController < ApplicationController
 
   def show
     @map = Map.find(params[:id])
+
+    if @map.kind == "activity"
+      render :show_event
+    end
   end
 
   def create
@@ -68,7 +72,7 @@ class MapsController < ApplicationController
   def assign_role(role_name)
     @user = User.find_by(email: params[:email])
 
-    if @user.present?    
+    if @user.present?
       @map = Map.find(params[:id])
       @user.add_role role_name, @map
       respond_to do |format|

@@ -9,7 +9,7 @@ end
 end
 
 gem "settingslogic"
-gem 'bootstrap-sass', '~> 3.3.1'
+gem 'bootstrap-sass', '~> 3.3.5'
 gem "bootstrap_helper", ">= 4.2.2.1"
 gem "autoprefixer-rails"
 gem 'seo_helper', '~> 1.0'
@@ -57,6 +57,7 @@ group :development do
 
   gem "letter_opener"
   gem 'meta_request'
+  gem 'xray-rails'
   gem 'sqlite3'
 end
 

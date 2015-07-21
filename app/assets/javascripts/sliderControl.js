@@ -49,8 +49,11 @@ L.Control.SliderControl = L.Control.extend({
         this.options.map = map;
 
         // Create a control sliderContainer with a jquery ui slider
-        var sliderContainer = L.DomUtil.create('div', 'slider leaflet-bar', this._container);
-        $(sliderContainer).append('<div id="leaflet-slider" style="width:200px"><div class="ui-slider-handle"></div><div id="slider-timestamp" style="width:200px; margin-top:13px; background-color:#FFFFFF; text-align:center; border-radius:5px;"></div></div>');
+        var sliderContainer = L.DomUtil.create('div', 'slider', this._container);
+        $(sliderContainer).append('<div id="leaflet-slider" style="height:200px;">'+
+            '<div class="ui-slider-handle"></div>'+
+            '<div id="slider-timestamp" style="width:460px; margin-top:13px; text-align:center; border-radius:5px;"></div>'+
+            '</div>');
         //Prevent map panning/zooming while using the slider
         $(sliderContainer).mousedown(function () {
             map.dragging.disable();
@@ -58,7 +61,7 @@ L.Control.SliderControl = L.Control.extend({
         $(document).mouseup(function () {
             map.dragging.enable();
             //Hide the slider timestamp if not range and option alwaysShowDate is set on false
-            if (options.range || !options.alwaysShowDate) {
+            if (!options.alwaysShowDate) {
                 $('#slider-timestamp').html('');
             }
         });
@@ -88,15 +91,30 @@ L.Control.SliderControl = L.Control.extend({
         }
         $('#leaflet-slider').remove();
     },
+    echoString: function (start,end) {
+        return '開始時間：'+_extractTimestamp(_options.markers[start].options[_options.timeAttribute], _options)+
+        '<br />結束時間：'+_extractTimestamp(_options.markers[end].options[_options.timeAttribute], _options);
+    },
 
     startSlider: function () {
         _options = this.options;
-        _extractTimestamp = this.extractTimestamp
+        _extractTimestamp = this.extractTimestamp;
+        _echoString = this.echoString;
         var index_start = _options.minValue;
         if(_options.showAllOnStart){
             index_start = _options.maxValue;
-            if(_options.range) _options.values = [_options.minValue,_options.maxValue];
-            else _options.value = _options.maxValue;
+            if(_options.range){
+                _options.values = [_options.minValue,_options.maxValue];
+            }
+            else{
+                _options.value = _options.maxValue;
+            }
+        }
+        var fg = L.featureGroup();
+        var map = _options.map;
+        for (i = _options.minValue; i <= index_start; i++) {
+            map.addLayer(_options.markers[i]);
+            fg.addLayer(_options.markers[i]);
         }
         $("#leaflet-slider").slider({
             range: _options.range,
@@ -106,8 +124,7 @@ L.Control.SliderControl = L.Control.extend({
             max: _options.maxValue,
             step: 1,
             slide: function (e, ui) {
-                var map = _options.map;
-                var fg = L.featureGroup();
+
                 if(!!_options.markers[ui.value]) {
                     // If there is no time property, this line has to be removed (or exchanged with a different property)
                     if(_options.markers[ui.value].feature !== undefined) {
@@ -120,8 +137,7 @@ L.Control.SliderControl = L.Control.extend({
                     }else {
                         // set by leaflet Vector Layers
                         if(_options.markers [ui.value].options[_options.timeAttribute]){
-                            if(_options.markers[ui.value]) $('#slider-timestamp').html(
-                                _extractTimestamp(_options.markers[ui.value].options[_options.timeAttribute], _options));
+                            if(_options.markers[ui.value]) $('#slider-timestamp').html(_echoString(ui.values[0],ui.values[1]));
                         }else {
                             console.error("Time property "+ _options.timeAttribute +" not found in data");
                         }
@@ -135,10 +151,10 @@ L.Control.SliderControl = L.Control.extend({
                     if(_options.range){
                         // jquery ui using range
                         for (i = ui.values[0]; i <= ui.values[1]; i++){
-                           if(_options.markers[i]) {
-                               map.addLayer(_options.markers[i]);
-                               fg.addLayer(_options.markers[i]);
-                           }
+                            if(_options.markers[i]) {
+                                map.addLayer(_options.markers[i]);
+                                fg.addLayer(_options.markers[i]);
+                            }
                         }
                     }else if(_options.follow){
                         for (i = ui.value - _options.follow + 1; i <= ui.value ; i++) {
@@ -163,13 +179,11 @@ L.Control.SliderControl = L.Control.extend({
                 }
             }
         });
-        if (!_options.range && _options.alwaysShowDate) {
-            $('#slider-timestamp').html(_extractTimeStamp(_options.markers[index_start].feature.properties[_options.timeAttribute], _options));
-        }
-        for (i = _options.minValue; i <= index_start; i++) {
-            _options.map.addLayer(_options.markers[i]);
-        }
-    }
+if (_options.alwaysShowDate) {
+    $('#slider-timestamp').html(this.echoString(_options.minValue,_options.maxValue));
+}
+
+}
 });
 
 L.control.sliderControl = function (options) {

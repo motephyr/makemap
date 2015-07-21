@@ -50,10 +50,10 @@
     #   -86
     # ]
   )
-  scope.otherIcon = new LeafIcon(iconUrl: "/assets/singing.png")
-  scope.factoryIcon = new LeafIcon(iconUrl: "/assets/coal-power-plant-icon.png")
+  scope.otherIcon = new LeafIcon(iconUrl: "/images/singing.png")
+  scope.factoryIcon = new LeafIcon(iconUrl: "/images/coal-power-plant-icon.png")
 
-  L.Icon.Default.imagePath = "/assets/leaflet/images"
+  L.Icon.Default.imagePath = "/images/leaflet/images"
   scope.myIcon = new L.Icon.Default()
   scope.setMarkerOnMapArea = (marker, position, callback) ->
     marker.setLatLng position,

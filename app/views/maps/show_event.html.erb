@@ -1,0 +1,68 @@
+<%= render :partial => "maps/map" %>
+<% content_for :sidebar_content do %>
+
+
+<% end %>
+<%= render template: "common/sidebar" %>
+
+
+<% content_for :javascripts do %>
+<script type='text/javascript'>
+  (function(scope){
+
+    var sidebar = L.control.sidebar('sidebar', {
+      position: 'left'
+    });
+
+    map.addControl(sidebar);
+
+    var markers = new L.MarkerClusterGroup();
+    $.ajax({
+      url: "/maps/<%= @map.id %>/locations",
+      dataType: "json",
+      success: function (data) {
+        var keysArray = Object.keys(data);
+        for (var i in keysArray){
+        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
+        //   color: 'red',
+        //   fillColor: '#f03',
+        //   fillOpacity: 0.5
+        // }).addTo(map);
+        // circle.bindPopup(data[keysArray[i]][2]);
+        if(!data[keysArray[i]]["lat"] || !data[keysArray[i]]["start_at"]){
+          continue;
+        }
+
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{location_id:data[keysArray[i]]["id"], icon:otherIcon, title:data[keysArray[i]]["title"], start_at:data[keysArray[i]]["start_at"].replace('T', ' '), end_at:data[keysArray[i]]["end_at"]} );
+        markers.addLayer(marker);
+
+        // var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
+        // marker.bindPopup(text);
+
+        marker.on('click',function(event){
+          var alatlng = event.latlng;
+          $.ajax({
+            url: '/maps/<%= @map.id %>/locations/' +event.target.options.location_id ,
+            dataType:'script'
+          }).success(function(data){
+            // event.target.bindPopup($('#content').html());
+            // event.target.openPopup();
+            sidebar.show();
+          });
+        });
+      }
+
+      //map.addLayer(marker);
+
+      var sliderControl = L.control.sliderControl({layer: markers,position: 'bottomleft',range: true, timeAttribute: "start_at", alwaysShowDate: true, showAllOnStart: true });
+      map.addControl(sliderControl);
+      sliderControl.startSlider();
+    }
+  });
+
+
+})(window);
+
+</script>
+<% end %>
+
