@@ -59,6 +59,7 @@ group :development do
   gem "letter_opener"
   gem 'meta_request'
   gem 'xray-rails'
+  gem 'capistrano3-rainbows', git: 'https://github.com/motephyr/capistrano3-rainbows'
   gem 'sqlite3'
 end
 
