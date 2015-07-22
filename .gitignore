@@ -50,12 +50,15 @@ config/secrets.yml
 # capitraro
 Capfile
 database.yml
-/config/deploy.rb
-/config/deploy/production.rb
-/config/deploy/staging.rb
+config/deploy.rb
+config/deploy/production.rb
+config/deploy/staging.rb
 
 # carrierwave
 /public/uploads
 
 # asset
 /public/assets
+
+# setting
+config/config.yml
