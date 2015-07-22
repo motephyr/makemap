@@ -31,6 +31,7 @@ gem 'rolify'
 gem 'geocoder'
 gem 'roo'
 gem 'iconv'
+gem 'rainbows'
 
 group :production do
   #gem 'rails_12factor'
