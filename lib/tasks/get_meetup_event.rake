@@ -62,7 +62,7 @@ namespace :get_meetup do
 
 
     location = Location.find_or_create_by(link_url: link_url)
-    location.update({ map_id: 6, title: title, content: content, address: address, lng: lng, lat: lat, start_at: start_at, end_at: end_at })
+    location.update({ map_id: 10, title: title, content: content, address: address, lng: lng, lat: lat, start_at: start_at, end_at: end_at })
 
 
   end
