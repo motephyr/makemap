@@ -42,9 +42,15 @@ GEM
       activesupport (= 4.1.6)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    activejob (0)
+      activemodel-globalid
+      activesupport (>= 4.1.0)
     activemodel (4.1.6)
       activesupport (= 4.1.6)
       builder (~> 3.1)
+    activemodel-globalid (0.1.1)
+      activemodel (>= 4.1.0)
+      activesupport (>= 4.1.0)
     activerecord (4.1.6)
       activemodel (= 4.1.6)
       activesupport (= 4.1.6)
@@ -348,6 +354,8 @@ GEM
     rack (1.5.2)
     rack-contrib (1.2.0)
       rack (>= 0.9.1)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.6)
@@ -400,6 +408,9 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.1.2)
       json (~> 1.4)
+    redis (3.2.1)
+    redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
     require_all (1.3.2)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
@@ -440,9 +451,21 @@ GEM
     seo_helper (1.0.2)
     settingslogic (2.0.9)
     sexp_processor (4.4.4)
+    sidekiq (3.3.0)
+      celluloid (>= 0.16.0)
+      connection_pool (>= 2.0.0)
+      json
+      redis (>= 3.0.6)
+      redis-namespace (>= 1.3.1)
+    sidekiq-middleware (0.3.0)
+      sidekiq (>= 2.12.4)
     simple_form (3.0.2)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    sinatra (1.4.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
     slop (3.6.0)
     spreadsheet (1.0.0)
       ruby-ole (>= 1.0)
@@ -492,6 +515,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activejob
   auto-facebook!
   autoprefixer-rails
   better_errors (~> 0.9.0)
@@ -551,7 +575,10 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   seo_helper (~> 1.0)
   settingslogic
+  sidekiq
+  sidekiq-middleware
   simple_form
+  sinatra
   spring
   sqlite3
   uglifier (>= 1.3.0)

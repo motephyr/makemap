@@ -6,7 +6,7 @@ class MapsController < ApplicationController
 
   def index
     @map = Map.find_by(kind: "activity")
-
+    GetLocationsWorker.perform_async
     render :show_event
   end
 

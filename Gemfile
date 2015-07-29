@@ -33,6 +33,10 @@ gem 'roo'
 gem 'iconv'
 gem 'rainbows'
 
+gem 'sidekiq'
+gem 'activejob'
+gem 'sidekiq-middleware'
+
 group :production do
   #gem 'rails_12factor'
   gem "non-stupid-digest-assets"
@@ -60,6 +64,7 @@ group :development do
   gem 'meta_request'
   gem 'xray-rails'
   gem 'capistrano3-rainbows', git: 'https://github.com/motephyr/capistrano3-rainbows'
+  gem 'sinatra', require: false
   gem 'sqlite3'
 end
 
