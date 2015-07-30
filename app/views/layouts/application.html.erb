@@ -40,13 +40,12 @@
 <%= javascript_include_tag "maps" %>
 <%= yield :javascripts %>
 <script type="text/javascript">
-  $(document).keydown(function(e){
-    var t=e.target.type;
-    var kc=e.keyCode;
-    if ((kc != 8) || (t == 'textarea')){
-      return true
-    }else {
-      return false
+  $(document).keydown(function(e) {
+    var element = e.target.nodeName.toLowerCase();
+    if (element != 'input' && element != 'textarea' && element != 'div') {
+      if (e.keyCode === 8) {
+        return false;
+      }
     }
   });
 </script>

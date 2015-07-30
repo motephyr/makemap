@@ -2,10 +2,14 @@
   <li class="dropdown">
     <% if current_user %>
 
-    <li><%= current_user.name %></li>
+    <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
+    <%= current_user.name %>
+    <% end %>
+
 
     <% else %>
-
+    <li> <%= link_to( "註冊" ,new_user_registration_path) %> </li>
+    <li> <%= link_to( "登入", new_user_session_path )  %> </li>
     <li> <%= link_to( "FACEBOOK登入", "/users/auth/facebook" )  %> </li>
 
     <% end %>

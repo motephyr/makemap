@@ -8,7 +8,14 @@
   </div>
   <br>
   <div class="field">
-    <%= f.input_field :description,placeholder: '說明',:required => true,style: "width:100%;height:130px" %>
+    <%= f.label "描述：" %>
+    <%= f.input_field :description,:required => true,style: "display:none" %>
+    <% content_for :trumbowyg_content do %>
+    <% if !@map.description.nil? %>
+    <%= sanitize @map.description %>
+    <% end %>
+    <% end %>
+    <%= render template: "common/trumbowyg" %>
   </div>
   <div class="field">
     <%= f.input_field :private,inline_label: "設為私人",as: :boolean %>
@@ -18,3 +25,17 @@
   </div>
   <% end %>
 </div>
+
+
+<% content_for :javascripts do %>
+<script type='text/javascript'>
+(function(scope){
+  $("input[type=submit]").on('click',function() {
+    var form_id = $("form:eq(1)").attr("id");
+    $("#map_description").val($("#trumbowyg").html());
+    $( "#"+form_id ).submit();
+  });
+})(window);
+
+</script>
+<% end %>

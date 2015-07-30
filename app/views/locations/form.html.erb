@@ -12,14 +12,14 @@
     <%= f.input_field :content,:required => true,style: "display:none" %>
     <% content_for :trumbowyg_content do %>
     <% if !@location.content.nil? %>
-    <%= @location.content.html_safe %>
+    <%= sanitize @location.content %>
     <% end %>
     <% end %>
     <%= render template: "common/trumbowyg" %>
   </div>
   <br>
   <div class="field">
-    <%= f.label "網址連結：" %>  
+    <%= f.label "網址連結：" %>
     <%= f.input_field :link_url, maxlength: 48 %>
   </div>
   <div class="field">
@@ -29,12 +29,12 @@
   </div>
   <br>
   <div class="actions">
-    <%= f.submit "送出" %>  
+    <%= f.submit "送出" %>
   </div>
   <% end %>
 </div>
 
-<% content_for :javascripts do %> 
+<% content_for :javascripts do %>
 <script type='text/javascript'>
 (function(scope){
   $("input[type=submit]").on('click',function() {

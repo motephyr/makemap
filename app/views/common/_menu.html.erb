@@ -11,6 +11,41 @@
       <div class="ribbon">Beta</div>
     </div>
     <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
+          <%= render_map_title_for_map(@map) %>
+          <% end %>
+
+          <% if is_existed_map(@map) && can?(:manage, @map) %>
+          <ul class="dropdown-menu">
+            <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
+            <li><%= link_to("數據管理",upload_page_map_locations_path(@map) ) %></li>
+          </ul>
+          <% else %>
+          <ul class="dropdown-menu">
+            <% if @maps.present? %>
+            <% @maps.each do |map| %>
+            <li><%= link_to(map.title, map_path(map) ) %></li>
+            <% end %>
+            <% end %>
+            <li><%= link_to("新增地圖",new_map_path, class: "btn btn-link" ) %></li>
+          </ul>
+          <% end %>
+        </li>
+
+        <li>
+          <%= render :partial => "common/search_form" %>
+        </li>
+        <% if is_existed_map(@map) && current_user %>
+        <% if request.path == map_path(@map) %>
+        <li><%= link_to("新增地點","#",id: "new_location" ) %></li>
+        <% else %>
+        <li><%= link_to("回地圖",map_path(@map)) %></li>
+        <% end %>
+        <% end %>
+      </ul>
+
       <%= render :partial => "common/user_nav"%>
     </div><!--/.nav-collapse -->
   </div>
@@ -21,14 +56,14 @@
 
 <% content_for :javascripts do %>
 <% if is_existed_map(@map) && current_user %>
-        <% if request.path == map_path(@map) %>
+<% if request.path == map_path(@map) %>
 <script type="text/javascript">
-(function(scope){
-  $('#new_location').click(function(e){
-    e.preventDefault();
-    location.href = '<%= new_map_location_path(@map) %>?lat='+myMarker._latlng.lat + '&lng='+ myMarker._latlng.lng
-  });
-})(window)
+  (function(scope){
+    $('#new_location').click(function(e){
+      e.preventDefault();
+      location.href = '<%= new_map_location_path(@map) %>?lat='+myMarker._latlng.lat + '&lng='+ myMarker._latlng.lng
+    });
+  })(window)
 </script>
 <% end %>
 <% end %>

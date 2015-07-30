@@ -15,7 +15,7 @@ module ApplicationHelper
       content_tag(:div, alert_content, :class => alert_class)
     end
 
-    alerts.join("\n").html_safe
+    sanitize alerts.join("\n")
   end
 
 end

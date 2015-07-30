@@ -5,9 +5,6 @@ class MapsController < ApplicationController
   authorize_resource #cancan's setting
 
   def index
-    @map = Map.find_by(kind: "activity")
-    GetLocationsWorker.perform_async
-    render :show_event
   end
 
   def new
