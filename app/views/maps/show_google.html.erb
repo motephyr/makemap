@@ -1,0 +1,132 @@
+<%= render :partial => "maps/map" %>
+<% content_for :sidebar_content do %>
+
+<%= render "common/sidebar_index" %>
+<% end %>
+<%= render template: "common/sidebar" %>
+
+
+<% content_for :javascripts do %>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type='text/javascript'>
+  (function(scope){
+
+    var sidebar = L.control.sidebar('sidebar', {
+      position: 'left'
+    });
+
+    map.addControl(sidebar);
+    sidebar.show();
+
+    var markers = new L.MarkerClusterGroup();
+    google.load('visualization', '1.0');
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+
+      var URL = 'http://spreadsheets.google.com/tq?key=1h04BlU1H3deYk3XXqiXMsx17nhQD4VvZ7CcCVOxBfkY';
+      google.load('visualization', '1');
+      var query = new google.visualization.Query(URL);
+      // 使用 query language 查詢資料
+      query.setQuery('select A,B,C,D,E,F');
+      query.send(function(resp){
+        if (!resp.isError()) {
+          var dataTable = resp.getDataTable();
+          var jsonData = JSON.parse(dataTable.toJSON());
+          var locations_data = _.map(jsonData.rows, function(data){
+            var locations_data2 = _.map(data, function(data2){
+              return {name: data2[0] ? data2[0].v : '',
+              address: data2[1] ? data2[1].v : '',
+              contact: data2[2] ? data2[2].v : '',
+              description: data2[3] ? data2[3].v : '',
+              open_time: data2[4] ? data2[4].v : '',
+              item: data2[5] ? data2[5].v : ''}
+            });
+            return locations_data2[0];
+          })
+        }
+        var title = locations_data[0];
+        _.each(locations_data,function(location){
+          if (!location || location["address"].length == 0 || location["address"] === '地址'){
+            return;
+          }
+
+          $.ajax({
+            url:'http://maps.googleapis.com/maps/api/geocode/json',
+            data:{
+              address:location["address"],
+              region: 'tw'
+            },
+            dataType:'json',
+            success: function (data) {
+              var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+
+              var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:location["name"]} );
+              markers.addLayer(marker);
+
+              marker.on('click',function(event){
+                $('#sidebar').html(transfer_to_html(title,location));
+                sidebar.show();
+              });
+              map.addLayer(markers);
+            }
+          });
+        });
+      });
+};
+
+
+})(window);
+
+function transfer_to_html(title, object){
+  var name = object["name"];
+  var address = object["address"];
+  var contact = object["contact"];
+  var description = object["description"];
+  var open_time = object["open_time"];
+  var item = object["item"];
+
+  var con = function(tagname, content){
+    return '<' + tagname + '>' + content + '</' + tagname + '>';
+  };
+
+  var result = '';
+  if (object["name"]){
+    result += con('h1', title['name'])+
+              con('h2', object["name"]);
+  }
+  console.log(result);
+  if (object["address"]){
+    result += con('h2', title['address'])+
+              con('pre', object["address"]);
+  }
+  if (object["contact"]){
+    result += con('h2', title['contact'])+
+              con('pre', object["contact"]);
+  }
+  if (object["description"]){
+    result += con('h2', title['description'])+
+              con('pre', object["description"]);
+  }
+  if (object["open_time"]){
+    result += con('h2', title['open_time'])+
+              con('pre', object["open_time"]);
+  }
+  if (object["item"]){
+    result += con('h2', title['item'])+
+              con('pre', object["item"]);
+  }
+
+  return result;
+
+}
+
+</script>
+
+<% end %>
+

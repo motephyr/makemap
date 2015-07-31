@@ -17,3 +17,4 @@
 //= require sliderControl
 //= require jquery.ui.slider
 //= require bootstrap/dropdown
+//= require lodash

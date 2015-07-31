@@ -24,7 +24,10 @@ class MapsController < ApplicationController
     @map = Map.find(params[:id])
 
     if @map.kind == "activity"
-      render :show_event
+      GetLocationsWorker.perform_async
+      render :show_activity
+    elsif @map.kind == "google"
+      render :show_google
     end
   end
 

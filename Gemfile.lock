@@ -380,6 +380,7 @@ GEM
     rails-assets-leaflet.locatecontrol (0.43.0)
       rails-assets-fontawesome (~> 4.3.0)
       rails-assets-leaflet (~> 0.7.3)
+    rails-assets-lodash (3.10.0)
     rails-assets-trumbowyg (1.1.7)
       rails-assets-jquery (>= 1.7)
     rails_best_practices (1.15.4)
@@ -565,6 +566,7 @@ DEPENDENCIES
   rails-assets-leaflet-sidebar!
   rails-assets-leaflet-slider!
   rails-assets-leaflet.locatecontrol!
+  rails-assets-lodash!
   rails-assets-trumbowyg!
   rails_best_practices
   rainbows
