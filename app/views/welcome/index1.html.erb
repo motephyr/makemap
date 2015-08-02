@@ -1,6 +1,6 @@
-<%= render :partial => "maps/map" %>
 
-<% content_for :javascripts do %> 
+
+<% content_for :javascripts do %>
 
 <script src='/assets/KML.js'></script>
 
@@ -9,7 +9,7 @@
 
   var kmlLayer = new L.KML("/assets/counties.kml", {async: true});
 
-  kmlLayer.on("loaded", function(e) { 
+  kmlLayer.on("loaded", function(e) {
     map.fitBounds(e.target.getBounds());
   });
 

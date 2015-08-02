@@ -1,4 +1,4 @@
-<%= render :partial => "maps/map" %>
+
 Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"$exists":true}}' value='{"lat":{"$exists":true}}' />
 <% content_for :sidebar_content do %>
 <% content_for :stylesheets do %>
@@ -16,14 +16,14 @@ Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"
 <% end %>
 <%= render template: "common/sidebar" %>
 
-<% content_for :javascripts do %> 
+<% content_for :javascripts do %>
 
 <script type='text/javascript'>
 (function(scope){
   var sidebar = L.control.sidebar('sidebar', {
     position: 'left'
   });
-  
+
   map.addControl(sidebar);
   sidebar.show();
 
@@ -68,7 +68,7 @@ Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"
   $('#query_string').keypress(function(e){
     code = (e.keyCode ? e.keyCode : e.which);
     if(code == 13){
-      query_data($('#query_string').val(),function(data){$('#sidebar').text(data);}); 
+      query_data($('#query_string').val(),function(data){$('#sidebar').text(data);});
     }
   });
 
@@ -80,12 +80,12 @@ Mongodb Query String:<input id="query_string" type="text" placeholder='{"lat":{"
       success: function(data){
         if (typeof callback !== "undefined"){
           callback.call(this,JSON.stringify(data));
-        }     
+        }
       }
     })
   };
 
-  
+
 
 
 

@@ -1,4 +1,4 @@
-<%= render :partial => "maps/map" %>
+
 
 
 
@@ -32,13 +32,13 @@ path:hover {
 
 </style>
 <% end %>
-<% content_for :javascripts do %> 
+<% content_for :javascripts do %>
 
 <%= javascript_include_tag "d3" %>
 
 <script type='text/javascript'>
 (function(scope){
-  
+
 
 var quantize = d3.scale.quantize()
             .domain([0, 500])

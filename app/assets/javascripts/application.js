@@ -18,10 +18,11 @@
 //= require jquery.ui.slider
 //= require lodash
 //= require jquery-icheck
+//= require leaflet.markercluster
 
 $(function(){
  $('input').iCheck({
   checkboxClass: 'icheckbox_square-blue',
   radioClass: 'iradio_square-blue'
 });
-})();
+});
