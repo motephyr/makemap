@@ -1,4 +1,7 @@
 <ul class="nav navbar-nav navbar-right">
+
+
+
   <li class="dropdown">
     <% if current_user %>
 
@@ -6,8 +9,15 @@
     <%= current_user.name %>
     <% end %>
 
+    <ul class="dropdown-menu">
+
+      <%#= link_to("設定","/users/edit" ) %>
+      <li><%= link_to(render_user_role_for_map(@map),"#") %></li>
+      <li><%= link_to("登出",destroy_user_session_path, :method => :delete ) %></li>
+    </ul>
 
     <% else %>
+
     <li> <%= link_to( "註冊" ,new_user_registration_path) %> </li>
     <li> <%= link_to( "登入", new_user_session_path )  %> </li>
     <li> <%= link_to( "FACEBOOK登入", "/users/auth/facebook" )  %> </li>
@@ -16,3 +26,6 @@
   </li>
 
 </ul>
+
+<% content_for :javascripts do %>
+<% end %>

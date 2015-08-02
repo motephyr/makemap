@@ -17,3 +17,11 @@
 //= require sliderControl
 //= require jquery.ui.slider
 //= require lodash
+//= require jquery-icheck
+
+$(function(){
+ $('input').iCheck({
+  checkboxClass: 'icheckbox_square-blue',
+  radioClass: 'iradio_square-blue'
+});
+})();
