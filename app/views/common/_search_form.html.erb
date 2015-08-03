@@ -1,63 +1,70 @@
 <div class="navbar-form navbar-left" role="form">
-  <input type="text" id="search_location" name="q" class="form-control" value="<%= @query_string %>" placeholder="<%= @query_string ||   "Search" %>" />      
+  <input type="text" id="search_location" name="q" class="form-control" value="<%= @query_string %>" placeholder="<%= @query_string ||   "搜尋地點" %>" />
 </div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">
-(function(scope){
-  if(!scope.myMarker){
+  (function(scope){
+    if(!scope.myMarker){
 
-    var location;
+      var location;
 
-    if (typeof params !== "undefined" && params != ''){
-      location = {lat: params.lat, lng: params.lng } 
-      map.setView(new L.LatLng(location.lat,
-        location.lng), 16);
-    }else{
-      location = taiwanCenter
+      if (typeof params !== "undefined" && params != ''){
+        location = {lat: params.lat, lng: params.lng }
+        map.setView(new L.LatLng(location.lat,
+          location.lng), 16);
+      }else{
+        location = taiwanCenter
+      }
+
+      scope.myMarker = L.marker( location , {
+        icon: myIcon,
+        draggable: "true"
+      }).addTo(map);
+
+      setMarkerOnMapArea(myMarker,location,setLocationNumfunction);
+
+
+      myMarker.on("dragend", function(e) {
+        var position = e.target.getLatLng();
+        setMarkerOnMapArea(e.target, position,setLocationNumfunction);
+      });
+
+      map.on("click", function(e) {
+        setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
+      });
+
     }
-    
-    scope.myMarker = L.marker( location , {
-      icon: myIcon,
-      draggable: "true"
-    }).addTo(map);
 
-    setMarkerOnMapArea(myMarker,location,setLocationNumfunction);
-
-
-    myMarker.on("dragend", function(e) {
-      var position = e.target.getLatLng();
-      setMarkerOnMapArea(e.target, position,setLocationNumfunction);
+    $('#search_location').keypress(function(e){
+      code = (e.keyCode ? e.keyCode : e.which);
+      if(code == 13){
+        search_location($('#search_location').val());
+      }
     });
 
-    map.on("click", function(e) {
-      setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
-    });
 
-  }
+    var search_location = function(queryString){
+      $.ajax({
+        url:'http://maps.googleapis.com/maps/api/geocode/json',
+        data:{
+          address:queryString,
+          region: 'tw'
+        },
+        dataType:'json',
+        success: (function(m,s){
+          return function (data) {
+            var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
 
-  $('#search_location').keypress(function(e){
-    code = (e.keyCode ? e.keyCode : e.which);
-    if(code == 13){
-      search_location($('#search_location').val());
+            setMarkerOnMapArea(m,{lat: lat_lng["lat"], lng: lat_lng["lng"]},s);
+            map.setZoom(15);
+
+          }
+        })(myMarker,setLocationNumfunction)
+      });
+
     }
-  });
 
-
-  var search_location = function(queryString){
-    $.ajax({
-      url: "/welcome/search_location",
-      dataType: "json",
-      data: {q: queryString},
-      success: (function(m,s){
-        return function (data) {
-          setMarkerOnMapArea(m,{lat: data[0],lng:data[1]},s);
-          map.setZoom(15);
-        }
-      })(myMarker,setLocationNumfunction)
-    });
-  }
-
-})(window)
+  })(window)
 </script>
 <% end %>

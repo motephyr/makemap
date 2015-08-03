@@ -39,6 +39,9 @@
   L.Icon.Default.imagePath = "/images/leaflet/images";
   window.myIcon = new L.Icon.Default();
   window.setMarkerOnMapArea = function(marker, position, callback) {
+    marker.setLatLng(position);
+    map.setView(position);
+
     if (typeof callback !== "undefined") {
       callback.call(this, position);
     }

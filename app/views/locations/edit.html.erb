@@ -24,26 +24,17 @@
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
-(function(scope){
+  (function(scope){
 
-  scope.myMarker = L.marker({lat: <%= @location.lat %>, lng: <%= @location.lng %> }, {
-    icon: myIcon,
-    draggable: "true"
-  }).addTo(map);
+    scope.myMarker = L.marker({lat: <%= @location.lat %>, lng: <%= @location.lng %> }, {
+      icon: myIcon,
+      draggable: "true"
+    }).addTo(map);
 
-  map.setView(new L.LatLng(<%= @location.lat %>, <%= @location.lng %>), 16);
+    map.setView(new L.LatLng(<%= @location.lat %>, <%= @location.lng %>), 16);
 
 
-  myMarker.on("dragend", function(e) {
-    var position = e.target.getLatLng();
-    setMarkerOnMapArea(e.target, position,setLocationNumfunction);
-  });
-
-  map.on("click", function(e) {
-    setMarkerOnMapArea(myMarker, e.latlng,setLocationNumfunction);
-  });
-
-})(window);
+  })(window);
 
 </script>
 <% end %>
