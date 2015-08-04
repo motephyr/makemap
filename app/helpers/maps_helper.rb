@@ -16,7 +16,7 @@ module MapsHelper
 
   def render_map_title_for_map(map)
 
-    if current_user && is_existed_map(map)
+    if is_existed_map(map)
       "#{@map.title}"
     else
       "地圖列表"

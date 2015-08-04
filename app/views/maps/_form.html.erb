@@ -17,11 +17,13 @@
     <% end %>
     <%= render template: "common/trumbowyg" %>
   </div>
+  <% if can?(:create, @map) %>
   <div class="field">
     <%= f.input_field :private,inline_label: "設為私房地圖",as: :boolean %>
     <p>私房地圖：<ul><li>只有自已可以編輯</li><li>有連結的人才能觀看</li><li>不會出現在地圖列表內</li> </ul></p>
     <p>公開地圖：<ul><li>登入的使用者都可以編輯</li></ul></p>
   </div>
+  <% end %>
   <div class="actions">
     <%= f.submit '送出', :class => "btn btn-success" %>
   </div>

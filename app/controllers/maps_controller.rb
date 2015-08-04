@@ -29,7 +29,7 @@ class MapsController < ApplicationController
   def create
     @map = Map.new(map_params)
     if @map.save
-      current_user.add_role :manager,@map
+      current_user.add_role :admin,@map
 
       redirect_to map_path(@map)
     else

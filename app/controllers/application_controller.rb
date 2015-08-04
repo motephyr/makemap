@@ -30,8 +30,8 @@ class ApplicationController < ActionController::Base
 
   def set_maps
     if current_user
-      self_maps =  Map.with_role([:manager,:invitee],current_user)
-      other_maps = Map.where(private: false) 
+      self_maps =  Map.with_role([:admin, :manager,:invitee],current_user)
+      other_maps = Map.where(private: false)
 
       @maps = (self_maps + other_maps).uniq.sort
     else
