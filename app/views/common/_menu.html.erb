@@ -17,10 +17,10 @@
           <%= render_map_title_for_map(@map) %>
           <% end %>
 
-          <% if is_existed_map(@map) && can?(:update, @map) %>
+          <% if is_existed_map(@map) && can?(:change_map, @map) %>
           <ul class="dropdown-menu">
             <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
-            <%# if can?(:update, @map) %>
+            <%# if can?(:change_map, @map) %>
             <li><%#= link_to("邀請",invite_page_map_locations_path(@map) ) %></li>
             <li><%#= link_to("數據管理",upload_page_map_locations_path(@map) ) %></li>
             <%# end %>

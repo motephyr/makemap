@@ -26,7 +26,7 @@
   <% if !@location.user.nil?  %>
   <h6 class="note-author">Steper: <%= @location.user.name %></h6>
   <% end %>
-  <% if can?(:update, @map) %>
+  <% if can?(:change_map, @map) %>
   <%= link_to "修改", edit_map_location_path(@map,@location), class: "btn btn-info"  %>
   <% end %>
 </div>

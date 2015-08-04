@@ -76,9 +76,7 @@ class LocationsController < ApplicationController
     @map = Map.find(params[:map_id])
     @locations = @map.locations
 
-    @manager_users = User.with_role(:manager,@map)
-    @invitee_users = User.with_role(:invitee,@map)
-    @other_users = User.with_role(:other,@map)
+    @manager_users = User.with_role([:admin],@map) + User.with_role([:manager],@map)
   end
 
   def upload_page
