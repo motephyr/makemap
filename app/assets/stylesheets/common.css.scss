@@ -12,10 +12,10 @@ body {
 }
 
 .social{
-   float:left;
-   width: 78px;
-   padding-top: 15px;
-   padding-left: 15px;
+ float:left;
+ width: 78px;
+ padding-top: 15px;
+ padding-left: 15px;
 }
 
 .social > div {
@@ -48,28 +48,28 @@ body {
 }
 
 *:before, *:after {
-    -moz-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 *:before, *:after {
-    -moz-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 h3, .h3 {
-    color: #555555;
-    font-family: "Helvetica Neue",Arial,"Heiti TC","LiHei Pro","微軟正黑體","Microsoft Jhenghei",sans-serif;
-    font-size: 23px;
-    letter-spacing: 1px;
-    line-height: 20px;
-    padding: 0 5px;
+  color: #555555;
+  font-family: "Helvetica Neue",Arial,"Heiti TC","LiHei Pro","微軟正黑體","Microsoft Jhenghei",sans-serif;
+  font-size: 23px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  padding: 0 5px;
 }
 
 h4, .h4 {
-    color: #555555;
-    font-family: "Helvetica Neue",Arial,"Heiti TC","LiHei Pro","微軟正黑體","Microsoft Jhenghei",sans-serif;
-    font-size: 15px;
-    letter-spacing: 1px;
-    line-height: 20px;
-    padding: 0 5px;
+  color: #555555;
+  font-family: "Helvetica Neue",Arial,"Heiti TC","LiHei Pro","微軟正黑體","Microsoft Jhenghei",sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  padding: 0 5px;
 }
 
 .ribbon {
@@ -86,4 +86,18 @@ h4, .h4 {
   -o-transform: rotate(-45deg);
   background-color: #d7cbbb;
   opacity: 0.5;
+}
+
+.leaflet-sidebar {
+  position: absolute;
+  height: 100%;
+  top:50px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  z-index: 1000;
+}
+.leaflet-top {
+  top:50px;
 }

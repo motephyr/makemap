@@ -1,25 +1,5 @@
-<% content_for :stylesheets do %>
 
-<%= stylesheet_link_tag "leaflet-sidebar" %>
-<style type="text/css">
-  .leaflet-sidebar {
-    position: absolute;
-    top:50px;
-    height: 100%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    z-index: 1000;
-  }
-  .leaflet-top {
-    top:50px;
-  }
-</style>
-<% end %>
 <div id="sidebar">
   <%= notice_message %>
   <%= yield :sidebar_content %>
 </div>
-<% content_for :javascripts do %>
-<%= javascript_include_tag "leaflet-sidebar/L.Control.Sidebar.js" %>
-<% end %>

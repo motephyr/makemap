@@ -20,7 +20,10 @@
           <% if is_existed_map(@map) && can?(:manage, @map) %>
           <ul class="dropdown-menu">
             <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>
-            <li><%= link_to("數據管理",upload_page_map_locations_path(@map) ) %></li>
+            <%# if can?(:manage, @map) %>
+            <li><%#= link_to("邀請",invite_page_map_locations_path(@map) ) %></li>
+            <li><%#= link_to("數據管理",upload_page_map_locations_path(@map) ) %></li>
+            <%# end %>
           </ul>
           <% else %>
           <ul class="dropdown-menu">

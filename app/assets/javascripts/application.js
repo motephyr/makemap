@@ -19,6 +19,7 @@
 //= require lodash
 //= require jquery-icheck
 //= require leaflet.markercluster
+//= require leaflet-sidebar/L.Control.Sidebar
 
 $(function(){
  $('input').iCheck({

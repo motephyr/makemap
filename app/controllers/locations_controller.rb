@@ -72,6 +72,15 @@ class LocationsController < ApplicationController
     redirect_to map_path(@map)
   end
 
+  def invite_page
+    @map = Map.find(params[:map_id])
+    @locations = @map.locations
+
+    @manager_users = User.with_role(:manager,@map)
+    @invitee_users = User.with_role(:invitee,@map)
+    @other_users = User.with_role(:other,@map)
+  end
+
   def upload_page
     @map = Map.find(params[:map_id])
     @locations = @map.locations

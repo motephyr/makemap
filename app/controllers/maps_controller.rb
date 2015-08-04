@@ -13,11 +13,6 @@ class MapsController < ApplicationController
 
   def edit
     @map = Map.find(params[:id])
-
-    @manager_users = User.with_role(:manager,@map)
-    @invitee_users = User.with_role(:invitee,@map)
-    @other_users = User.with_role(:other,@map)
-
   end
 
   def show
@@ -55,10 +50,6 @@ class MapsController < ApplicationController
 
   def assign_manager_role
     assign_role("manager")
-  end
-
-  def assign_invitee_role
-    assign_role("invitee")
   end
 
   def assign_other_role

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :maps do
     resources :locations do
       collection do
+        get 'invite_page'
         get 'upload_page'
         post 'import'
       end
@@ -31,7 +32,6 @@ Rails.application.routes.draw do
 
     member do
       post 'assign_manager_role'
-      post 'assign_invitee_role'
       post 'assign_other_role'
     end
   end

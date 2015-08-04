@@ -45,3 +45,6 @@ config/deploy/staging.rb
 
 # setting
 config/config.yml
+
+# redis
+dump.rdb

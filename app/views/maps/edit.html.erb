@@ -7,51 +7,6 @@
 
     <%= render :partial => "maps/form" %>
 
-    <% if can?(:manage, @map) %>
-      <h3>邀請</h3>
-      <input id="permission_email" maxlength="20" placeholder="輸入E-mail" size="20" type="text" value="">
-      <%= link_to "Go", "#" ,id:"permission_submit",class: "btn btn-default btn-xs" %>
-      <h3>設定權限</h3>
-
-
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>E-mail</th>
-            <th>admin</th>
-            <th>invitee</th>
-            <th>other</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @manager_users.each do |u| %>
-          <tr>
-            <td><%= u.email %></td>
-            <td>V</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <% end %>
-          <% @invitee_users.each do |u| %>
-          <tr>
-            <td><%= u.email %></td>
-            <td></td>
-            <td>V</td>
-            <td></td>
-          </tr>
-          <% end %>
-          <% @other_users.each do |u| %>
-          <tr>
-            <td><%= u.email %></td>
-            <td></td>
-            <td></td>
-            <td>V</td>
-          </tr>
-          <% end %>
-
-        </tbody>
-      </table>
-    <% end %>
 
 <% end %>
 <%= render template: "common/sidebar_right" %>
@@ -86,23 +41,6 @@
     }
   });
 
-
-  $('#permission_submit').click(function(){
-    $.ajax({
-      url: '/maps/<%= @map.id %>/assign_invitee_role',
-      type:'post',
-      dataType: "json",
-      data: { email: $('#permission_email').val() },
-      success: function(data) {
-        //console.log(data);
-        location.reload();
-      },
-      error: function(e){
-        alert(e.statusText);
-      }
-    });
-
-  });
 
 })();
 
