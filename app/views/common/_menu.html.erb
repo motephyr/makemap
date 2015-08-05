@@ -16,7 +16,6 @@
           <%= link_to "#" , :class => "dropdown-toggle", :data => { :toggle => "dropdown" } do %>
           <%= render_map_title_for_map(@map) %>
           <% end %>
-
           <% if is_existed_map(@map) && can?(:change_map, @map) %>
           <ul class="dropdown-menu">
             <li><%= link_to("地圖設定",edit_map_path(@map) ) %></li>

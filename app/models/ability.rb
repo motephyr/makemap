@@ -22,11 +22,11 @@ class Ability
         # admin
         can :manage, :all #管理所有資源
       elsif user.has_role?(:manager,resource) #如果role 為 manager
-        map_manager_only(user)
+        map_manager_only(user,resource.id)
       # elsif user.has_role?(:invitee,resource)
       #   map_invitee_only(user)
       else
-        map_invitee_only(user) #呼叫基本權限設定 Medthod
+        map_manager_only(user,resource.id) #呼叫基本權限設定 Medthod
       end
     else
       #地圖是私人的
@@ -40,7 +40,7 @@ class Ability
         # admin
         can :manage, :all #管理所有資源
       elsif user.has_role?(:manager,resource) #如果role 為 manager
-        map_manager_only(user)
+        map_manager_only(user,resource.id)
       # elsif user.has_role?(:invitee,resource)
       #   map_invitee_only(user)
       else
@@ -61,14 +61,14 @@ class Ability
     can :read,    Location
   end
 
-  def map_manager_only(user)
-    can :change_map, Map, :id => Map.with_role(:manager, user).pluck(:id)
-    can :manage, Location, :map_id => Map.with_role(:manager, user).pluck(:id)
+  def map_manager_only(user,id)
+    can :change_map, Map, :id => id
+    can :manage, Location, :map_id => id
   end
 
-  def map_invitee_only(user)
-    can :read, Map, :id => Map.with_role(:invitee, user).pluck(:id)
-    can :change_location, Location, :map_id => Map.with_role(:invitee, user).pluck(:id)
+  def map_invitee_only(user,id)
+    can :read, Map, :id => id
+    can :change_location, Location, :map_id => id
   end
 
 
