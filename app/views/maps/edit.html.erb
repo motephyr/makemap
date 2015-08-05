@@ -31,11 +31,18 @@
         // }).addTo(map);
         // circle.bindPopup(data[keysArray[i]][2]);
         //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon} );
+        var title = data[keysArray[i]]["title"];
+        var location_id = data[keysArray[i]]["id"];
+        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{location_id:location_id, icon:otherIcon, title:title} );
+
         markers.addLayer(marker);
 
         var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
         marker.bindPopup(text);
+
+        marker.on('click',function(event){
+          location.href = '/maps/<%= @map.id %>/locations/'+event.target.options.location_id;
+        });
       }
       map.addLayer(markers);
     }
