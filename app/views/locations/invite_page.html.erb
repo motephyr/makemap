@@ -64,7 +64,7 @@
 
   $('#permission_submit').click(function(){
     $.ajax({
-      url: '/maps/<%= @map.id %>/assign_invitee_role',
+      url: '/maps/<%= @map.id %>/assign_manager_role',
       type:'post',
       dataType: "json",
       data: { email: $('#permission_email').val() },
