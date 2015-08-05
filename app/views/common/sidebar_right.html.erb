@@ -4,14 +4,17 @@
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
-(function(scope){
-var sidebar = L.control.sidebar('sidebar_right', {
-  position: 'right',
-  closeButton: false
-});
+  (function(scope){
+    var sidebar = L.control.sidebar('sidebar_right', {
+      position: 'right',
+    });
+    sidebar.on('hidden', function () {
+      parent.history.back();
+      return false;
+    });
 
-map.addControl(sidebar);
-sidebar.show();
-})(window);
+    map.addControl(sidebar);
+    sidebar.show();
+  })(window);
 </script>
 <% end %>
