@@ -24,6 +24,7 @@ class MapsController < ApplicationController
     elsif @map.kind == "google"
       render :show_google
     elsif @map.kind == "sheethub"
+      @data_url = params[:data_url]
       render :show_sheethub
     end
   end

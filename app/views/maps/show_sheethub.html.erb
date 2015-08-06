@@ -5,7 +5,6 @@
 <% end %>
 <%= render template: "common/sidebar" %>
 
-
 <% content_for :javascripts do %>
 <script type='text/javascript'>
   (function(scope){
@@ -18,50 +17,59 @@
     sidebar.show();
 
     var markers = new L.MarkerClusterGroup();
-    var name = "data.taipei.gov.tw/臺北市災防緊急安置學校分佈";
-    $.ajax({
-      url: "https://sheethub.com/"+ name +"?format=json",
-      dataType: "json",
-      success: function (data) {
-        $('#sidebar').html('<h2>'+data.sheet.name+'</h2>'+ '<h3>'+data.sheet.description+'</h3>'+ '<h4>資料來源：<h4><a href='+data.sheet.url+'>SheetHub.com</h4>');
+    var name = '<%= @data_url %>';
+    if (name){
+      $.ajax({
+        url: "https://sheethub.com/"+ name +"?format=json",
+        dataType: "json",
+        success: function (data) {
+          console.log(data);
+          var name_index = _.findIndex(data.select_columns,function(chr){
+            return chr === "ORG_NAME" || chr.toLowerCase().indexOf('name') != -1;
+          })
+          var address_index = _.findIndex(data.select_columns,function(chr){
+            return chr === "ADDRESS" || chr.toLowerCase().indexOf('addr') != -1 ;
+          })
 
-        var keysArray = data.data;
+          $('#sidebar').html('<h2>'+data.sheet.name+'</h2>'+ '<h3>'+data.sheet.description+'</h3>'+ '<h4>資料來源：<h4><a href='+data.sheet.url+'>SheetHub.com</h4>');
 
-        for (var i=0; i < keysArray.length; i++){
+          var keysArray = data.data;
 
-          var getLocation = function (location) {
-            return function(){$.ajax({
-              url:'http://maps.googleapis.com/maps/api/geocode/json',
-              data:{
-                address:location[2],
-                region: 'tw'
-              },
-              dataType:'json',
-              success: function (data) {
-                var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
-                var title = location[0];
-                var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:title} );
+          for (var i=0; i < keysArray.length; i++){
 
-                markers.addLayer(marker);
-                marker.bindPopup('<h2>'+title+'</h2>');
-                map.addLayer(markers);
-              }
-            });
+            var getLocation = function (location, index ) {
+              return function(){$.ajax({
+                url:'http://maps.googleapis.com/maps/api/geocode/json',
+                data:{
+                  address:location[index["address"]],
+                  region: 'tw'
+                },
+                dataType:'json',
+                success: function (data) {
+                  var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+                  var title = location[index["name"]];
+                  var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:title} );
+
+                  markers.addLayer(marker);
+                  marker.bindPopup('<h2>'+title+'</h2><p>地址：'+location[index["address"]]+'</p>');
+                  map.addLayer(markers);
+                }
+              });
+            };
           };
+
+
+          setTimeout(getLocation(keysArray[i],{name: name_index,address: address_index}) , 110*i);
         };
 
 
-        setTimeout(getLocation(keysArray[i]), 110*i);
-      };
-
-
-      setTimeout(
-        function(){map.fitBounds(markers.getBounds());}
-        ,keysArray.length*110
-        );
-    }
-  });
-
+        setTimeout(
+          function(){map.fitBounds(markers.getBounds());}
+          ,keysArray.length*110
+          );
+      }
+    });
+}
 })(window);
 
 </script>
