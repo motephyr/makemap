@@ -39,7 +39,7 @@
         <li>
           <%= render :partial => "common/search_form" %>
         </li>
-        <% if is_existed_map(@map) && current_user %>
+        <% if is_existed_map(@map) && current_user && @map.kind.nil? %>
         <% if request.path == map_path(@map) %>
         <li><%= link_to("新增地點","#",id: "new_location" ) %></li>
         <% else %>

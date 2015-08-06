@@ -1,0 +1,69 @@
+
+<% content_for :sidebar_content do %>
+
+<%= render "common/sidebar_index" %>
+<% end %>
+<%= render template: "common/sidebar" %>
+
+
+<% content_for :javascripts do %>
+<script type='text/javascript'>
+  (function(scope){
+
+    var sidebar = L.control.sidebar('sidebar', {
+      position: 'left'
+    });
+
+    map.addControl(sidebar);
+    sidebar.show();
+
+    var markers = new L.MarkerClusterGroup();
+    var name = "data.taipei.gov.tw/臺北市災防緊急安置學校分佈";
+    $.ajax({
+      url: "https://sheethub.com/"+ name +"?format=json",
+      dataType: "json",
+      success: function (data) {
+        $('#sidebar').html('<h2>'+data.sheet.name+'</h2>'+ '<h3>'+data.sheet.description+'</h3>'+ '<h4>資料來源：<h4><a href='+data.sheet.url+'>SheetHub.com</h4>');
+
+        var keysArray = data.data;
+
+        for (var i=0; i < keysArray.length; i++){
+
+          var getLocation = function (location) {
+            return function(){$.ajax({
+              url:'http://maps.googleapis.com/maps/api/geocode/json',
+              data:{
+                address:location[2],
+                region: 'tw'
+              },
+              dataType:'json',
+              success: function (data) {
+                var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+                var title = location[0];
+                var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:title} );
+
+                markers.addLayer(marker);
+                marker.bindPopup('<h2>'+title+'</h2>');
+                map.addLayer(markers);
+              }
+            });
+          };
+        };
+
+
+        setTimeout(getLocation(keysArray[i]), 110*i);
+      };
+
+
+      setTimeout(
+        function(){map.fitBounds(markers.getBounds());}
+        ,keysArray.length*110
+        );
+    }
+  });
+
+})(window);
+
+</script>
+<% end %>
+

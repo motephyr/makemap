@@ -23,6 +23,8 @@ class MapsController < ApplicationController
       render :show_activity
     elsif @map.kind == "google"
       render :show_google
+    elsif @map.kind == "sheethub"
+      render :show_sheethub
     end
   end
 

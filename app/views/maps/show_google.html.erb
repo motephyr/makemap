@@ -51,33 +51,42 @@
           })
         }
         var title = locations_data[0];
-        _.each(locations_data,function(location){
-          if (!location || location["address"].length == 0 || location["address"] === '地址'){
-            return;
-          }
+        for (var i=0; i < locations_data.length; i++){
 
-          $.ajax({
-            url:'http://maps.googleapis.com/maps/api/geocode/json',
-            data:{
-              address:location["address"],
-              region: 'tw'
-            },
-            dataType:'json',
-            success: function (data) {
-              var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+          var getLocation = function (location) {
+            return function(){
+              if (!location || location["address"].length == 0 || location["address"] === '地址'){
+                return;
+              }
 
-              var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:location["name"]} );
-              markers.addLayer(marker);
+              $.ajax({
+                url:'http://maps.googleapis.com/maps/api/geocode/json',
+                data:{
+                  address:location["address"],
+                  region: 'tw'
+                },
+                dataType:'json',
+                success: function (data) {
+                  var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+                  var title = location["name"];
+                  var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:title} );
 
-              marker.on('click',function(event){
-                $('#sidebar').html(transfer_to_html(title,location));
-                sidebar.show();
+                  markers.addLayer(marker);
+                  marker.on('click',function(event){
+                    $('#sidebar').html(transfer_to_html(title,location));
+                    sidebar.show();
+                  });
+                  map.addLayer(markers);
+                }
               });
-              map.addLayer(markers);
-            }
-          });
+            }};
+            setTimeout(getLocation(locations_data[i]), 110*i);
+          }
+          setTimeout(
+            function(){map.fitBounds(markers.getBounds());}
+            ,locations_data.length*110
+            );
         });
-      });
 };
 
 
@@ -98,28 +107,27 @@ function transfer_to_html(title, object){
   var result = '';
   if (object["name"]){
     result += con('h1', title['name'])+
-              con('h2', object["name"]);
+    con('h2', object["name"]);
   }
-  console.log(result);
   if (object["address"]){
     result += con('h2', title['address'])+
-              con('pre', object["address"]);
+    con('pre', object["address"]);
   }
   if (object["contact"]){
     result += con('h2', title['contact'])+
-              con('pre', object["contact"]);
+    con('pre', object["contact"]);
   }
   if (object["description"]){
     result += con('h2', title['description'])+
-              con('pre', object["description"]);
+    con('pre', object["description"]);
   }
   if (object["open_time"]){
     result += con('h2', title['open_time'])+
-              con('pre', object["open_time"]);
+    con('pre', object["open_time"]);
   }
   if (object["item"]){
     result += con('h2', title['item'])+
-              con('pre', object["item"]);
+    con('pre', object["item"]);
   }
 
   return result;

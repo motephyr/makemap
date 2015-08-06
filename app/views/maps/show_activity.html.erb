@@ -38,6 +38,7 @@
         var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{location_id:location_id, icon:otherIcon, title:title, start_at:data[keysArray[i]]["start_at"].replace('T', ' '), end_at:data[keysArray[i]]["end_at"]} );
 
         markers.addLayer(marker);
+        map.fitBounds(markers.getBounds());
         var callback = function(event,location_id){
           var alatlng = event.latlng;
           $.ajax({
