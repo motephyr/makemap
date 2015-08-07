@@ -53,7 +53,7 @@
             map.zoomIn(6);
           });
         };
-        $('#event_list').append('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+'><h4>'+title+'<h4></a></td></tr></table>');
+        $('#event_list').prepend('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+'><h4>'+title+'<h4></a></td></tr></table>');
 
         $('#location_'+location_id).bind('click',function(event){
           callback(event,$(this).attr('data-id'));

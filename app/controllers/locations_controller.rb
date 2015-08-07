@@ -9,7 +9,7 @@ class LocationsController < ApplicationController
   # GET /maps/1/locations.json
   def index
     @map = Map.find(params[:map_id])
-    @locations =  @map.locations.order('start_at desc')
+    @locations =  @map.locations.where("start_at > ?",Time.now).order('start_at desc')
     respond_to do |format|
       format.json { render :json => @locations }
     end
