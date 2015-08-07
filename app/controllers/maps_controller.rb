@@ -49,6 +49,12 @@ class MapsController < ApplicationController
     end
   end
 
+  def destroy
+    @map = Map.find(params[:id])
+    @map.destroy
+    redirect_to maps_path, notice: "成功刪除了地圖"
+  end
+
 
 
   def assign_manager_role
