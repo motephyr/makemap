@@ -1,7 +1,10 @@
 
 <h1><%= @map.title %></h1>
 <div id="trumbowyg">
-    <%= sanitize @map.description %>
+  <%= sanitize @map.description %>
 </div>
+<% if @map.user.present? %>
+建立者：<%= @map.user.name %>
+<% end %>
 
 

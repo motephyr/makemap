@@ -9,7 +9,11 @@ class LocationsController < ApplicationController
   # GET /maps/1/locations.json
   def index
     @map = Map.find(params[:map_id])
-    @locations =  @map.locations.where("start_at > ?",Time.now).order('start_at desc')
+    if @map.kind == "activity"
+      @locations = @map.locations.activity
+    else
+      @locations = @map.locations
+    end
     respond_to do |format|
       format.json { render :json => @locations }
     end
@@ -42,8 +46,7 @@ class LocationsController < ApplicationController
 
   def create
     @map = Map.find(params[:map_id])
-    @location = current_user.locations.build(location_params)
-    @location.map_id = @map.id
+    @location = current_user.locations.build(location_params.merge(map_id: @map.id))
     if @location.save
 
       redirect_to map_path(@map)

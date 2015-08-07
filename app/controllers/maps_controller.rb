@@ -30,7 +30,7 @@ class MapsController < ApplicationController
   end
 
   def create
-    @map = Map.new(map_params)
+    @map = current_user.maps.build(map_params)
     if @map.save
       current_user.add_role :admin,@map
 
