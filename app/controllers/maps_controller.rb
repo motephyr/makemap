@@ -1,6 +1,6 @@
 class MapsController < ApplicationController
 
-  before_action :login_required, :only => [:new,:create]
+  before_action :login_required, :only => [:new, :create, :update, :destroy]
   before_action :set_maps
   authorize_resource #cancan's setting
 
@@ -26,6 +26,9 @@ class MapsController < ApplicationController
     elsif @map.kind == "sheethub"
       @data_url = params[:data_url]
       render :show_sheethub
+    elsif @map.kind == "news"
+      GetNewsWorker.perform_async
+      render :show_news
     end
   end
 

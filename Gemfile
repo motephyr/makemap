@@ -36,6 +36,8 @@ gem 'rainbows'
 gem 'sidekiq'
 gem 'activejob'
 gem 'sidekiq-middleware'
+gem 'nokogiri'
+gem 'taiwanese_news_parser'
 
 group :production do
   #gem 'rails_12factor'
@@ -78,7 +80,6 @@ group :test do
   gem 'guard-rspec', require: false
   gem 'rspec-rails', '~> 2.14.1'
   gem 'rails_best_practices'
-  gem 'nokogiri'
   gem 'capybara'
   gem 'poltergeist'
 end

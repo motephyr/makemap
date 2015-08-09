@@ -38,15 +38,14 @@ class GetLocationsWorker
   })
 
   def perform(*args)
-    p "排程執行"
-    p "start"
+    p "start GetLocationsWorker"
     get_meetup
     p "meetup end"
     get_kktix
     p "kktix end"
     get_address
     p "address end"
-    p "排程執行end"
+    p "end GetLocationsWorker"
     sleep 300
   end
 
