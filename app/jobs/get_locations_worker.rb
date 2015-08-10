@@ -83,7 +83,8 @@ class GetLocationsWorker
 
 
       location = Location.find_or_create_by(link_url: link_url)
-      location.update({ map_id: 10, title: title, content: content, address: address, lng: lng, lat: lat, start_at: start_at, end_at: end_at })
+      map = Map.find_by(kind: "activity")
+      location.update({ map_id: map.id, title: title, content: content, address: address, lng: lng, lat: lat, start_at: start_at, end_at: end_at })
     end
   end
 

@@ -32,7 +32,8 @@ class GetNewsWorker
         p address
 
         location = Location.find_or_create_by(link_url: parser[:url])
-        location.update({ map_id: 17, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at] })
+        map = Map.find_by(kind: "news")
+        location.update({ map_id: map.id, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at] })
         #data << {title:parser[:title], content:parser[:content], link_url: parser[:url], address: address,start_at:parser[:published_at]}
       end
     end
