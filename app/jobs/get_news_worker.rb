@@ -25,15 +25,17 @@ class GetNewsWorker
       rescue
         next
       end
-      p parser[:content]
       re = /(?<city>(台北|新北|台中|台南|高雄|基隆|新竹|嘉義|桃園|新竹|苗栗|彰化|南投|雲林|嘉義|屏東|宜蘭|花蓮|台東|澎湖|金門|連江)([縣市])?)(?<district>\D{2,3}(市區|鎮區|鎮市|[鄉鎮市區]))?(?<street>\D{2,3}([路街]))?/
       if !parser[:content].scan(re)[0].nil?
+        p parser[:content]
         address = parser[:content].scan(re)[0].join
-        p address
-
-        location = Location.find_or_create_by(link_url: parser[:url])
-        map = Map.find_by(kind: "news")
-        location.update({ map_id: map.id, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at] })
+        location = Location.find_by(link_url: parser[:url])
+        if location.nil?
+          p address
+          location = Location.create(link_url: parser[:url])
+          map = Map.find_by(kind: "news")
+          location.update({ map_id: map.id, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at] })
+        end
         #data << {title:parser[:title], content:parser[:content], link_url: parser[:url], address: address,start_at:parser[:published_at]}
       end
     end
