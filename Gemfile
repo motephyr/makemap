@@ -38,6 +38,7 @@ gem 'activejob'
 gem 'sidekiq-middleware'
 gem 'nokogiri'
 gem 'taiwanese_news_parser'
+gem 'sinatra', require: false
 
 group :production do
   #gem 'rails_12factor'
@@ -66,7 +67,6 @@ group :development do
   gem 'meta_request'
   gem 'xray-rails'
   gem 'capistrano3-rainbows', git: 'https://github.com/motephyr/capistrano3-rainbows'
-  gem 'sinatra', require: false
   gem 'sqlite3'
 end
 

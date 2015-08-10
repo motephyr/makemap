@@ -48,3 +48,4 @@ config/config.yml
 
 # redis
 dump.rdb
+/db/*.sql

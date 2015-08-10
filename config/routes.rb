@@ -6,8 +6,10 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'maps#index'
 
-  #require 'sidekiq/web'
-  #mount Sidekiq::Web => '/sidekiq'
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.id == 1 } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   arrayMap = (1..6).map { |x| %Q(get 'index#{x}'\n)}
   arrayMapReduce = arrayMap.reduce { |x,y| x+y }
