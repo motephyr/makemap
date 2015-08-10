@@ -10,6 +10,7 @@ class Location < ActiveRecord::Base
   validates :title, :presence => {:message => '是必填欄位'}
 
   scope :activity, -> {where("start_at > ?",Time.now).order('start_at desc')}
+  scope :news, -> {where("start_at > ?", 1.hour.ago ).order('start_at asc')}
 
   before_save :check_if_url_exist_http_or_add_prefix
 

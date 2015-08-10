@@ -17,7 +17,7 @@ class GetNewsWorker
       each_news_url(x.website, x.realtime_news_url, x.css_location, x.has_link_website_url)
     end
 
-    data = []
+    #data = []
     urls.flatten.map do |url|
       p url
       begin
@@ -30,7 +30,10 @@ class GetNewsWorker
       if !parser[:content].scan(re)[0].nil?
         address = parser[:content].scan(re)[0].join
         p address
-        data << {title:parser[:title], content:parser[:content], link_url: parser[:url], address: address,start_at:parser[:published_at]}
+
+        location = Location.find_or_create_by(link_url: parser[:url])
+        location.update({ map_id: 17, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at] })
+        #data << {title:parser[:title], content:parser[:content], link_url: parser[:url], address: address,start_at:parser[:published_at]}
       end
     end
   end

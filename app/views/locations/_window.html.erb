@@ -18,11 +18,10 @@
     </div>
   </div>
   <div class="note-message">
-    <p><%= sanitize @location.content %></p>
+    <h4><%= sanitize @location.content %></h4>
   </div>
   <hr>
-  <h4>連結：</h4>
-  <h5><%= link_to @location.link_url , @location.link_url, target: '_blank'  %></h5>
+  <h4><%= link_to '原始連結', @location.link_url, target: '_blank'  %></h4>
   <% if !@location.user.nil?  %>
   <h6 class="note-author">Steper: <%= @location.user.name %></h6>
   <% end %>

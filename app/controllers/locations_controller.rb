@@ -11,6 +11,8 @@ class LocationsController < ApplicationController
     @map = Map.find(params[:map_id])
     if @map.kind == "activity"
       @locations = @map.locations.activity
+    elsif @map.kind == "news"
+      @locations = @map.locations.news
     else
       @locations = @map.locations
     end
