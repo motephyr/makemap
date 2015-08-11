@@ -82,9 +82,9 @@ class GetLocationsWorker
       end_at = result["duration"].present? ? Time.at((result["time"]+result["duration"])/1000) : nil
 
 
-      location = Location.find_by(link_url: parser[:url])
+      location = Location.find_by(link_url: link_url)
       if location.nil?
-        location = Location.create(link_url: parser[:url])
+        location = Location.create(link_url: link_url)
         map = Map.find_by(kind: "activity")
         location.update({ map_id: map.id, title: title, content: content, address: address, lng: lng, lat: lat, start_at: start_at, end_at: end_at })
       end
@@ -115,9 +115,9 @@ class GetLocationsWorker
       link_url = result["url"]
       address = result["content"].split("地點：").last
 
-      location = Location.find_by(link_url: parser[:url])
+      location = Location.find_by(link_url: link_url)
       if location.nil?
-        location = Location.create(link_url: parser[:url])
+        location = Location.create(link_url: link_url)
         map = Map.find_by(kind: "activity")
         location.update({ map_id: map.id, title: title, content: content, address: address, start_at: start_at, end_at: end_at })
       end
