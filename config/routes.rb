@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get '', to: 'maps#show', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' }
   root 'maps#index'
 
   require 'sidekiq/web'

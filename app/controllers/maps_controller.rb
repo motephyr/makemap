@@ -16,7 +16,7 @@ class MapsController < ApplicationController
   end
 
   def show
-    @map = Map.find(params[:id])
+    @map = params[:id].present? ? Map.find(params[:id]) : Map.find_by_kind!(request.subdomain)
 
     if @map.kind == "activity"
       GetLocationsWorker.perform_async
