@@ -39,7 +39,7 @@
                 var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
                 var title = location["title"];
                 var location_id = location["id"];
-                var start_at = moment(location["start_at"]).subtract(8, 'hours').calendar();
+                var start_at = '於 ' + moment(location["start_at"]).subtract(8, 'hours').format('MMMM Do, a h:mm')+'分';
                 var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{location_id: location_id, icon:otherIcon,title:title} );
 
                 markers.addLayer(marker);
@@ -60,7 +60,7 @@
                   });
                 };
                 var remark = (!location["remark"]) ? "" : '<span class="pull-right">'+ location["remark"]["name"]+'</span>';
-                $('#event_list').prepend('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+' data-lat='+lat_lng["lat"]+' data-lng='+lat_lng["lng"]+'><h4>'+title+'<h4></a><p>於 '+ start_at + remark +'</p></td></tr></table>');
+                $('#event_list').prepend('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+' data-lat='+lat_lng["lat"]+' data-lng='+lat_lng["lng"]+'><h4>'+title+'<h4></a><p> '+ start_at + remark +'</p></td></tr></table>');
 
                 $('#location_'+location_id).bind('click',function(event){
                   callback(event,$(this).attr('data-id'), {lat: $(this).attr('data-lat'), lng: $(this).attr('data-lng')});
