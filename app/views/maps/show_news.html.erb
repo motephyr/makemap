@@ -24,57 +24,57 @@
       dataType: "json",
       success: function (data) {
         var keysArray = data;
-        for (var i=0; i < keysArray.length; i++){
 
-          var getLocation = function (location) {
-            return function(){
-              $.ajax({
-                url:'http://maps.googleapis.com/maps/api/geocode/json',
-                data:{
-                  address:location["address"],
-                  region: 'tw'
-                },
-                dataType:'json',
-                success: function (data) {
-                  var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
-                  var title = location["title"];
-                  var location_id = location["id"];
-                  var start_at = location["start_at"];
-                  var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{location_id: location_id, icon:otherIcon,title:title} );
+        var getLocation = function (location) {
+          return function(){
+            $.ajax({
+              url:'http://maps.googleapis.com/maps/api/geocode/json',
+              data:{
+                address:location["address"],
+                region: 'tw'
+              },
+              dataType:'json',
+              success: function (data) {
+                moment.locale('zh-TW');
+                var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+                var title = location["title"];
+                var location_id = location["id"];
+                var start_at = moment(location["start_at"]).subtract(8, 'hours').calendar();
+                var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{location_id: location_id, icon:otherIcon,title:title} );
 
-                  markers.addLayer(marker);
-                  marker.bindPopup('<h2>'+title+'</h2><p>地址：'+location["address"]+'</p>');
-                  map.addLayer(markers);
+                markers.addLayer(marker);
+                marker.bindPopup('<h2>'+title+'</h2><p>地址：'+location["address"]+'</p>');
+                map.addLayer(markers);
 
-                  var callback = function(event,location_id,lat_lng){
-                    var alatlng = (event.latlng) ? event.latlng : lat_lng;
-                    $.ajax({
-                      url: '/maps/<%= @map.id %>/locations/' +location_id ,
-                      dataType:'script'
-                    }).success(function(data){
+                var callback = function(event,location_id,lat_lng){
+                  var alatlng = (event.latlng) ? event.latlng : lat_lng;
+                  $.ajax({
+                    url: '/maps/<%= @map.id %>/locations/' +location_id ,
+                    dataType:'script'
+                  }).success(function(data){
 
-                      sidebar.show();
-                      console.log(data);
-                      map.panTo(alatlng);
-                      map.zoomIn(6);
-                    });
-                  };
-                  $('#event_list').prepend('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+' data-lat='+lat_lng["lat"]+' data-lng='+lat_lng["lng"]+'><h4>'+title+'<h4></a><p>'+ start_at +'</p></td></tr></table>');
-
-                  $('#location_'+location_id).bind('click',function(event){
-                    callback(event,$(this).attr('data-id'), {lat: $(this).attr('data-lat'), lng: $(this).attr('data-lng')});
+                    sidebar.show();
+                    console.log(data);
+                    map.panTo(alatlng);
+                    map.zoomIn(6);
                   });
+                };
+                var remark = (!location["remark"]) ? "" : '<span class="pull-right">'+ location["remark"]["name"]+'</span>';
+                $('#event_list').prepend('<table class="table table-striped"><tr><td><a id="location_'+location_id+'" data-id='+location_id+' data-lat='+lat_lng["lat"]+' data-lng='+lat_lng["lng"]+'><h4>'+title+'<h4></a><p>於 '+ start_at + remark +'</p></td></tr></table>');
 
-                  marker.on('click',function(event){
-                    callback(event,event.target.options.location_id);
-                  });
-                }
-              });
+                $('#location_'+location_id).bind('click',function(event){
+                  callback(event,$(this).attr('data-id'), {lat: $(this).attr('data-lat'), lng: $(this).attr('data-lng')});
+                });
+
+                marker.on('click',function(event){
+                  callback(event,event.target.options.location_id);
+                });
+              }
+            });
 };
 };
-
-
-setTimeout(getLocation(keysArray[i]) , 110*i);
+for (var i=0; i < keysArray.length; i++){
+  setTimeout(getLocation(keysArray[i]) , 110*i);
 };
 
 setTimeout(

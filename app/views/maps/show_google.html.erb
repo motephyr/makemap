@@ -50,36 +50,35 @@
             return locations_data2[0];
           })
         }
-        var title = locations_data[0];
-        for (var i=0; i < locations_data.length; i++){
+        var title_chinese = locations_data[0];
+        var getLocation = function (location) {
+          return function(){
+            if (!location || location["address"].length == 0 || location["address"] === '地址'){
+              return;
+            }
 
-          var getLocation = function (location) {
-            return function(){
-              if (!location || location["address"].length == 0 || location["address"] === '地址'){
-                return;
+            $.ajax({
+              url:'http://maps.googleapis.com/maps/api/geocode/json',
+              data:{
+                address:location["address"],
+                region: 'tw'
+              },
+              dataType:'json',
+              success: function (data) {
+                var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
+                var title = location["name"];
+                var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:title} );
+
+                markers.addLayer(marker);
+                marker.on('click',function(event){
+                  $('#sidebar').html(transfer_to_html(title_chinese,location));
+                  sidebar.show();
+                });
+                map.addLayer(markers);
               }
-
-              $.ajax({
-                url:'http://maps.googleapis.com/maps/api/geocode/json',
-                data:{
-                  address:location["address"],
-                  region: 'tw'
-                },
-                dataType:'json',
-                success: function (data) {
-                  var lat_lng = (data["results"]) ? data["results"][0]["geometry"]["location"] : '' ;
-                  var title = location["name"];
-                  var marker = L.marker([lat_lng["lat"], lat_lng["lng"]],{icon:otherIcon,title:title} );
-
-                  markers.addLayer(marker);
-                  marker.on('click',function(event){
-                    $('#sidebar').html(transfer_to_html(title,location));
-                    sidebar.show();
-                  });
-                  map.addLayer(markers);
-                }
-              });
-            }};
+            });
+          }};
+          for (var i=0; i < locations_data.length; i++){
             setTimeout(getLocation(locations_data[i]), 110*i);
           }
           setTimeout(

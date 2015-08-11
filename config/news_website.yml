@@ -1,22 +1,27 @@
 defaults: &defaults
   news:
-    - website: http://www.appledaily.com.tw
+    - name: 蘋果日報
+      website: http://www.appledaily.com.tw
       realtime_news_url: /realtimenews/section/new/
       css_location: 'ul.rtddd li.rtddt a'
       has_link_website_url: false
-    - website: http://www.chinatimes.com
+    - name: 中時電子報
+      website: http://www.chinatimes.com
       realtime_news_url: /realtimenews/
       css_location: 'div.listRight ul li.clear-fix h2 a'
       has_link_website_url: false
-    - website: http://www.ettoday.net
+    - name: 東森新聞
+      website: http://www.ettoday.net
       realtime_news_url: /news/news-list.htm
       css_location: 'div#all-news-list h3 a'
       has_link_website_url: true
-    - website: http://news.ltn.com.tw
+    - name: 自由時報
+      website: http://news.ltn.com.tw
       realtime_news_url: /list/local
       css_location: 'div.list ul#newslistul li a'
       has_link_website_url: false
-    - website: http://nownews.com
+    - name: 今日新聞
+      website: http://nownews.com
       realtime_news_url: /cat/r
       css_location: 'div.box_1 div.big_catlog h2 a'
       has_link_website_url: true

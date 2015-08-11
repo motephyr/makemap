@@ -14,14 +14,14 @@ class GetNewsWorker
 
   def get_news
     urls = NewsWebsite.news.map do |x|
-      each_news_url(x.website, x.realtime_news_url, x.css_location, x.has_link_website_url)
+      each_news_url(x.website, x.realtime_news_url, x.css_location, x.has_link_website_url, x.name)
     end
 
     #data = []
     urls.flatten.map do |url|
       p url
       begin
-        parser =  TaiwaneseNewsParser.parse(url)
+        parser =  TaiwaneseNewsParser.parse(url[:url])
       rescue
         next
       end
@@ -34,20 +34,20 @@ class GetNewsWorker
           p address
           location = Location.create(link_url: parser[:url])
           map = Map.find_by(kind: "news")
-          location.update({ map_id: map.id, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at] })
+          location.update({ map_id: map.id, title: parser[:title], content: parser[:content], address: address, start_at: parser[:published_at], remark: {name: url[:name]} })
         end
         #data << {title:parser[:title], content:parser[:content], link_url: parser[:url], address: address,start_at:parser[:published_at]}
       end
     end
   end
 
-  def each_news_url(website, realtime_news_url,css_location, has_link_website_url)
+  def each_news_url(website, realtime_news_url,css_location, has_link_website_url, name)
     doc = Nokogiri::HTML(open(website + realtime_news_url))
     urls = doc.css(css_location).map do |link|
       if has_link_website_url
-        URI.escape(link.attr('href'))
+        {url: URI.escape(link.attr('href')), name: name}
       else
-        URI.escape(website+link.attr('href'))
+        {url: URI.escape(website+link.attr('href')), name:name}
       end
 
     end

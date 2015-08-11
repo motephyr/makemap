@@ -35,10 +35,9 @@
 
           var keysArray = data.data;
 
-          for (var i=0; i < keysArray.length; i++){
-
-            var getLocation = function (location, index ) {
-              return function(){$.ajax({
+          var getLocation = function (location, index ) {
+            return function(){
+              $.ajax({
                 url:'http://maps.googleapis.com/maps/api/geocode/json',
                 data:{
                   address:location[index["address"]],
@@ -57,18 +56,17 @@
               });
             };
           };
+          for (var i=0; i < keysArray.length; i++){
+            setTimeout(getLocation(keysArray[i],{name: name_index,address: address_index}) , 110*i);
+          };
 
 
-          setTimeout(getLocation(keysArray[i],{name: name_index,address: address_index}) , 110*i);
-        };
-
-
-        setTimeout(
-          function(){map.fitBounds(markers.getBounds());}
-          ,keysArray.length*110
-          );
-      }
-    });
+          setTimeout(
+            function(){map.fitBounds(markers.getBounds());}
+            ,keysArray.length*110
+            );
+        }
+      });
 }
 })(window);
 

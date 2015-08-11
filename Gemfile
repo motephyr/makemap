@@ -3,6 +3,7 @@ source 'https://rails-assets.org' do
   %w(
     leaflet-plugins leaflet-sidebar leaflet.locatecontrol
     leaflet-slider trumbowyg dropzone d3 lodash jquery-icheck
+    moment
     ).each do |asset_source|
   gem "rails-assets-#{asset_source}"
 end
