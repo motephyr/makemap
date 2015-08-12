@@ -30,9 +30,10 @@ class Connection
   end
 end
 
-class Jobs::GetLocationsWorker
+class GetLocationsWorker
   include Sidekiq::Worker
   sidekiq_options ({
+    queue: :default,
     :retry => false,
     unique: true,
     expiration: 4 * 60 # 5 minute
