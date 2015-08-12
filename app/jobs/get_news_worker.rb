@@ -1,6 +1,7 @@
-class GetNewsWorker
+class Jobs::GetNewsWorker
   include Sidekiq::Worker
   sidekiq_options ({
+    :retry => false,
     unique: true,
     expiration: 4 * 60 # 5 minute
     })

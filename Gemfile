@@ -34,11 +34,14 @@ gem 'roo'
 gem 'iconv'
 gem 'rainbows'
 
-gem 'sidekiq'
-gem 'activejob'
-gem 'sidekiq-middleware'
 gem 'nokogiri'
 gem 'taiwanese_news_parser'
+
+#sidekiq
+gem 'activejob'
+gem 'sidekiq'
+gem 'sidekiq-middleware'
+gem 'sidekiq-client-cli'
 gem 'sinatra', require: false
 
 group :production do

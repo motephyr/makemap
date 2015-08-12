@@ -19,7 +19,7 @@ class MapsController < ApplicationController
     @map = params[:id].present? ? Map.find(params[:id]) : Map.find_by_kind!(request.subdomain)
 
     if @map.kind == "activity"
-      GetLocationsWorker.perform_async
+      #GetLocationsWorker.perform_async
       render :show_activity
     elsif @map.kind == "google"
       render :show_google
@@ -27,7 +27,7 @@ class MapsController < ApplicationController
       @data_url = params[:data_url]
       render :show_sheethub
     elsif @map.kind == "news"
-      GetNewsWorker.perform_async
+      #GetNewsWorker.perform_async
       render :show_news
     end
   end
