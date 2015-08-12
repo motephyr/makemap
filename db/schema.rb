@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150807070654) do
+ActiveRecord::Schema.define(version: 20150812091232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "location_pins", force: true do |t|
+    t.string   "pin"
+    t.integer  "map_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "locations", force: true do |t|
     t.string   "title"
@@ -30,6 +37,7 @@ ActiveRecord::Schema.define(version: 20150807070654) do
     t.string   "outer_photo_url"
     t.datetime "start_at"
     t.datetime "end_at"
+    t.integer  "pin_id"
   end
 
   add_index "locations", ["map_id"], name: "index_locations_on_map_id", using: :btree
