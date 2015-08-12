@@ -25,7 +25,7 @@ class LocationPinUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :resize_to_fit => [128, 0]
+  process :resize_to_fit => [128, 128]
 
   # def scale(width, height)
   #   # do something
