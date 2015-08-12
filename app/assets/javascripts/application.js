@@ -21,3 +21,4 @@
 //= require jquery_style
 //= require leaflet.markercluster
 //= require leaflet-sidebar/L.Control.Sidebar
+//= require dropzone

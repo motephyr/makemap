@@ -5,7 +5,28 @@
   <div class="field">
     <%= f.input_field :title ,placeholder: '標題',:required => true, maxlength: 25 %>
   </div>
-  <%= yield :form_content %>
+  <br>
+  <div class="field">
+    <label class="string optional control-label">上傳圖片：</label>
+    <%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
+    <% @location.photos.each do |photo| %>
+    <div class="dz-preview dz-image-preview">
+      <div class="dz-details">
+        <div class="dz-id"><%= photo[:id] %></div>
+        <div class="dz-filename"><span data-dz-name><%= photo[:photo] %></span></div>
+        <div class="dz-size" data-dz-size></div>
+        <img data-dz-thumbnail src="<%= "#{@fullpath}#{photo.photo}" %>"/>
+      </div>
+      <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+      <div class="dz-success-mark"><span>✔</span></div>
+      <div class="dz-error-mark"><span>✘</span></div>
+      <div class="dz-error-message"><span data-dz-errormessage></span></div>
+      <a class="dz-remove" href="javascript:undefined;" data-dz-remove="">Remove file</a>
+    </div>
+    <% end %>
+    <% end %>
+
+  </div>
   <br>
   <div class="field">
     <%= f.label "描述：" %>
@@ -29,18 +50,270 @@
   </div>
   <br>
   <div class="actions">
-    <%= f.submit "送出" %>
+    <input type="button" name="commit" id="sendButton" value="送出" />
   </div>
   <% end %>
 </div>
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
+
+//window.originFileIds = [];
+window.removeFileList = [];
+window.uploadFileList = [];
+window.addedParams = {};
+
+var doSubmitProcess = function(url, formId) {
+  var file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, option, progressObj, response, updateProgress, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, formEl;
+  xhr = new XMLHttpRequest();
+  // for (_i = 0, _len = files.length; _i < _len; _i++) {
+  //   file = files[_i];
+  //   file.xhr = xhr;
+  // }
+  xhr.open("POST", url, true);
+  // xhr.withCredentials = !!this.options.withCredentials;
+  xhr.withCredentials = false;
+  response = null;
+  
+  
+  // xhr.onload = (function(_this) {
+  //   return function(e) {
+  //     var _ref;
+  //     if (files[0].status === Dropzone.CANCELED) {
+  //       return;
+  //     }
+  //     if (xhr.readyState !== 4) {
+  //       return;
+  //     }
+  //     response = xhr.responseText;
+  //     if (xhr.getResponseHeader("content-type") && ~xhr.getResponseHeader("content-type").indexOf("application/json")) {
+  //       try {
+  //         response = JSON.parse(response);
+  //       } catch (_error) {
+  //         e = _error;
+  //         response = "Invalid JSON response from server.";
+  //       }
+  //     }
+  //     updateProgress();
+  //     if (!((200 <= (_ref = xhr.status) && _ref < 300))) {
+  //       return handleError();
+  //     } else {
+  //       return _this._finished(files, response, e);
+  //     }
+  //   };
+  // })(this);
+  // xhr.onerror = (function(_this) {
+  //   return function() {
+  //     if (files[0].status === Dropzone.CANCELED) {
+  //       return;
+  //     }
+  //     return handleError();
+  //   };
+  // })(this);
+  
+  xhr.onreadystatechange=function(){
+    //console.log(xhr.status);
+     if (xhr.readyState==4 && xhr.status==200){
+        
+        //console.log(xhr);
+        //console.log('response=',xhr.responseText);
+        window.location.href = xhr.responseURL;
+     }
+     // if(xhr.status >= 300 && xhr.status < 400){
+     //    console.log(xhr);
+     // }
+  }
+
+  headers = {
+    // "Accept": "application/json",
+    // "Accept": "multipart/form-data",
+    //"Accept": "application/x-www-form-urlencoded",
+    "Cache-Control": "no-cache",
+    "X-Requested-With": "XMLHttpRequest"
+  };
+  // if (this.options.headers) {
+  //   extend(headers, this.options.headers);
+  // }
+  for (headerName in headers) {
+    headerValue = headers[headerName];
+    xhr.setRequestHeader(headerName, headerValue);
+  }
+  formData = new FormData();
+  // if (this.options.params) {
+  //   _ref1 = this.options.params;
+  //   for (key in _ref1) {
+  //     value = _ref1[key];
+  //     formData.append(key, value);
+  //   }
+  // }
+  // for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+  //   file = files[_j];
+  //   this.emit("sending", file, xhr, formData);
+  // }
+  // if (this.options.uploadMultiple) {
+  //   this.emit("sendingmultiple", files, xhr, formData);
+  // }
+  // if (this.element.tagName === "FORM") {
+  formEl = document.getElementById(formId);
+  _ref2 = formEl.querySelectorAll("input, textarea, select, button");
+  for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+    input = _ref2[_k];
+    inputName = input.getAttribute("name");
+    inputType = input.getAttribute("type");
+    if (input.tagName === "SELECT" && input.hasAttribute("multiple")) {
+      _ref3 = input.options;
+      for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+        option = _ref3[_l];
+        if (option.selected) {
+          formData.append(inputName, option.value);
+        }
+      }
+    } else if (!inputType || ((_ref4 = inputType.toLowerCase()) !== "checkbox" && _ref4 !== "radio") || input.checked) {
+      formData.append(inputName, input.value);
+    }
+  }
+  // }
+  // for (i = _m = 0, _ref5 = files.length - 1; 0 <= _ref5 ? _m <= _ref5 : _m >= _ref5; i = 0 <= _ref5 ? ++_m : --_m) {
+  //   formData.append(this._getParamName(i), files[i], files[i].name);
+  // }
+  for(var i = 0, len = uploadFileList.length; i < len; i++){
+    formData.append("photo["+ i +"]", uploadFileList[i], uploadFileList[i].name);  
+  }
+  for(var k in addedParams){
+    formData.append(k, addedParams[k]);
+  }
+  return xhr.send(formData);
+};
+
+
 (function(scope){
-  $("input[type=submit]").on('click',function() {
-    var form_id = $("form:eq(1)").attr("id");
+   var foundForm = $(".dropzone").parents("form")[0];
+
+   //$(".dropzone .dz-id")
+
+  // $('.dz-remove').on('click',function(){
+  //   var id = this.parentNode.getElementsByClassName('dz-id')[0].innerText
+  //   deleteFile(id);
+  //   var mypreview = this.parentNode;
+  //   console.log(mypreview);
+  //   this.parentNode.parentNode.removeChild(mypreview);
+  // });
+
+  // var deleteFile = function(file_id){
+  //   $.ajax({
+  //     type: 'delete',
+  //     url: '<%= location_photos_path(@location) %>/'+file_id,
+  //     dataType: 'json'
+  //   });
+  // }
+
+  Dropzone.options.myAwesomeDropzone = {
+    // url: '<%= location_photos_path(@location) %>', 
+    url: foundForm.action,
+    paramName: "photo",
+    previewsContainer: ".dropzone-previews",
+    acceptedFiles: "image/*",
+    uploadMultiple: false,
+    parallelUploads: 100,
+    maxFiles: 100,
+    maxFilesize: 3,
+    autoProcessQueue: false,
+    addRemoveLinks: true,
+    removedfile: function(file) {
+      var _ref;
+      return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+    },
+    init: function() {
+      var myDropzone = this;
+
+
+      addedParams["authenticity_token"] = $('[name=csrf-token]').attr('content');
+      addedParams["photoable_type"] = 'Location';
+      addedParams["photoable_id"] = <%= @location.id %>;
+
+      // this.options.params["authenticity_token"] = $('[name=csrf-token]').attr('content');
+      // this.options.params["photoable_type"] = 'Location';
+      // this.options.params["photoable_id"] = <%= @location.id %>;
+
+      // this.on("sending", function(file, xhr, formData) {
+      //   formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
+      //   formData.append("photoable_type", 'Location'); 
+      //   formData.append("photoable_id", <%= @location.id %>);
+
+      //   // Gets triggered when the form is actually being sent.
+      //   // Hide the success button or the complete form.
+      // });
+      this.on("successmultiple", function(files, response) {
+        // Gets triggered when the files have successfully been sent.
+        // Redirect user or notify of success.
+      });
+      this.on("errormultiple", function(files, response) {
+        // Gets triggered when there was an error sending the files.
+        // Maybe show form again, and notify user of error
+      });
+      this.on("addedfile",function(file){
+        uploadFileList.push(file);
+      });
+      this.on("removedfile",function(file){
+        var test = "";
+      });
+      
+    }
+
+  };
+
+
+
+
+
+  $("#sendButton").on('click',function(e) {
+
     $("#location_content").val($("#trumbowyg").html());
-    $( "#"+form_id ).submit();
+    doSubmitProcess(foundForm.action, $("form:eq(0)").attr("id"));
+
+    // var form_id = $("form:eq(0)").attr("id");
+    // var formDom = document.getElementById(form_id);
+    // var formDomElements = formDom.elements;
+    // var formObj = new FormData();
+    // for(var idx = 0, len = formDomElements.length; idx < len; idx++){
+    //   formObj.append(formDomElements[idx].name, formDomElements[idx].value);
+    // }
+    // for(var i in uploadFileList){
+    //   formObj.append("photo[]", uploadFileList[i], uploadFileList[i].name);  
+    // }
+    // //formObj.append();
+    // //this.options.params["authenticity_token"] = $('[name=csrf-token]').attr('content');
+    // $.ajax({
+    //     url: foundForm.action,
+    //     data: formObj,
+    //     processData: false,
+    //     type: 'PATCH',
+    //     async:   false,
+
+    //     // This will override the content type header, 
+    //     // regardless of whether content is actually sent.
+    //     // Defaults to 'application/x-www-form-urlencoded'
+    //     // contentType: 'application/json', 
+
+    //     //Before 1.5.1 you had to do this:
+    //     // beforeSend: function (x) {
+    //     //     if (x && x.overrideMimeType) {
+    //     //         x.overrideMimeType("multipart/form-data");
+    //     //     }
+    //     // },
+    //     // Now you should be able to do this:
+    //     //mimeType: 'application/json',    //Property added in 1.5.1
+
+    //     success: function (data) {
+    //         alert(data);
+    //     },
+    //     error:function(e){
+    //       console.log(e.responseText);
+    //     }
+    // });
+
+    // $(formObj).submit();
+    // $( "#"+form_id ).submit();
   });
 })(window);
 
