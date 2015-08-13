@@ -13,6 +13,7 @@ class MapsController < ApplicationController
 
   def edit
     @map = Map.find(params[:id])
+    @map.location_pins.build
   end
 
   def show
@@ -71,7 +72,7 @@ class MapsController < ApplicationController
   private
 
   def map_params
-    params.require(:map).permit(:title, :description, :private)
+    params.require(:map).permit(:title, :description, :private, :location_pins_attributes => [:id, :pin])
   end
 
   def assign_role(role_name)

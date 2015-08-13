@@ -24,6 +24,13 @@
     <p>公開地圖：<ul><li>登入的使用者都可以編輯</li></ul></p>
   </div>
   <% end %>
+
+  <%= f.simple_fields_for :location_pins do |p| %>
+  <div class="field">
+    <%= p.input :pin %>
+  </div>
+  <% end -%>
+
   <div class="actions">
     <%= f.submit '送出', :class => "btn btn-success" %>
   </div>
