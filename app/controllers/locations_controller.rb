@@ -17,7 +17,7 @@ class LocationsController < ApplicationController
       @locations = @map.locations
     end
     respond_to do |format|
-      format.json { render :json => @locations }
+      format.json { render :json => @locations.as_json(:include => :location_pin)}
     end
   end
 
@@ -62,7 +62,6 @@ class LocationsController < ApplicationController
   end
 
   def update
-
     @map = Map.find(params[:map_id])
     @location = Location.find(params[:id])
     if @location.update(location_params)
@@ -107,7 +106,7 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:title,:content,:link_url,:lat,:lng)
+    params.require(:location).permit(:title,:content,:link_url,:lat,:lng,:location_pin_id)
   end
 
   def photo_params

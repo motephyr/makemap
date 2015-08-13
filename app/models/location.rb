@@ -3,7 +3,7 @@ require 'iconv'
 class Location < ActiveRecord::Base
   belongs_to :map
   belongs_to :user
-  has_one :location_pins
+  belongs_to :location_pin
   has_many :photos, as: :photoable, dependent: :destroy
   accepts_nested_attributes_for :photos
 

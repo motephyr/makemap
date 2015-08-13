@@ -3,10 +3,15 @@
 <% content_for :sidebar_content do %>
 
 
-      <h3>設定地圖</h3>
+<h3>設定地圖</h3>
 
-    <%= render :partial => "maps/form" %>
-
+<% content_for :form_content do %>
+<br>
+<div class="field">
+<%= render template: "common/edit_location_pin_upload" %>
+</div>
+<% end %>
+<%= render template: "maps/form" %>
 
 <% end %>
 <%= render template: "common/sidebar_right" %>
@@ -15,15 +20,15 @@
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
-(function(){
+  (function(){
 
-  var markers = new L.MarkerClusterGroup();
-  $.ajax({
-    url: "/maps/<%= @map.id %>/locations",
-    dataType: "json",
-    success: function (data) {
-      var keysArray = Object.keys(data);
-      for (var i=0; i<keysArray.length; i++){
+    var markers = new L.MarkerClusterGroup();
+    $.ajax({
+      url: "/maps/<%= @map.id %>/locations",
+      dataType: "json",
+      success: function (data) {
+        var keysArray = Object.keys(data);
+        for (var i=0; i<keysArray.length; i++){
         // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
         //   color: 'red',
         //   fillColor: '#f03',

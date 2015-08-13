@@ -1,20 +1,14 @@
-<div id="over_map_form">
 
-  <%= simple_form_for([@map,@location]) do |f| %>
-  <%= render 'common/error_messages', object: f.object %>
-  <div class="field">
-    <%= f.input_field :title ,placeholder: '標題',:required => true, maxlength: 25 %>
-  </div>
 
   <label class="string optional control-label">上傳圖片：</label>
   <%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
-  <% photos.each do |photo| %>
+  <% @map.location_pins.each do |photo| %>
   <div class="dz-preview dz-image-preview">
     <div class="dz-details">
       <div class="dz-id"><%= photo[:id] %></div>
-      <div class="dz-filename"><span data-dz-name><%= photo[:photo] %></span></div>
+      <div class="dz-filename"><span data-dz-name><%= photo[:pin] %></span></div>
       <div class="dz-size" data-dz-size></div>
-      <img data-dz-thumbnail src="<%= "#{@fullpath}#{photo.photo}" %>"/>
+      <img data-dz-thumbnail src="<%= "#{@fullpath}#{photo.pin}" %>"/>
     </div>
     <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
     <div class="dz-success-mark"><span>✔</span></div>
@@ -25,38 +19,6 @@
   <% end %>
   <% end %>
 
-  <br>
-  <div class="field">
-    <%= f.label "描述：" %>
-    <%= f.input_field :content,:required => true,style: "display:none" %>
-    <% content_for :trumbowyg_content do %>
-    <% if !@location.content.nil? %>
-    <%= sanitize @location.content %>
-    <% end %>
-    <% end %>
-    <%= render template: "common/trumbowyg" %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.label "圖示：" %>
-    <%= f.collection_radio_buttons :location_pin_id,  @map.location_pins.map {|x| [x.id,image_tag(x.pin.url)]}, :first, :last  %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.label "網址連結：" %>
-    <%= f.input_field :link_url, size: 48 %>
-  </div>
-  <div class="field">
-    <%= f.label "經緯度：" %>
-    <%= f.input_field :lat,readonly: true, maxlength: 20  %>
-    <%= f.input_field :lng,readonly: true, maxlength: 20  %>
-  </div>
-  <br>
-  <div class="actions">
-    <%= f.submit "送出" %>
-  </div>
-  <% end %>
-</div>
 
 <% content_for :javascripts do %>
 <%= javascript_include_tag "dropzone/dropzone.min.js" %>
@@ -76,13 +38,13 @@
     var deleteFile = function(file_id){
       $.ajax({
         type: 'delete',
-        url: '<%= location_photos_path(@location) %>/'+file_id,
+        url: '<%= map_location_pins_path(@map) %>/'+file_id,
         dataType: 'json'
       });
     }
 
     Dropzone.options.myAwesomeDropzone = {
-      url: '<%= location_photos_path(@location) %>',
+      url: '<%= map_location_pins_path(@map) %>',
       paramName: "photo",
       previewsContainer: ".dropzone-previews",
       acceptedFiles: "image/*",
@@ -101,8 +63,7 @@
 
         this.on("sending", function(file, xhr, formData) {
           formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
-          formData.append("photoable_type", 'Location');
-          formData.append("photoable_id", <%= @location.id %>);
+
 
       // Gets triggered when the form is actually being sent.
       // Hide the success button or the complete form.

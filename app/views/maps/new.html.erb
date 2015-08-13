@@ -3,7 +3,7 @@
 <% content_for :sidebar_content do %>
 
 <h3>新增地圖</h3>
-  <%= render :partial => "maps/form" %>
+<%= render template: "maps/form" %>
 
 <% end %>
 <%= render template: "common/sidebar_right" %>
@@ -13,12 +13,12 @@
 
 
 <script type='text/javascript'>
-(function(){
+  (function(){
 
-  <%= render :partial => "example/shifus_data" %>
+    <%= render :partial => "example/shifus_data" %>
 
 
-})();
+  })();
 
 </script>
 <% end %>

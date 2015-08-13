@@ -13,7 +13,6 @@ class MapsController < ApplicationController
 
   def edit
     @map = Map.find(params[:id])
-    @map.location_pins.build
   end
 
   def show

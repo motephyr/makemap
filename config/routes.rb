@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
 
   resources :maps do
+    resources :location_pins
     resources :locations do
       collection do
         get 'invite_page'

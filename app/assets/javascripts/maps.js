@@ -1,5 +1,10 @@
+  LeafIcon = L.Icon.extend({
+    options: {
+      iconSize: [64, 64]
+    }
+  });
 (function(window) {
-  var LeafIcon, ParaVal, getPara, getSearch, i, layer, onLocationFound, strUrl;
+  var ParaVal, getPara, getSearch, i, layer, onLocationFound, strUrl;
   window.params = [];
   strUrl = location.search;
   if (strUrl.indexOf("?") !== -1) {
@@ -25,11 +30,7 @@
     zoom: 8,
     minZoom: 4
   });
-  LeafIcon = L.Icon.extend({
-    options: {
-      iconSize: [64, 64]
-    }
-  });
+
   window.otherIcon = new LeafIcon({
     iconUrl: "/images/singing.png"
   });
