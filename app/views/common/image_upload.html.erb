@@ -1,7 +1,3 @@
-<% content_for :stylesheets do %>
-<%= stylesheet_link_tag "dropzone-fix.css" %>
-<% end %>
-
 <label class="string optional control-label">上傳圖片：</label>
 <%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
 <% photos.each do |photo| %>
@@ -24,7 +20,7 @@
 
 
 
-<% content_for :javascripts do %> 
+<% content_for :javascripts do %>
 <%= javascript_include_tag "dropzone/dropzone.min.js" %>
 
 <script type='text/javascript'>
@@ -48,7 +44,7 @@
   }
 
   Dropzone.options.myAwesomeDropzone = {
-    url: '<%= location_photos_path(@location) %>', 
+    url: '<%= location_photos_path(@location) %>',
     paramName: "photo",
     previewsContainer: ".dropzone-previews",
     acceptedFiles: "image/*",
@@ -67,7 +63,7 @@
 
       this.on("sending", function(file, xhr, formData) {
         formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
-        formData.append("photoable_type", 'Location'); 
+        formData.append("photoable_type", 'Location');
         formData.append("photoable_id", <%= @location.id %>);
 
       // Gets triggered when the form is actually being sent.

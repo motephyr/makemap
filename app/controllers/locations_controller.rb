@@ -50,8 +50,12 @@ class LocationsController < ApplicationController
     @map = Map.find(params[:map_id])
     @location = current_user.locations.build(location_params.merge(map_id: @map.id))
     if @location.save
-
-      redirect_to map_path(@map)
+      if !params[:photo].blank?
+        photo_params.each.with_index.each do |photo|
+          Photo.create!(photo: photo[1], photoable_type: "Location",photoable_id: @location.id)
+        end
+      end
+      redirect_to map_location_path(@map,@location)
     else
       render :new
     end
@@ -62,7 +66,8 @@ class LocationsController < ApplicationController
     @map = Map.find(params[:map_id])
     @location = Location.find(params[:id])
     if @location.update(location_params)
-      redirect_to map_path(@map)
+
+      redirect_to map_location_path(@map,@location)
     else
       render :edit
     end
@@ -102,7 +107,11 @@ class LocationsController < ApplicationController
 
   private
   def location_params
-    params.require(:location).permit(:title,:content,:link_url,:lat,:lng,photos_attributes: [:id, :photoable_id, :photoable_type, :photo])
+    params.require(:location).permit(:title,:content,:link_url,:lat,:lng)
+  end
+
+  def photo_params
+    params.require(:photo)
   end
 
 end
