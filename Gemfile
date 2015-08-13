@@ -57,6 +57,7 @@ group :development do
   gem "capistrano-rails"
   gem "capistrano-rvm"
   gem 'capistrano-bower'
+  gem 'capistrano-sidekiq'
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
 
