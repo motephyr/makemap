@@ -1,0 +1,121 @@
+<div id="over_map_form">
+
+  <%= simple_form_for([@map,@location]) do |f| %>
+  <%= render 'common/error_messages', object: f.object %>
+  <div class="field">
+    <%= f.input_field :title ,placeholder: '標題',:required => true, maxlength: 25 %>
+  </div>
+
+  <label class="string optional control-label">上傳圖片：</label>
+  <%= content_tag(:div, class: "dropzone dropzone-previews", id: "my-awesome-dropzone") do %>
+  <% photos.each do |photo| %>
+  <div class="dz-preview dz-image-preview">
+    <div class="dz-details">
+      <div class="dz-id"><%= photo[:id] %></div>
+      <div class="dz-filename"><span data-dz-name><%= photo[:photo] %></span></div>
+      <div class="dz-size" data-dz-size></div>
+      <img data-dz-thumbnail src="<%= "#{@fullpath}#{photo.photo}" %>"/>
+    </div>
+    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+    <div class="dz-success-mark"><span>✔</span></div>
+    <div class="dz-error-mark"><span>✘</span></div>
+    <div class="dz-error-message"><span data-dz-errormessage></span></div>
+    <a class="dz-remove" href="javascript:undefined;" data-dz-remove="">Remove file</a>
+  </div>
+  <% end %>
+  <% end %>
+
+  <br>
+  <div class="field">
+    <%= f.label "描述：" %>
+    <%= f.input_field :content,:required => true,style: "display:none" %>
+    <% content_for :trumbowyg_content do %>
+    <% if !@location.content.nil? %>
+    <%= sanitize @location.content %>
+    <% end %>
+    <% end %>
+    <%= render template: "common/trumbowyg" %>
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label "網址連結：" %>
+    <%= f.input_field :link_url, size: 48 %>
+  </div>
+  <div class="field">
+    <%= f.label "經緯度：" %>
+    <%= f.input_field :lat,readonly: true, maxlength: 20  %>
+    <%= f.input_field :lng,readonly: true, maxlength: 20  %>
+  </div>
+  <br>
+  <div class="actions">
+    <%= f.submit "送出" %>
+  </div>
+  <% end %>
+</div>
+
+<% content_for :javascripts do %>
+<%= javascript_include_tag "dropzone/dropzone.min.js" %>
+
+<script type='text/javascript'>
+
+  (function(scope){
+
+    $('.dz-remove').on('click',function(){
+      var id = this.parentNode.getElementsByClassName('dz-id')[0].innerText
+      deleteFile(id);
+      var mypreview = this.parentNode;
+      console.log(mypreview);
+      this.parentNode.parentNode.removeChild(mypreview);
+    });
+
+    var deleteFile = function(file_id){
+      $.ajax({
+        type: 'delete',
+        url: '<%= location_photos_path(@location) %>/'+file_id,
+        dataType: 'json'
+      });
+    }
+
+    Dropzone.options.myAwesomeDropzone = {
+      url: '<%= location_photos_path(@location) %>',
+      paramName: "photo",
+      previewsContainer: ".dropzone-previews",
+      acceptedFiles: "image/*",
+      uploadMultiple: false,
+      parallelUploads: 100,
+      maxFiles: 100,
+      maxFilesize: 3,
+      addRemoveLinks: true,
+      removedfile: function(file) {
+        var _ref;
+        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+      },
+      init: function() {
+        var myDropzone = this;
+
+
+        this.on("sending", function(file, xhr, formData) {
+          formData.append("authenticity_token", $('[name=csrf-token]').attr('content'));
+          formData.append("photoable_type", 'Location');
+          formData.append("photoable_id", <%= @location.id %>);
+
+      // Gets triggered when the form is actually being sent.
+      // Hide the success button or the complete form.
+    });
+        this.on("successmultiple", function(files, response) {
+      // Gets triggered when the files have successfully been sent.
+      // Redirect user or notify of success.
+    });
+        this.on("errormultiple", function(files, response) {
+      // Gets triggered when there was an error sending the files.
+      // Maybe show form again, and notify user of error
+    });
+      }
+
+    };
+    $("input[type=submit]").on('click',function(){
+      $("#location_content").val($("#trumbowyg").html());
+    });
+  })(window);
+</script>
+<% end %>

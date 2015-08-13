@@ -38,7 +38,7 @@
 <script type='text/javascript'>
 (function(scope){
   $("input[type=submit]").on('click',function() {
-    var form_id = $("form:eq(1)").attr("id");
+    var form_id = $("form:eq(0)").attr("id");
     $("#location_content").val($("#trumbowyg").html());
     $( "#"+form_id ).submit();
   });

@@ -5,13 +5,9 @@
 
 <h3>修改位置</h3>
 
-<% content_for :form_content do %>
-<br>
-<div class="field">
-  <%= render template: "common/image_upload",locals: {photos: @location.photos} %>
-</div>
-<% end %>
-<%= render template: "locations/form" %>
+
+<%= render template: "common/edit_image_upload",locals: {photos: @location.photos} %>
+
 <br>
 <%= button_to('刪除此地點', map_location_path(@map,@location), method: :delete , data: { confirm: '你確定要刪除嗎？' } , class:"btn btn-danger",style: "float:right") %>
 
