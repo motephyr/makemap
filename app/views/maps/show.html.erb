@@ -17,54 +17,21 @@
     map.addControl(sidebar);
     sidebar.show();
 
-    var markers = new L.MarkerClusterGroup();
-    $.ajax({
-      url: "/maps/<%= @map.id %>/locations",
-      dataType: "json",
-      success: function (data) {
-        var keysArray = Object.keys(data);
-        for (var i in keysArray){
-        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
-        //   color: 'red',
-        //   fillColor: '#f03',
-        //   fillOpacity: 0.5
-        // }).addTo(map);
-        // circle.bindPopup(data[keysArray[i]][2]);
-        if(!data[keysArray[i]]["lat"]){
-          continue;
-        }
-        var location_icon = {};
-        if(data[keysArray[i]]["location_pin"]){
-          location_icon = new LeafIcon({
-            iconUrl: data[keysArray[i]]["location_pin"]["pin"].url
-          });
-        }else{
-          location_icon = otherIcon;
-        }
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:location_icon,title:data[keysArray[i]]["id"]} )
-        markers.addLayer(marker);
-        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
-        marker.bindPopup(text);
 
-        marker.on('click',function(event){
-          var alatlng = event.latlng;
-          $.ajax({
-            url: '/maps/<%= @map.id %>/locations/' +event.target.options.title ,
-            dataType:'script'
-          }).success(function(data){
-            // event.target.bindPopup($('#content').html());
-            // event.target.openPopup();
+    get_marker_and_pin_in_map(<%= @map.id %>,function(marker,map_id){
+      marker.on('click',function(event){
+        var alatlng = event.latlng;
+        $.ajax({
+          url: '/maps/'+map_id+'/locations/' +event.target.options.location_id ,
+          dataType:'script'
+        }).success(function(data){
             sidebar.show();
           });
-        });
-      }
-      map.addLayer(markers);
-      map.fitBounds(markers.getBounds());
-    }
-  });
+      });
+    });
 
 
-})(window);
+  })(window);
 
 </script>
 <% end %>

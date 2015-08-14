@@ -38,7 +38,7 @@
   </div>
   <br>
   <div class="field">
-    <%= f.label "圖示：" %>
+    <%= f.label "選擇代表圖示：" %>
     <%= f.collection_radio_buttons :location_pin_id,  @map.location_pins.map {|x| [x.id,image_tag(x.pin.url)]}, :first, :last  %>
   </div>
   <br>

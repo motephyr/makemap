@@ -8,7 +8,7 @@
 <% content_for :form_content do %>
 <br>
 <div class="field">
-<%= render template: "common/edit_location_pin_upload" %>
+  <%= render template: "common/edit_location_pin_upload" %>
 </div>
 <% end %>
 <%= render template: "maps/form" %>
@@ -22,39 +22,12 @@
 <script type='text/javascript'>
   (function(){
 
-    var markers = new L.MarkerClusterGroup();
-    $.ajax({
-      url: "/maps/<%= @map.id %>/locations",
-      dataType: "json",
-      success: function (data) {
-        var keysArray = Object.keys(data);
-        for (var i=0; i<keysArray.length; i++){
-        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
-        //   color: 'red',
-        //   fillColor: '#f03',
-        //   fillOpacity: 0.5
-        // }).addTo(map);
-        // circle.bindPopup(data[keysArray[i]][2]);
-        //console.log(data[keysArray[i]]);
-        var title = data[keysArray[i]]["title"];
-        var location_id = data[keysArray[i]]["id"];
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{location_id:location_id, icon:otherIcon, title:title} );
-
-        markers.addLayer(marker);
-
-        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
-        marker.bindPopup(text);
-
-        marker.on('click',function(event){
-          location.href = '/maps/<%= @map.id %>/locations/'+event.target.options.location_id;
-        });
-      }
-      map.addLayer(markers);
-    }
-  });
-
-
-})();
+    get_marker_and_pin_in_map(<%= @map.id %>,function(marker,map_id){
+      marker.on('click',function(event){
+        location.href = '/maps/'+map_id+'/locations/'+event.target.options.location_id;
+      });
+    });
+  })();
 
 </script>
 <% end %>

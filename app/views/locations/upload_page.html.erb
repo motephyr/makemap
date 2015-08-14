@@ -18,8 +18,8 @@
 <%= submit_tag "匯入" %>
 <% end %>
 <h2>匯出</h2>
-  <%= link_to "CSV", upload_page_map_locations_path(@map,format: "csv") %> |
-  <%= link_to "Excel", upload_page_map_locations_path(@map,format: "xls") %>
+<%= link_to "CSV", upload_page_map_locations_path(@map,format: "csv") %> |
+<%= link_to "Excel", upload_page_map_locations_path(@map,format: "xls") %>
 
 <% end %>
 <%= render template: "common/sidebar_right" %>
@@ -27,34 +27,16 @@
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
-(function(){
+  (function(){
 
-  var markers = new L.MarkerClusterGroup();
-  $.ajax({
-    url: "/maps/<%= @map.id %>/locations",
-    dataType: "json",
-    success: function (data) {
-      var keysArray = Object.keys(data);
-      for (var i=0; i<keysArray.length; i++){
-        // var circle = L.circle([data[keysArray[i]][1], data[keysArray[i]][0]], 500, {
-        //   color: 'red',
-        //   fillColor: '#f03',
-        //   fillOpacity: 0.5
-        // }).addTo(map);
-        // circle.bindPopup(data[keysArray[i]][2]);
-        //console.log(data[keysArray[i]]);
-        var marker = L.marker([data[keysArray[i]]["lat"], data[keysArray[i]]["lng"]],{icon:otherIcon} );
-        markers.addLayer(marker);
-
-        var text = "<h2>"+data[keysArray[i]]["title"]+"</h2>";
-        marker.bindPopup(text);
-      }
-      map.addLayer(markers);
-    }
-  });
+    get_marker_and_pin_in_map(<%= @map.id %>,function(marker,map_id){
+      marker.on('click',function(event){
+        location.href = '/maps/'+map_id+'/locations/'+event.target.options.location_id;
+      });
+    });
 
 
-})();
+  })();
 
 </script>
 <% end %>
