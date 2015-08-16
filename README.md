@@ -1,6 +1,6 @@
 # Make Map
 
-## http://52.68.126.89
+## http://www.makemap.org
 
 ### 創造屬於自已的地圖
 ### 參加附近有趣的活動
