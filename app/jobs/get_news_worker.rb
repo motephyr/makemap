@@ -1,3 +1,5 @@
+require './app/models/setting'
+
 class GetNewsWorker
   include Sidekiq::Worker
   sidekiq_options ({

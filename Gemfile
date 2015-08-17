@@ -41,8 +41,8 @@ gem 'taiwanese_news_parser'
 gem 'activejob'
 gem 'sidekiq'
 gem 'sidekiq-middleware'
-gem 'sidekiq-client-cli'
 gem 'sinatra', require: false
+gem 'whenever', require: false
 
 group :production do
   #gem 'rails_12factor'
@@ -52,12 +52,11 @@ group :production do
 end
 
 group :development do
-  gem 'capistrano-bundler', '~> 1.1.2'
-  gem "capistrano", '~> 3.2.1'
-  gem "capistrano-rails"
-  gem "capistrano-rvm"
-  gem 'capistrano-bower'
-  gem 'capistrano-sidekiq'
+  gem 'capistrano-bundler', '~> 1.1.2', require: false
+  gem "capistrano", '~> 3.2.1', require: false
+  gem "capistrano-rails", require: false
+  gem "capistrano-rvm", require: false
+  gem 'capistrano-sidekiq', require: false
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
 
