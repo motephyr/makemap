@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :welcome do
     collection do
+      get 'style_editor'
       get 'demo'
       get 'search_location'
       eval(arrayMapReduce)
@@ -32,7 +33,6 @@ Rails.application.routes.draw do
         post 'import'
       end
     end
-
 
     member do
       post 'assign_manager_role'

@@ -1,0 +1,180 @@
+
+<% content_for :sidebar_content do %>
+
+
+<% end %>
+<%= render template: "common/sidebar" %>
+
+<%= render template: "common/sidebar_right" %>
+
+<% content_for :javascripts do %>
+
+<script type='text/javascript'>
+(function(scope){
+    var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+  });
+
+  map.addControl(sidebar);
+  sidebar.show();
+
+  var markers = new L.MarkerClusterGroup();
+
+})(window);
+
+(function(win){
+
+  var _getDeep = function(endParent, current){
+    var n = 0;
+    while(endParent != current){
+      if(!current){
+        n = -1; 
+        break;
+      }else{
+        current = current.parentElement;
+        n++;
+      }
+    }
+    return n;
+  };
+
+  var _getIdx = function(el){
+    var n = -1;
+    if(el.parentElement){
+      var p = el.parentElement;
+      var childs = p.childNodes;
+      for(var i = 0, len = childs.length; i < len; i++){
+        if(childs[i] == el) return i;
+      }
+    }
+    return n;
+  };
+
+  var RegionHighlighter = function(parentDom){
+    this._canvas = document.createElement("canvas");
+    this._w = this._canvas.width = $(parentDom).outerWidth(true);
+    this._h = this._canvas.height = $(parentDom).outerHeight(true);
+    this._canvasContext = this._canvas.getContext("2d");
+    this._canvasContext.lineWidth = 5;
+    this._canvasContext.strokeStyle = "#ffcc00";
+    this._highlightIdx = -1;
+    this._parentEl = parentDom;
+    this._regions = [];
+
+    $(this._canvas).css({
+      position: 'absolute',
+      left:0,top:0,
+      zIndex:9999
+    });
+
+    $(this._canvas).mousemove((function(scope){
+      var rs = scope._regions;
+      return function(e){
+        // _highlightIdx
+        // this._regions
+        var found = false;
+        for(var i = 0, len = rs.length; i < len; i++) {
+          if (e.pageX > rs[i].x && e.pageX < rs[i].x + rs[i].w &&
+            e.pageY > rs[i].y && e.pageY < rs[i].y + rs[i].h){
+            // find the highlight region
+            found = true;
+            if(scope._highlightIdx != i){
+              // hightlight region changed
+              scope._canvasContext.clearRect(0, 0, scope._w, scope._h);
+
+              scope._canvasContext.beginPath();
+              scope._canvasContext.rect(rs[i].x, rs[i].y, rs[i].w, rs[i].h);
+              scope._canvasContext.stroke();
+
+              scope._highlightIdx = i;
+            }
+            break;
+          }                        
+        }
+        if(!found){
+          // cancel the hightlight style
+          scope._highlightIdx = -1;
+          scope._canvasContext.clearRect(0, 0, scope._w, scope._h);
+        }
+      }
+    })(this));  
+
+    $(this._canvas).click((function(scope){
+      return function(e){
+        if(~scope._highlightIdx){
+          var hoverRegion = scope._regions[scope._highlightIdx];
+          hoverRegion.callback.call(hoverRegion.element, hoverRegion, e);
+        }
+      }
+    })(this));  
+
+    document.body.appendChild(this._canvas);
+  };
+
+  RegionHighlighter.prototype.addRegion = function(queryString, callback){
+    // var divs = $(parentDom).children("div");
+
+    callback = (typeof callback == 'function')? callback : function(e){};
+    // if(typeof callback == 'function'){
+    //   setTimeout((function(scope){
+    //     return function(){
+    //       callback.call(scope);
+    //     };
+    //   })(this), 0);
+    // }
+
+    var foundEls = $(this._parentEl).find(queryString);
+
+    for(var i = 0, len = foundEls.length; i < len; i++){
+      var elJQ = $(foundEls[i]);
+      var offset = elJQ.offset();
+      var deep = _getDeep(this._parentEl, foundEls[i]);
+      var idx = _getIdx(foundEls[i]);
+      this._regions.push({
+        x: offset.left,
+        y: offset.top,
+        z: elJQ.css("z-index"),
+        w: elJQ.outerWidth(),
+        h: elJQ.outerHeight(),
+        deepFromRoot: deep,
+        idxInParent: idx,
+        callback: callback,
+        element: foundEls[i]
+      });
+    }
+
+    this._regions.sort(function(a, b){
+      var az = parseInt(a.z);
+      var bz = parseInt(b.z);
+      az = isNaN(az)? 0 : az;
+      bz = isNaN(bz)? 0 : bz;
+      if(a.deepFromRoot != b.deepFromRoot){
+        return b.deepFromRoot - a.deepFromRoot;
+      }else if(az != bz){
+        return bz - az;  
+      }else{
+        return b.idxInParent - a.idxInParent;
+      }
+    });
+  };
+
+  win.RegionHighlighter = RegionHighlighter;
+})(window);
+
+var hightlighter;
+
+$(window).load(function(){
+
+  hightlighter = new RegionHighlighter(document.body);
+
+  
+  hightlighter.addRegion(".leaflet-sidebar #sidebar", function(o, e){ alert("sidebar left"); });
+  hightlighter.addRegion(".leaflet-control-container .left .close", function(o, e){ alert("close left"); });
+  
+  hightlighter.addRegion(".leaflet-sidebar #sidebar_right", function(o, e){ alert("sidebar right"); });
+  hightlighter.addRegion(".leaflet-control-container .right .close", function(o, e){ alert("close right"); });
+
+});
+
+</script>
+<% end %>
