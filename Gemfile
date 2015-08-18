@@ -44,6 +44,9 @@ gem 'sidekiq-middleware'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 
+#performance
+gem 'newrelic_rpm'
+
 group :production do
   #gem 'rails_12factor'
   gem "non-stupid-digest-assets"
