@@ -23,3 +23,4 @@
 //= require leaflet-sidebar/L.Control.Sidebar
 //= require moment
 //= require moment/locale/zh-tw
+//= require StyleEditor
