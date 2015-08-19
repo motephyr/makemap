@@ -50,7 +50,26 @@
     return n;
   };
 
-  var RegionHighlighter = function(parentDom){
+  var _addRegion = function(el, ops){
+    var elJQ = $(el);
+    var offset = elJQ.offset();
+    var deep = _getDeep(this._parentEl, el);
+    var idx = _getIdx(el);
+    this._regions.push({
+      x: offset.left,
+      y: offset.top,
+      z: elJQ.css("z-index"),
+      w: elJQ.outerWidth(),
+      h: elJQ.outerHeight(),
+      deepFromRoot: deep,
+      idxInParent: idx,
+      over: ops.over,
+      click: ops.click,
+      element: el
+    });
+  };
+
+  var RegionHighlighter = function(parentDom, options){
     this._canvas = document.createElement("canvas");
     this._w = this._canvas.width = $(parentDom).outerWidth(true);
     this._h = this._canvas.height = $(parentDom).outerHeight(true);
@@ -61,11 +80,37 @@
     this._parentEl = parentDom;
     this._regions = [];
 
+    this._options = {
+      over: function(o, e){},
+      click: function(o, e){}
+    };
+
+    $.extend( this._options, options || {} );
+
+    var maxZindex = -1;
+
+    $(parentDom).find('*').filter(function(){
+      var zIndex = $(this).css("z-index"); 
+      var getIt = zIndex != 'auto';
+      if(getIt){
+        maxZindex = Math.max(parseInt(zIndex), maxZindex);
+      }
+      return getIt;
+    });
+
+    // Add attribute: 'rh' to element, it would be auto added.
+    var rhAttrs = $(parentDom).find("[rh]");
+    for(var i = 0, len = rhAttrs.length; i < len; i++){
+      _addRegion.call(this, rhAttrs[i], this._options);
+    }
+
     $(this._canvas).css({
       position: 'absolute',
       left:0,top:0,
-      zIndex:9999
+      zIndex: ++maxZindex
     });
+
+    this._zIndex = maxZindex;
 
     $(this._canvas).mousemove((function(scope){
       var rs = scope._regions;
@@ -88,6 +133,11 @@
 
               scope._highlightIdx = i;
             }
+            setTimeout((function(o, event){
+              return function(){
+                o.over.call(o.element, o, event);
+              };
+            })(rs[i], e), 0);
             break;
           }                        
         }
@@ -103,7 +153,12 @@
       return function(e){
         if(~scope._highlightIdx){
           var hoverRegion = scope._regions[scope._highlightIdx];
-          hoverRegion.callback.call(hoverRegion.element, hoverRegion, e);
+          //hoverRegion.click.call(hoverRegion.element, hoverRegion, e);
+          setTimeout((function(o, event){
+            return function(){
+              o.click.call(o.element, o, event);
+            };
+          })(hoverRegion, e), 0);
         }
       }
     })(this));  
@@ -111,36 +166,30 @@
     document.body.appendChild(this._canvas);
   };
 
-  RegionHighlighter.prototype.addRegion = function(queryString, callback){
-    // var divs = $(parentDom).children("div");
-
-    callback = (typeof callback == 'function')? callback : function(e){};
-    // if(typeof callback == 'function'){
-    //   setTimeout((function(scope){
-    //     return function(){
-    //       callback.call(scope);
-    //     };
-    //   })(this), 0);
-    // }
-
+  RegionHighlighter.prototype.addRegion = function(queryString, options){
+    
+    var op = $.extend( {}, this._options, options || {} );
+    
     var foundEls = $(this._parentEl).find(queryString);
 
     for(var i = 0, len = foundEls.length; i < len; i++){
-      var elJQ = $(foundEls[i]);
-      var offset = elJQ.offset();
-      var deep = _getDeep(this._parentEl, foundEls[i]);
-      var idx = _getIdx(foundEls[i]);
-      this._regions.push({
-        x: offset.left,
-        y: offset.top,
-        z: elJQ.css("z-index"),
-        w: elJQ.outerWidth(),
-        h: elJQ.outerHeight(),
-        deepFromRoot: deep,
-        idxInParent: idx,
-        callback: callback,
-        element: foundEls[i]
-      });
+      // var elJQ = $(foundEls[i]);
+      // var offset = elJQ.offset();
+      // var deep = _getDeep(this._parentEl, foundEls[i]);
+      // var idx = _getIdx(foundEls[i]);
+      // this._regions.push({
+      //   x: offset.left,
+      //   y: offset.top,
+      //   z: elJQ.css("z-index"),
+      //   w: elJQ.outerWidth(),
+      //   h: elJQ.outerHeight(),
+      //   deepFromRoot: deep,
+      //   idxInParent: idx,
+      //   over: op.over,
+      //   click: op.click,
+      //   element: foundEls[i]
+      // });
+      _addRegion.call(this, foundEls[i], op);
     }
 
     this._regions.sort(function(a, b){
@@ -161,18 +210,35 @@
   win.RegionHighlighter = RegionHighlighter;
 })(window);
 
+
+
 var hightlighter;
+var editor;
 
 $(window).load(function(){
 
-  hightlighter = new RegionHighlighter(document.body);
+  // Add 'rh' attribute to element for highlight
+  hightlighter = new RegionHighlighter(document.body, {
+    click: function(o, e){
+      alert("test");
+    }
+  });
 
   
-  hightlighter.addRegion(".leaflet-sidebar #sidebar", function(o, e){ alert("sidebar left"); });
-  hightlighter.addRegion(".leaflet-control-container .left .close", function(o, e){ alert("close left"); });
+  // hightlighter.addRegion(".leaflet-sidebar #sidebar", {
+  //   click: function(o, e){ alert("sidebar left"); }
+  // });
+  // hightlighter.addRegion(".leaflet-control-container .left .close", {
+  //   click: function(o, e){ alert("close left"); }
+  // });
   
-  hightlighter.addRegion(".leaflet-sidebar #sidebar_right", function(o, e){ alert("sidebar right"); });
-  hightlighter.addRegion(".leaflet-control-container .right .close", function(o, e){ alert("close right"); });
+  hightlighter.addRegion(".leaflet-sidebar #sidebar_right", {
+    click:function(o, e){ alert("sidebar right"); }
+  });
+
+  hightlighter.addRegion(".leaflet-control-container .right .close", {
+    click: function(o, e){ alert("close right"); }
+  });
 
 });
 
