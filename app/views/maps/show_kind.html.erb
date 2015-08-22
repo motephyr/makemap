@@ -1,0 +1,25 @@
+
+<% content_for :sidebar_content do %>
+
+<%= render "common/sidebar_index" %>
+<% end %>
+<%= render template: "common/sidebar" %>
+
+<% content_for :javascripts do %>
+<script type='text/javascript'>
+  (function(scope){
+
+    var sidebar = L.control.sidebar('sidebar', {
+      position: 'left'
+    });
+
+    map.addControl(sidebar);
+    sidebar.show();
+    <% if @js_str.present? %>
+    eval("<%= @js_str.html_safe %>");
+    <% end %>
+})(window);
+
+</script>
+<% end %>
+

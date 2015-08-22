@@ -4,11 +4,12 @@
   <%= simple_form_for(@map) do |f| %>
   <%= render 'common/error_messages', object: f.object %>
   <div class="field">
-    <%= f.input_field :title ,placeholder: '名稱',:required => true, maxlength: 25 %>
+    <p><%= f.label "地圖名稱" %></p>
+    <%= f.input_field :title ,:required => true, maxlength: 25 %>
   </div>
   <br>
   <div class="field">
-    <%= f.label "描述：" %>
+    <p><%= f.label "描述：" %></p>
     <%= f.input_field :description,:required => true,style: "display:none" %>
     <% content_for :trumbowyg_content do %>
     <% if !@map.description.nil? %>
@@ -22,6 +23,10 @@
     <%= f.input_field :private,inline_label: "設為私房地圖",as: :boolean %>
     <p>私房地圖：<ul><li>只有自已可以編輯</li><li>有連結的人才能觀看</li><li>不會出現在地圖列表內</li> </ul></p>
     <p>公開地圖：<ul><li>登入的使用者都可以編輯</li></ul></p>
+  </div>
+  <div class="field">
+    <p><%= f.label "地圖種類：(自定javascript)" %></p>
+    <%= f.input_field :kind ,placeholder: 'ex:sheethub',:required => true, maxlength: 25 %>
   </div>
   <% end %>
 

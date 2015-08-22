@@ -24,8 +24,8 @@ class MapsController < ApplicationController
     elsif @map.kind == "google"
       render :show_google
     elsif @map.kind == "sheethub"
-      @data_url = params[:data_url]
-      render :show_sheethub
+      @js_str = @map.js_str.gsub(/\r\n/,'')
+      render :show_kind
     elsif @map.kind == "news"
       #GetNewsWorker.perform_async
       render :show_news
@@ -68,10 +68,14 @@ class MapsController < ApplicationController
     assign_role("other")
   end
 
+  def edit_js_str_page
+    @map = Map.find(params[:id])
+  end
+
   private
 
   def map_params
-    params.require(:map).permit(:title, :description, :private, :location_pins_attributes => [:id, :pin])
+    params.require(:map).permit(:title, :description, :private,:kind,:js_str, :location_pins_attributes => [:id, :pin])
   end
 
   def assign_role(role_name)
