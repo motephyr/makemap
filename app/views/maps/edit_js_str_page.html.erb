@@ -42,10 +42,12 @@
       var s = document.createElement('script');
       s.textContent = js;//inne
       document.body.appendChild(s);
-      $('#map_js_str').html(myCodeMirror.getValue());
     })
 
 
+    $('[name=commit]').click(function(){
+      $('#map_js_str').html(myCodeMirror.getValue());
+    })
 
 
 
