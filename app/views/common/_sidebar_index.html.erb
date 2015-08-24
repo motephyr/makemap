@@ -2,6 +2,7 @@
 <h1><%= @map.title %></h1>
 <div id="trumbowyg">
   <%= sanitize @map.description %>
+  <div id="event_list"></div>
 </div>
 <% if @map.user.present? %>
 建立者：<%= @map.user.name %>

@@ -98,5 +98,8 @@
           map.fitBounds(markers.getBounds());
         }
       });
-}
+};
+var href_array = location.href.split('/');
+window.map_url = href_array.slice(0,5).join('/');
+
 })(window);

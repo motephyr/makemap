@@ -4,6 +4,7 @@
 <%= render "common/sidebar_index" %>
 <% end %>
 <%= render template: "common/sidebar" %>
+<code id="myCodeMirror" style="display:none"><%= @js_str %></code>
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
@@ -15,10 +16,12 @@
 
     map.addControl(sidebar);
     sidebar.show();
-    <% if @js_str.present? %>
-    eval("<%= @js_str.html_safe %>");
-    <% end %>
-})(window);
+
+    var js = $('#myCodeMirror').text();
+    var s = document.createElement('script');
+    s.textContent = js;//inne
+    document.body.appendChild(s);
+  })(window);
 
 </script>
 <% end %>

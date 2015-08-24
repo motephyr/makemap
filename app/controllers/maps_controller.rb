@@ -23,12 +23,9 @@ class MapsController < ApplicationController
       render :show_activity
     elsif @map.kind == "google"
       render :show_google
-    elsif @map.kind == "sheethub"
-      @js_str = @map.js_str.gsub(/\r\n/,'')
+    elsif @map.kind.present?
+      @js_str = @map.js_str
       render :show_kind
-    elsif @map.kind == "news"
-      #GetNewsWorker.perform_async
-      render :show_news
     end
   end
 

@@ -5,14 +5,13 @@
   <%= simple_form_for(@map) do |f| %>
   <%= render 'common/error_messages', object: f.object %>
   <div class="field">
-    <%= f.input_field :js_str,:required => true,style: "width:100%;height:500px" %>
-
+    <%= f.input_field :js_str,:required => true, hidden: true %>
+<div id="codeMirror"></div>
   </div>
   <br>
+  <%= link_to 'Try to run it!', "#", id: "execute", :class => "btn btn-info" %>
 
-  <div class="actions">
-    <%= f.submit '送出', :class => "btn btn-success" %>
-  </div>
+  <%= f.submit 'Save', :class => "btn btn-success pull-right" %>
   <% end %>
 </div>
 
@@ -24,14 +23,31 @@
 
 <% content_for :javascripts do %>
 <script type='text/javascript'>
-  (function(){
 
     get_marker_and_pin_in_map(<%= @map.id %>,function(marker,map_id){
       marker.on('click',function(event){
         location.href = '/maps/'+map_id+'/locations/'+event.target.options.location_id;
       });
     });
-  })();
+    var myTextArea = document.getElementById('map_js_str');
+    var codeMirror = document.getElementById('codeMirror');
+    var myCodeMirror = CodeMirror(function(elt) {
+      codeMirror.parentNode.replaceChild(elt, codeMirror);
+    }, {
+      value: myTextArea.value,
+      mode: {name: "javascript", json: true},
+      lineNumbers: true});
+    $('#execute').click(function(){
+      var js = myCodeMirror.getValue();//http://codemirror.net/doc/manual.html#getValue
+      var s = document.createElement('script');
+      s.textContent = js;//inne
+      document.body.appendChild(s);
+      $('#map_js_str').html(myCodeMirror.getValue());
+    })
+
+
+
+
 
 </script>
 <% end %>

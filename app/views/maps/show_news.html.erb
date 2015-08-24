@@ -20,7 +20,7 @@
 
     var markers = new L.MarkerClusterGroup();
     $.ajax({
-      url: "/maps/<%= @map.id %>/locations",
+      url: map_url+ "/locations",
       dataType: "json",
       success: function (data) {
         var keysArray = data;
@@ -49,7 +49,7 @@
                 var callback = function(event,location_id,lat_lng){
                   var alatlng = (event.latlng) ? event.latlng : lat_lng;
                   $.ajax({
-                    url: '/maps/<%= @map.id %>/locations/' +location_id ,
+                    url: map_url+'/locations/' +location_id ,
                     dataType:'script'
                   }).success(function(data){
 
