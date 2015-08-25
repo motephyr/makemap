@@ -17,9 +17,17 @@ module MapsHelper
   def render_map_title_for_map(map)
 
     if is_existed_map(map)
-      "#{@map.title}"
+      "#{map.title}"
     else
       "地圖列表"
+    end
+  end
+
+  def render_map_title_for_maplist(map)
+    if map.private
+      "#{map.title} (私房)"
+    else
+      "#{map.title} (公開)"
     end
   end
 

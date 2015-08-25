@@ -28,7 +28,7 @@
           <ul class="dropdown-menu">
             <% if @maps.present? %>
             <% @maps.each do |map| %>
-            <li><%= link_to(map.title, map_path(map) ) %></li>
+            <li><%= link_to(render_map_title_for_maplist(map), map_path(map) ) %></li>
             <% end %>
             <% end %>
             <li><%= link_to("新增地圖",new_map_path, class: "btn btn-link" ) %></li>
@@ -41,7 +41,7 @@
         </li>
         <% if is_existed_map(@map) && current_user %>
 
-        <% if @map.kind.nil? %>
+        <% if @map.kind.blank? %>
 
         <% if request.path == map_path(@map) %>
         <li><%= link_to("新增地點","#",id: "new_location" ) %></li>
