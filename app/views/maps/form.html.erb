@@ -25,7 +25,7 @@
     <p>公開地圖：<ul><li>登入的使用者都可以編輯</li></ul></p>
   </div>
   <div class="field">
-    <p><%= f.label "地圖種類：(自定javascript)" %></p>
+    <p><%= f.label "特殊地圖：(有填值的話，可以編輯Javascript以呈現內容)" %></p>
     <%= f.input_field :kind ,placeholder: 'ex:sheethub',:required => true, maxlength: 25 %>
   </div>
   <% end %>
