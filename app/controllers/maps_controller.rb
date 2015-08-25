@@ -5,6 +5,7 @@ class MapsController < ApplicationController
   authorize_resource #cancan's setting
 
   def index
+    @random_map_id = Map.where(:private => false, :kind => nil).sample.id
   end
 
   def new

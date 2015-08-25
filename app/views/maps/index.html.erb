@@ -8,20 +8,29 @@
 <% content_for :javascripts do %>
 
 <script type='text/javascript'>
-(function(scope){
+  (function(scope){
     var sidebar = L.control.sidebar('sidebar', {
-    position: 'left'
-  });
+      position: 'left'
+    });
 
-  map.addControl(sidebar);
-  sidebar.show();
+    map.addControl(sidebar);
+    sidebar.show();
 
-  var markers = new L.MarkerClusterGroup();
+    var markers = new L.MarkerClusterGroup();
 
-  <%= render :partial => "example/shifus_data" %>
+    get_marker_and_pin_in_map(<%= @random_map_id %>,function(marker,map_id){
+      marker.on('click',function(event){
+        var alatlng = event.latlng;
+        $.ajax({
+          url: '/maps/'+map_id+'/locations/' +event.target.options.location_id ,
+          dataType:'script'
+        }).success(function(data){
+          sidebar.show();
+        });
+      });
+    });
 
-
-})(window);
+  })(window);
 
 </script>
 <% end %>

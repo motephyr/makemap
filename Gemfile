@@ -60,7 +60,6 @@ group :development do
   gem "capistrano-rails", require: false
   gem "capistrano-rvm", require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano-faster-assets', '~> 1.0'
   gem "binding_of_caller"
   gem "better_errors", "~> 0.9.0"
 
