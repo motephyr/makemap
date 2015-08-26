@@ -15,6 +15,10 @@ class MapsController < ApplicationController
     @map = Map.find(params[:id])
   end
 
+  def style_editor
+    
+  end
+
   def show
     @map = params[:id].present? ? Map.find(params[:id]) : Map.find_by_kind!(request.subdomain)
 

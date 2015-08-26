@@ -34,6 +34,8 @@ Rails.application.routes.draw do
       end
     end
 
+    get 'style_editor'
+
     member do
       post 'assign_manager_role'
       post 'assign_other_role'

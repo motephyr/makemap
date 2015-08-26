@@ -1,0 +1,38 @@
+/* The MIT License */
+
+.style-editor-main{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.style-editor-dot{
+  width: 64px;
+  height: 64px;
+  background: #dadada;
+  opacity: 0.6;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.style-editor-trans{
+
+}
+
+.style-editor-panel{
+
+}
+
+.color-editor-box{
+  background: #ececec;
+}
+
+.color-editor-red{
+  background: red;
+}
+.color-editor-green{
+  background: green;
+}
+.color-editor-blue{
+  background: blue;
+}

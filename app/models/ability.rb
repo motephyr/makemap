@@ -5,7 +5,7 @@ class Ability
     # cannot :manage, :all  #default設置無法管理任何資源
 
     alias_action :create,:read, :to => :starter
-    alias_action :update,:read,:assign_manager_role, :to => :change_map
+    alias_action :update,:read,:assign_manager_role,:style_editor, :to => :change_map
     alias_action :create,:update,:read, :to => :change_location
     if resource.nil?
       basic_read_only
