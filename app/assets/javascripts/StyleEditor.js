@@ -216,36 +216,150 @@
 (function(win){
 
     // var _eventHandler = function(){};
+    
+    // var _onChange = function(){};
 
-    var ColorEditor = function(opts){
-        this._events = {};
-        this._el = document.createElement('div');
-
-        var redEl = '<div class="color-editor-box"><div class="color-editor-red" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="255"></div></div>';
-        var greenEl = '<div class="color-editor-box"><div class="color-editor-green" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="255"></div></div>';
-        var blueEl = '<div class="color-editor-box"><div class="color-editor-blue" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="255"></div></div>';
-
-        // renderTo
-        this._options = $.extend({
-            width: 300, height: 50
-        }, opts || {});
-
-        $(this._el).append(redEl, greenEl, blueEl);
-        $(this._el).css({
-            width: this._options.width,
-            height: this._options.height
-        });
-
-        if(this._options.renderTo){
-            $(renderTo).append(this._el);
-        }
-        
+    var _getColorFix = function(n){
+      return Math.round(Math.max(Math.min(n, 255), 0));
     };
 
-    ColorEditor.prototype.on = function(eventName, fn){
-        if(typeof fn == 'function'){
-            this._events[eventName] = fn;
+    var _onMouseDown = function(scope, referDom, changedDom, relateName){
+      return function(e){
+        var w = $(referDom).width();
+        var x = Math.max(Math.min(e.offsetX, w), 0);
+        var percent = x / w;
+        var v = percent * 255;
+        $(changedDom).css("width", (percent * 100) + "%").attr('aria-valuenow', v);
+        scope['_isHold' + relateName] = true;
+        scope[relateName] = Math.round(v);
+        scope._changeHandler(scope.getColor());
+      };
+    };
+
+    var _onMouseMove = function(scope, referDom, changedDom, relateName){
+      return function(e){
+        if(scope['_isHold' + relateName]){
+          var w = $(referDom).width();
+          var x = Math.max(Math.min(e.offsetX, w), 0);
+          var percent = x / w;
+          var v = percent * 255;
+          $(changedDom).css("width", (percent * 100) + "%").attr('aria-valuenow', v);
+          scope[relateName] = Math.round(v);
+          scope._changeHandler(scope.getColor());
         }
+      };
+    };
+
+    var _onMouseUp = function(scope, relateName){
+      return function(e){
+        scope['_isHold' + relateName] = false;
+      };
+    };
+
+    var ColorEditor = function(opts){
+        var self = this;
+        self._events = {};
+        self._isHold = false;
+        // self._el = document.createElement('div');
+        self._r = 255;
+        self._g = 255;
+        self._b = 255;
+
+        var redElText = '<div class="color-editor-box"><div class="color-editor-body" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="255" style="background:red;"></div></div>';
+        var greenElText = '<div class="color-editor-box"><div class="color-editor-body" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="255" style="background:green;"></div></div>';
+        var blueElText = '<div class="color-editor-box"><div class="color-editor-body" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="255" style="background:blue;"></div></div>';
+
+        // renderTo
+        self._options = $.extend({
+            //width: 300, height: 30
+            height: '100%'
+        }, opts || {});
+
+        self._el = $(self._options.renderTo || document.createElement('div'))[0];
+
+        $(self._el).append(redElText, greenElText, blueElText);
+        $(self._el).css({
+            width: self._options.width,
+            height: self._options.height
+        });
+
+        self._changeHandler = self._options.changeHandler || function(){};
+
+        var childs = self._el.childNodes;
+        self.redEl = childs[0];
+        self.greenEl = childs[1];
+        self.blueEl = childs[2];
+
+        // if(self._options.renderTo){
+        //     $(self._options.renderTo).append(self._el);
+        // }
+        self.hookEvents();
+    };
+
+    ColorEditor.prototype._sync = function(){
+      var self = this;
+      $(self.redEl.childNodes[0]).css("width", (self._r / 255 * 100) + "%").attr('aria-valuenow', self._r);
+      $(self.blueEl.childNodes[0]).css("width", (self._g / 255 * 100) + "%").attr('aria-valuenow', self._g);
+      $(self.greenEl.childNodes[0]).css("width", (self._b / 255 * 100) + "%").attr('aria-valuenow', self._b);
+    };
+
+    ColorEditor.prototype.hookEvents = function(){
+      var self = this,
+        r = self.redEl, rbody = $(r).children(".color-editor-body"),
+        g = self.greenEl, gbody = $(g).children(".color-editor-body"),
+        b = self.blueEl, bbody = $(b).children(".color-editor-body");
+
+      // red
+      r.addEventListener('mousedown', _onMouseDown(self, r, rbody, '_r'));
+      r.addEventListener('mousemove', _onMouseMove(self, r, rbody, '_r'));
+      r.addEventListener('mouseup', _onMouseUp(self, '_r'));
+
+      // green
+      g.addEventListener('mousedown', _onMouseDown(self, g, gbody, '_g'));
+      g.addEventListener('mousemove', _onMouseMove(self, g, gbody, '_g'));
+      g.addEventListener('mouseup', _onMouseUp(self, '_g'));
+
+      // blue
+      b.addEventListener('mousedown', _onMouseDown(self, b, bbody, '_b'));
+      b.addEventListener('mousemove', _onMouseMove(self, b, bbody, '_b'));
+      b.addEventListener('mouseup', _onMouseUp(self, '_b'));
+
+      // prevent up in other region
+      document.body.addEventListener('mouseup', _onMouseUp(self, '_r'));
+      document.body.addEventListener('mouseup', _onMouseUp(self, '_g'));
+      document.body.addEventListener('mouseup', _onMouseUp(self, '_b'));
+    };
+
+    ColorEditor.prototype.onchange = function(fn){
+      if(typeof fn == 'function'){
+        this._changeHandler = fn;
+      }
+    };
+
+    ColorEditor.prototype.setColor = function(r, g, b){
+      r = _getColorFix(r);
+      g = _getColorFix(g);
+      b = _getColorFix(b);
+
+      this._r = r;
+      this._g = g;
+      this._b = b;
+      
+      this._sync();
+      this._changeHandler(this.getColor());
+    };
+
+    ColorEditor.prototype.getColor = function(cssColorPrefix){
+      var r = this._r.toString(16);
+      var g = this._g.toString(16);
+      var b = this._b.toString(16);
+      r = r.length < 2 ? "0" + r : r;
+      g = g.length < 2 ? "0" + g : g;
+      b = b.length < 2 ? "0" + b : b;
+      var res = [r,g,b].join('');
+      if(cssColorPrefix) res = '#' + res;
+      console.log(res);
+      return res;
     };
 
     win.ColorEditor = ColorEditor;
@@ -272,18 +386,37 @@
         return [];
     };
 
-    var _generateEditor = function(attrs){
+    var _generateEditor = function(attrs, target){
         var attrsLen = attrs.length;
         // if(attrsLen){
         // }
         var resEl = document.createElement('div');
         $(resEl).css({
-            display: 'none',
+            // display: 'none',
             width:'100%',
             height:'100%'
         });
-        var ce = new ColorEditor(resEl);
+        $(resEl).append('<div class="style-editor-item">' +
+            '<div class="style-editor-label">background:</div><div class="style-editor-body"></div>' +
+            '</div>'
+        );
+        var currentItemEl = $(resEl).children().last();
+        var editorContainer = $(currentItemEl).children().eq(1);
+        var ce = new ColorEditor({
+            renderTo: editorContainer,
+            changeHandler: (function(el){
+              return function(hex){
+                $(el).css('background', this.getColor(true));
+              };
+            })(target)
+        });
         return resEl;
+    };
+
+    var _resizeHandler = function(el, w, h){
+      $(el).width(w * 0.4).height(h * 0.3);
+      //width: 40%;
+      //height: 30%;
     };
 
     // se-id = 
@@ -328,7 +461,7 @@
                 var el = seAttrs[i];
                 var id = _getEditorId(el); 
                 var attrs = _getEditorAttrs(el);
-                var editEl = _generateEditor(attrs);
+                var editEl = _generateEditor(attrs, el);
                 self._editElements.push({
                     id: id,
                     attrs: attrs,
@@ -340,6 +473,11 @@
                 $(self._panelEl).append(editEl);
             }
             $(self._el).append(self._dotEl, self._transEl, self._panelEl);
+            $(window).on('resize', (function(scope, fn){
+              return function(){
+                fn(scope, $(window).width(), $(window).height());
+              };
+            })(self._panelEl, _resizeHandler));
         }
 
         $(self._el).css({
