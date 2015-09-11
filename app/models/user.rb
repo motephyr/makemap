@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 
   extend OmniauthCallbacks
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :invitable, :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :invitable
 
   has_many :locations
   has_many :maps

@@ -18,6 +18,7 @@ gem 'seo_helper', '~> 1.0'
 gem "simple_form"
 gem 'devise'
 gem 'devise-i18n'
+gem 'devise_invitable'
 gem "omniauth"
 gem "omniauth-facebook"
 gem "auto-facebook", git: 'https://github.com/motephyr/auto-facebook.git'
