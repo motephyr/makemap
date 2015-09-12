@@ -119,6 +119,7 @@
       return function(e){
         // _highlightIdx
         // this._regions
+        console.log("canvas move");
         var found = false;
         for(var i = 0, len = rs.length; i < len; i++) {
           if (e.pageX > rs[i].x && e.pageX < rs[i].x + rs[i].w &&
@@ -350,16 +351,21 @@
     };
 
     ColorEditor.prototype.getColor = function(cssColorPrefix){
-      var r = this._r.toString(16);
-      var g = this._g.toString(16);
-      var b = this._b.toString(16);
-      r = r.length < 2 ? "0" + r : r;
-      g = g.length < 2 ? "0" + g : g;
-      b = b.length < 2 ? "0" + b : b;
-      var res = [r,g,b].join('');
-      if(cssColorPrefix) res = '#' + res;
-      console.log(res);
-      return res;
+      // var r = this._r.toString(16);
+      // var g = this._g.toString(16);
+      // var b = this._b.toString(16);
+      // r = r.length < 2 ? "0" + r : r;
+      // g = g.length < 2 ? "0" + g : g;
+      // b = b.length < 2 ? "0" + b : b;
+      // var res = [r,g,b].join('');
+      // if(cssColorPrefix) res = '#' + res;
+      // console.log(res);
+      // return res;
+      return "rgba("+ [this._r,this._g,this._b,1].join(',') + ")";
+    };
+
+    ColorEditor.prototype.getValue = function(){
+      return this.getColor(true);
     };
 
     win.ColorEditor = ColorEditor;
@@ -368,22 +374,33 @@
 
 (function(win){
 
-    var _editorId = 0;
-    var _getEditorId = function(dom){
-        var id = dom.id;
-        if(!id){
-            id = "se-gen-" + ++_editorId;
-            dom.id = id;
-        }
-        return id;
+    // var _editorId = 0;
+    // var _getEditorId = function(dom){
+    //     var id = dom.id;
+    //     if(!id){
+    //         id = "se-gen-" + ++_editorId;
+    //         dom.id = id;
+    //     }
+    //     return id;
+    // };
+
+    var _validStyleNames = {
+      'background-color': { showName: 'Background Color', mapClass: 'ColorEditor' }
+    };
+
+    var _checkHasValid = function(attrs){
+      for(var i = 0, len = attrs.length; i < len; i++){
+        if(_validStyleNames[attrs[i]]) return true;
+      }
+      return false;
     };
 
     var _getEditorAttrs = function(dom){
-        var attrs = $(dom).attr("se-attr");
-        if(attrs){
-            return attrs.split(' ');
+        var attrs = $(dom).attr("se-attr"), attrsInArray;
+        if(attrs && (attrsInArray = attrs.split(' ')) && _checkHasValid(attrsInArray)){
+            return attrsInArray;
         }
-        return [];
+        return false;
     };
 
     var _generateEditor = function(attrs, target){
@@ -391,30 +408,41 @@
         // if(attrsLen){
         // }
         var resEl = document.createElement('div');
-        $(resEl).css({
-            // display: 'none',
-            width:'100%',
-            height:'100%'
-        });
-        $(resEl).append('<div class="style-editor-item">' +
-            '<div class="style-editor-label">background:</div><div class="style-editor-body"></div>' +
-            '</div>'
-        );
-        var currentItemEl = $(resEl).children().last();
-        var editorContainer = $(currentItemEl).children().eq(1);
-        var ce = new ColorEditor({
-            renderTo: editorContainer,
-            changeHandler: (function(el){
-              return function(hex){
-                $(el).css('background', this.getColor(true));
-              };
-            })(target)
-        });
-        return resEl;
+        // $(resEl).css({
+        //     // display: 'none',
+        //     // width:'100%',
+        //     // height:'100%'
+        // });
+
+        for(var i = 0; i < attrsLen; i++){
+          var name = attrs[i];
+          if(_validStyleNames[name]){
+            var showName = _validStyleNames[name].showName;
+            var mapClass = _validStyleNames[name].mapClass;
+            var elStr = '<div class="style-editor-item">' +
+              '<div class="style-editor-label">' + (showName || name) +
+              '</div><div class="style-editor-body"></div></div>';
+            $(resEl).append(elStr);
+
+            var currentItemEl = $(resEl).children().last();
+            var editorContainer = $(currentItemEl).children().eq(1);
+            var ed = new win[mapClass]({
+                renderTo: editorContainer,
+                changeHandler: (function(el, cssProperty){
+                  return function(hex){
+                    $(el).css(cssProperty, this.getValue());
+                  };
+                })(target, name)
+            });
+          }
+        }
+        return {
+          el: resEl
+        };
     };
 
     var _resizeHandler = function(el, w, h){
-      $(el).width(w * 0.4).height(h * 0.3);
+      $(el).width(w * 0.4).height(h * 0.4);
       //width: 40%;
       //height: 30%;
     };
@@ -437,7 +465,7 @@
         // this._canvas = document.createElement("canvas");
         // document.body.appendChild(this._canvas);
 
-        this._options = {
+        self._options = {
           activeOnClick: true
         };
 
@@ -446,7 +474,7 @@
         self._el = document.createElement("div");
         $(self._el).addClass("style-editor-main");
 
-        var seAttrs = $(document.body).find("[se-attr]");
+        var seAttrs = $(document.body).find("[se-id]").filter("[se-attr]");
         var seLen = seAttrs.length;
         if(seLen){
             // renders
@@ -457,27 +485,82 @@
             $(self._transEl).addClass("style-editor-trans");
             $(self._panelEl).addClass("style-editor-panel");
 
+            $(self._panelEl).append('<div class="se-panel-head"></div><div class="se-panel-body"></div>');
+            if(self._options.activeOnClick){
+              // $(self._panelEl).append('<div class="se-panel-button"></div>');
+            }
+            if(self._options.url && typeof self._options.submit == 'function'){
+              $(self._panelEl).append('<div class="se-panel-button"><div class="se-panel-button-body noselect">Submit</div></div>'); 
+              self._submitEl = $(self._panelEl).find(".se-panel-button-body").eq(0);
+              $(self._submitEl).click(function(e){
+                $.post(self._options.url, { style: JSON.stringify(self.getAllStyle()) }, 
+                  function(data, status, xhr){
+
+                  }
+                );
+              });
+            }
+
+            self._panelHeadEl = $(self._panelEl).children().eq(0);
+
+            var _movingHandler = (function(scope, t){
+              return function(e){
+                console.log("editor move");
+                if(scope._isMoving){
+                  var mx = e.pageX - scope._curXY.x;
+                  var my = e.pageY - scope._curXY.y;
+                  var p = $(t).offset();
+                  $(t).offset({
+                    left: mx,
+                    top: my
+                  });    
+                }
+              };
+            })(self._panelHeadEl[0], self._panelEl);
+
+            var _upHandler = (function(scope){
+              return function(e){
+                scope._isMoving = false;
+                scope._curXY = null;  
+                $(document.body).off('mousemove', _movingHandler);
+                $(document.body).off('mouseup', _upHandler);
+              };
+            })(self._panelHeadEl[0]);
+
+            self._panelHeadEl.on('mousedown',function(e){
+              this._isMoving = true;
+              this._curXY = { x:e.offsetX, y: e.offsetY };
+              $(document.body).on('mousemove', _movingHandler);
+              $(document.body).on('mouseup', _upHandler);
+            });
+
+            self._panelBodyEl = $(self._panelEl).children().eq(1);
+
             for(var i = 0; i < seLen; i++){
                 var el = seAttrs[i];
-                var id = _getEditorId(el); 
+                var id = $(el).attr("se-id"); 
                 var attrs = _getEditorAttrs(el);
-                var editEl = _generateEditor(attrs, el);
+                if(!attrs) continue;
+                var editor = _generateEditor(attrs, el);
                 self._editElements.push({
                     id: id,
                     attrs: attrs,
                     targetEl: el,
-                    editEl: editEl
+                    editor: editor
                 });
-                self._editMap[id] = editEl;
+                self._editMap[id] = editor;
 
-                $(self._panelEl).append(editEl);
+                $(editor.el).attr("se-map-id", id);
+                $(self._panelBodyEl).append(editor.el);
             }
-            $(self._el).append(self._dotEl, self._transEl, self._panelEl);
-            $(window).on('resize', (function(scope, fn){
-              return function(){
-                fn(scope, $(window).width(), $(window).height());
-              };
-            })(self._panelEl, _resizeHandler));
+            if(self._editElements.length > 0){
+              $(self._el).append(self._dotEl, self._transEl, self._panelEl);
+              $(window).on('resize', (function(scope, fn){
+                return function(){
+                  fn(scope, $(window).width(), $(window).height());
+                };
+              })(self._panelEl, _resizeHandler));
+            }
         }
 
         $(self._el).css({
@@ -492,19 +575,42 @@
     };
 
     StyleEditor.prototype.hide = function(){
-        if(!this._isAnimating){
-            this._isAnimating = true;
-        }
+        // if(!this._isAnimating){
+        //     this._isAnimating = true;
+        // }
+        $(this._panelEl).hide();
     };
 
     StyleEditor.prototype.show = function(){
-        if(!this._isAnimating){
-            this._isAnimating = true;
-        }
+        // if(!this._isAnimating){
+        //     this._isAnimating = true;
+        // }
+        $(this._panelEl).show();
+        _resizeHandler(this._panelEl, $(window).width(), $(window).height());
     };
 
     StyleEditor.prototype.setActive = function(id){
 
+    };
+
+    StyleEditor.prototype.getStyle = function(id){
+
+    };
+
+    // [
+    //   {
+    //     id: xxx,
+    //     def: 
+    //   }
+    // ]
+
+    StyleEditor.prototype.getAllStyle = function(){
+      var self = this;
+      var eds = self._editElements;
+      var res = [];
+      for(var i = 0, len = eds.length; i < len; i++){
+        // res.push(eds[i].editor.)
+      }
     };
 
     win.StyleEditor = StyleEditor;

@@ -1,7 +1,17 @@
 /* The MIT License */
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 .style-editor-main{
   position: absolute;
+  width: 0;
+  height: 0;
   left: 0;
   top: 0;
 }
@@ -9,10 +19,11 @@
 .style-editor-dot{
   width: 64px;
   height: 64px;
-  background: #dadada;
-  opacity: 0.6;
+  background: rgba(210,210,210,0.6);
+  display: none;
   border-radius: 16px;
   cursor: pointer;
+  display: none;
 }
 
 .style-editor-trans{
@@ -23,7 +34,7 @@
   background: white;
   min-width: 320px;
   min-height: 180px;
-  padding: 6px;
+  position: relative;
   /*
   width: 40%;
   height: 22.5%;
@@ -48,6 +59,42 @@
   width: 70%;
   height: 100%;
   float: left;
+}
+.se-panel-head{
+  height: 10%;
+  min-height: 25px;
+  cursor: move;
+}
+.se-panel-body{
+  height: 90%;
+  padding: 6px;
+  overflow: auto;
+}
+.se-panel-button{
+  width: 90px;
+  height: 40px;
+  background: rgba(255,255,255,0.7);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.se-panel-button-body{
+  height: 28px;
+  padding: 3px;
+  cursor: pointer;
+  margin: 6px 10px;
+  text-align: center;
+  color: rgb(120,120,120);
+  border: 1px solid rgba(216, 216, 216, 0.8);
+  border-radius: 3px;
+  background: rgba(232, 232, 232, 0.8);
+  box-shadow: 0.5px 0.5px 1px 1px rgba(180,180,180,0.6);
+}
+.se-panel-button-body:hover{
+  background: rgba(180, 180, 180, 0.7);
+}
+.se-panel-button-body:active{
+  color: rgb(255,255,255);
 }
 
 .color-editor-box{

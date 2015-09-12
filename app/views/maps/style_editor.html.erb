@@ -27,13 +27,18 @@ var editor;
 
 $(window).load(function(){
 
+  var url = "http://fff";
+  var callback = function(){};
   // Add 'rh' attribute to element for highlight
   hightlighter = new RegionHighlighter(document.body);
 
   editor = new StyleEditor({
-    // url: 'action',
-    
+    url: url,
+    submit: callback
   });
+
+  editor.show();
+
 
   // hightlighter.onclick(function(o, e){ alert("shit"); });
   
