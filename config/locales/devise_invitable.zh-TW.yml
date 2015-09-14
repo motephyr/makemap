@@ -1,0 +1,24 @@
+zh-TW:
+  devise:
+    failure:
+      invited: "You have a pending invitation, accept it to finish creating your account."
+    invitations:
+      send_instructions: "An invitation email has been sent to %{email}."
+      invitation_token_invalid: "The invitation token provided is not valid!"
+      updated: "Your password was set successfully. You are now signed in."
+      updated_not_active: "Your password was set successfully."
+      no_invitations_remaining: "No invitations remaining"
+      invitation_removed: "Your invitation was removed."
+      new:
+        header: "Send invitation"
+        submit_button: "送出邀請"
+      edit:
+        header: "Set your password"
+        submit_button: "Set my password"
+    mailer:
+      invitation_instructions:
+        subject: "邀請通知"
+        hello: "Hello! %{email}"
+        someone_invited_you: "您的朋友 %{name} 邀請您到 %{url}, 這是一個協作地圖的平台，一起編輯你們自已的地圖。"
+        accept: "接受邀請"
+        ignore: "如果您不接受邀請, 請略過此封郵件.<br />"

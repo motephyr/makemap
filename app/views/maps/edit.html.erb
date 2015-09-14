@@ -13,6 +13,15 @@
 <% end %>
 <%= render template: "maps/form" %>
 
+<hr>
+<h3>邀請好友共同管理地圖</h3>
+<%= simple_form_for @map, url: invite_member_map_path, html: { method: :post} do |f| %>
+
+<input type="text"  name="email" class="form-control" placeholder="your_friend@gmail.com" />
+<br>
+<%= f.button :submit, t("devise.invitations.new.submit_button"),class: "btn btn-success" %>
+<% end %>
+
 <% end %>
 <%= render template: "common/sidebar_right" %>
 

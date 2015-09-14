@@ -14,4 +14,14 @@ class User < ActiveRecord::Base
   def skip_confirmation!
   end
 
+  def assign_role(map_id, role_name)
+    if self.present?
+      @map = Map.find(map_id)
+      self.add_role role_name, @map
+      return true
+    end
+
+    return false
+  end
+
 end

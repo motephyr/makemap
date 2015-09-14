@@ -59,11 +59,23 @@ class MapsController < ApplicationController
 
 
   def assign_manager_role
-    assign_role("manager")
+    result = auser.assign_role("manager")
+
+    if result
+      respond_to do |format|
+        format.json { render json: "success", status: :created }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: "no_user", status: :unprocessable_entity }
+      end
+    end
   end
 
-  def assign_other_role
-    assign_role("other")
+  def invite_member
+    @user = User.invite!(:email => params[:email],:name => "#{current_user.name}(#{current_user.email})" )
+    @user.assign_role(params[:id], "manager")
+    redirect_to edit_map_path, notice: "邀請了#{params[:email]}"
   end
 
   def edit_js_str_page
@@ -76,19 +88,4 @@ class MapsController < ApplicationController
     params.require(:map).permit(:title, :description, :private,:kind,:js_str, :location_pins_attributes => [:id, :pin])
   end
 
-  def assign_role(role_name)
-    @user = User.find_by(email: params[:email])
-
-    if @user.present?
-      @map = Map.find(params[:id])
-      @user.add_role role_name, @map
-      respond_to do |format|
-        format.json { render json: "success", status: :created }
-      end
-    else
-      respond_to do |format|
-        format.json { render json: "no_user", status: :unprocessable_entity }
-      end
-    end
-  end
 end

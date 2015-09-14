@@ -36,8 +36,8 @@ Rails.application.routes.draw do
 
     member do
       get 'edit_js_str_page'
+      post 'invite_member'
       post 'assign_manager_role'
-      post 'assign_other_role'
     end
   end
 
