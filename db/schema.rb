@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150813165936) do
+ActiveRecord::Schema.define(version: 20150907115456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20150813165936) do
     t.string   "outer_photo_url"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.json     "remark"
     t.integer  "location_pin_id"
+    t.json     "remark"
   end
 
   add_index "locations", ["map_id"], name: "index_locations_on_map_id", using: :btree
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150813165936) do
     t.datetime "updated_at"
     t.string   "kind"
     t.integer  "user_id"
+    t.json     "style"
   end
 
   create_table "photos", force: true do |t|

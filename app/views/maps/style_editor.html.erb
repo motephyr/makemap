@@ -27,14 +27,30 @@ var editor;
 
 $(window).load(function(){
 
-  var url = "http://fff";
-  var callback = function(){};
   // Add 'rh' attribute to element for highlight
   hightlighter = new RegionHighlighter(document.body);
 
   editor = new StyleEditor({
-    url: url,
-    submit: callback
+    renderTo: document.getElementById('float-editor'),
+    submitText: 'Save',
+    submitClick: function(event, el){
+      // $.ajax({
+      //   type: "post",
+      //   url: url,
+      //   data: {
+      //     authenticity_token: $('[name=csrf-token]').attr('content'),
+      //     _method: 'patch',
+      //     map:{
+      //       style: JSON.stringify(StyleDropper.suck("se-id"))
+      //     }
+      //   },
+      //   success: function(data, status, xhr){
+      //   },
+      //   dataType: 'json'
+      // });
+      $('#style_string').text(JSON.stringify(StyleDropper.suck("se-id")));
+      document.getElementById('style_submit_id').click();
+    }
   });
 
   editor.show();
@@ -59,3 +75,9 @@ $(window).load(function(){
 
 </script>
 <% end %>
+<div id="float-editor">
+  <%= simple_form_for @map, :html => { :style => 'display:none' } do |f| %>
+  <%= f.input_field :style, as: :text, id: 'style_string' %>
+  <%= f.submit '送出', id:'style_submit_id' %>
+  <% end %>
+</div>

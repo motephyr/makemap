@@ -16,7 +16,7 @@ class MapsController < ApplicationController
   end
 
   def style_editor
-    
+    @map = Map.find(params[:map_id])
   end
 
   def show
@@ -48,6 +48,7 @@ class MapsController < ApplicationController
   end
 
   def update
+    # binding.pry
     @map = Map.find(params[:id])
     if @map.update(map_params)
       redirect_to map_path(@map)
@@ -75,7 +76,7 @@ class MapsController < ApplicationController
   private
 
   def map_params
-    params.require(:map).permit(:title, :description, :private, :location_pins_attributes => [:id, :pin])
+    params.require(:map).permit(:title, :description, :private, :style, :location_pins_attributes => [:id, :pin])
   end
 
   def assign_role(role_name)

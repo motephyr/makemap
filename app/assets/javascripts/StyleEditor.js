@@ -450,9 +450,8 @@
     // se-id = 
     // se-attr = 
     var StyleEditor = function(options){
-        options = options || {};
         var self = this;
-        self._url = options.url || "";
+        
         self._zIndex = getElementMaxZindex();
         self._zIndex++;
 
@@ -469,9 +468,9 @@
           activeOnClick: true
         };
 
-        $.extend(this._options, options);
+        options = $.extend(self._options, options || {});
 
-        self._el = document.createElement("div");
+        self._el = options.renderTo? options.renderTo : document.createElement("div");
         $(self._el).addClass("style-editor-main");
 
         var seAttrs = $(document.body).find("[se-id]").filter("[se-attr]");
@@ -486,18 +485,15 @@
             $(self._panelEl).addClass("style-editor-panel");
 
             $(self._panelEl).append('<div class="se-panel-head"></div><div class="se-panel-body"></div>');
-            if(self._options.activeOnClick){
+            if(options.activeOnClick){
               // $(self._panelEl).append('<div class="se-panel-button"></div>');
             }
-            if(self._options.url && typeof self._options.submit == 'function'){
-              $(self._panelEl).append('<div class="se-panel-button"><div class="se-panel-button-body noselect">Submit</div></div>'); 
+            if(typeof options.submitClick == 'function'){
+              $(self._panelEl).append('<div class="se-panel-button"><div class="se-panel-button-body noselect">'+
+                  options.submitText || 'Submit' + '</div></div>'); 
               self._submitEl = $(self._panelEl).find(".se-panel-button-body").eq(0);
               $(self._submitEl).click(function(e){
-                $.post(self._options.url, { style: JSON.stringify(self.getAllStyle()) }, 
-                  function(data, status, xhr){
-
-                  }
-                );
+                options.submitClick.call(self, e, self._submitEl);
               });
             }
 
