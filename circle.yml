@@ -1,0 +1,5 @@
+checkout:
+  post:
+    - cp config/config.yml.example config/config.yml
+    - cp config/secrets.yml.example config/secrets.yml
+    - cp config/database.yml.example config/database.yml

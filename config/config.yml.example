@@ -1,0 +1,25 @@
+defaults: &defaults
+  app_name: "Make Map"
+  domain: "http://www.makemap.org"
+  facebook_admins: ""
+  facebook_app_id: ""
+  facebook_secret: ""
+  default_logo_url: ""
+  S3_KEY: ""
+  S3_SECRET: ""
+  S3_REGION: ""
+  S3_BUCKET_NAME: ""
+  google_analytics_key: ''
+  mailgun_user_name: ""
+  mailgun_password: ""
+
+development:
+  <<: *defaults
+  domain: "http://makemap.dev"
+
+test:
+  <<: *defaults
+  domain: "http://makemap.dev"
+
+production:
+  <<: *defaults
