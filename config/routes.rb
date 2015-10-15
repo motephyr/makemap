@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     collection do
       get 'demo'
       get 'search_location'
+      get 'getjson'
       eval(arrayMapReduce)
     end
   end
