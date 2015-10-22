@@ -9,7 +9,4 @@ class WelcomeController < ApplicationController
     end
   end
 
-  def style_editor
-  	
-  end
 end

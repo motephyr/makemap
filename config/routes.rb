@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   resources :welcome do
     collection do
-      get 'style_editor'
       get 'demo'
       get 'search_location'
       eval(arrayMapReduce)
@@ -35,6 +34,8 @@ Rails.application.routes.draw do
     end
 
     get 'style_editor'
+    post 'style_img'
+    # resources :style
 
     member do
       post 'assign_manager_role'
