@@ -11,12 +11,14 @@
 
 <script type='text/javascript'>
 (function(scope){
-    var sidebar = L.control.sidebar('sidebar', {
+  var sidebar = L.control.sidebar('sidebar', {
     position: 'left'
   });
 
   map.addControl(sidebar);
   sidebar.show();
+
+  StyleDropper.drop(<%= sanitize @style %>);
 
   var markers = new L.MarkerClusterGroup();
 
@@ -28,10 +30,21 @@ var editor;
 $(window).load(function(){
 
   // Add 'rh' attribute to element for highlight
-  hightlighter = new RegionHighlighter(document.body);
+  hightlighter = new RegionHighlighter(document.body, { querySelector: "[se-id]" });
 
   editor = new StyleEditor({
     renderTo: document.getElementById('float-editor'),
+    imageUploadOptions:{
+      url:{
+        create: '<%= map_style_img_path(@map) %>',
+        remove: '<%= map_style_img_path(@map) %>'  
+      },
+      uploadParams:{ "authenticity_token" : $('[name=csrf-token]').attr('content') },
+      removeParams:{ "authenticity_token" : $('[name=csrf-token]').attr('content') },
+      filenameGenFn: function(name){
+        return [$(this._el).parents("[se-map-id]").attr('se-map-id'), name].join('_');
+      },
+    },
     submitText: 'Save',
     submitClick: function(event, el){
       // $.ajax({
@@ -53,6 +66,15 @@ $(window).load(function(){
     }
   });
 
+  hightlighter.onclick(function(o, e){
+    var id = $(this).attr("se-id");
+    if(id){
+      editor.setActive(id);
+    }
+  });
+
+  // editor.syncByElement();
+  editor.setActive(0);
   editor.show();
 
 
@@ -70,12 +92,63 @@ $(window).load(function(){
   // hightlighter.addRegion(".leaflet-control-container .right .close", {
   //   click: function(o, e){ alert("close right"); }
   // });
+  
+  // // select the target node
+  // var target = document.querySelector('#sidebar');
+   
+  // // create an observer instance
+  // var observer = new MutationObserver(function(mutations) {
+  //   mutations.forEach(function(mutation) {
+  //     console.log(mutation.type);
+  //   });    
+  // });
+   
+  // // configuration of the observer:
+  // var config = { attributes: true, childList: true, characterData: true, attributeOldValue: true };
+   
+  // // pass in the target node, as well as the observer options
+  // observer.observe(target, config);
 
+  // var up = document.getElementById('bimgUpload');
+  // up.addEventListener('change', function(e){
+  //   var self = this;
+  //   if(self._isUploading !== true){
+  //     self._isUploading = true;
+  //     if(self.files.length){
+  //       // create
+  //       var f = new FormData();
+  //       var fileBlob = self.files[0];
+  //       f.append(self.name, fileBlob, 'id_bk_img');
+  //       f.append("authenticity_token", $('[name=csrf-token]').attr('content'));
+  //       f.append("img_url", '');
+  //       $.ajax({
+  //         type: "POST",
+  //         url: '<%= map_style_img_path(@map) %>',
+  //         cache: false,
+  //         contentType: false,
+  //         processData: false,
+  //         data: f,
+  //         success: function(o){
+  //           self._isUploading = false;
+  //           alert(JSON.stringify(o));
+  //         },
+  //         error:function(o, title, content){
+  //           self._isUploading = false;
+
+  //         }
+  //       });
+  //     }else{
+  //       // delete
+
+  //     }
+  //   }
+  // });
 });
 
 </script>
 <% end %>
 <div id="float-editor">
+  <!-- <input id="bimgUpload" type="file" name="se_img" accept="image/*"/> -->
   <%= simple_form_for @map, :html => { :style => 'display:none' } do |f| %>
   <%= f.input_field :style, as: :text, id: 'style_string' %>
   <%= f.submit '送出', id:'style_submit_id' %>

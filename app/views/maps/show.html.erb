@@ -17,6 +17,7 @@
     map.addControl(sidebar);
     sidebar.show();
 
+    StyleDropper.drop(<%= sanitize @style %>);
 
     get_marker_and_pin_in_map(<%= @map.id %>,function(marker,map_id){
       marker.on('click',function(event){
