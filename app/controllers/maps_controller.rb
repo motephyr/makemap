@@ -74,10 +74,10 @@ class MapsController < ApplicationController
     # url = params[:se_img_url]
     file = params[:_im_upload]
     ac = params[:_im_action]
+    base_path = File.expand_path(Rails.public_path)
     url_path = "uploads/style_image/map_#{params[:map_id]}"
     if file and ac == 'create'
       # new file
-      base_path = File.expand_path(Rails.public_path)
       file_path = FileUtils.mkdir_p("#{base_path}/#{url_path}")
       
       file_name = file.original_filename
@@ -86,16 +86,16 @@ class MapsController < ApplicationController
       File.open("#{file_path}/#{file_name}", 'wb') { |f| f.write(file.read)}
       res['_im_res_url'] = "/#{url_path}/#{file_name}"
       res['success'] = true
-    # elsif ac == 'remove'
-    #   # remove file
-    #   # File.delete(path_to_file) if File.exist?(path_to_file)
-    #   path = params[:_im_source]
-    #   name = path.split(url_path)[1]
-    #   if name
-    #     # binding.pry
-    #     File.delete(Rails.root + "/#{url_path}#{name}")
-    #     res['success'] = true
-    #   end
+    elsif ac == 'remove'
+      # remove file
+      # File.delete(path_to_file) if File.exist?(path_to_file)
+      path = params[:_im_source]
+      name = path.split(url_path)[1]
+      if name
+        # binding.pry
+        File.delete("#{base_path}/#{url_path}#{name}")
+        res['success'] = true
+      end
     end
     respond_to do |format|
       format.json { render :json => res }

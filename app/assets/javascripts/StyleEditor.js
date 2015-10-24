@@ -266,7 +266,8 @@
       };
     };
 
-    var ColorEditor = function(opts){
+    function ColorEditor(opts){
+    // var ColorEditor = function(opts){
         var self = this;
         self._events = {};
         self._isHold = false;
@@ -305,7 +306,7 @@
         // }
         self.initValues();
         self.hookEvents();
-    };
+    }
 
     ColorEditor.prototype._sync = function(){
       var self = this;
@@ -466,7 +467,8 @@
     url: {}   // create, remove
   };
 
-  var ImageEditor = function(options){
+  function ImageEditor(options){
+  // var ImageEditor = function(options){
     var self = this;
     self._options = $.extend({}, _defaults, options || {});
 
@@ -481,14 +483,13 @@
         height: self._options.height
     });
 
-    self._fileEl = self._options.inputElement;
+    // self._fileEl = self._options.inputElement;
 
-    if(!isDom(self._fileEl, 'input')){
-      $(self._el).append('<input style="display:none;" type="file" name="' + self._options.inputName + '"/>');
-      self._fileEl = self._el.childNodes[self._el.childNodes.length - 1];
-    }
-
-    self._fileEl.setAttribute("accept","image/*");
+    // if(!isDom(self._fileEl, 'input')){
+    // $(self._el).append('<input style="display:none;" type="file" />');
+    // self._fileEl = self._el.childNodes[self._el.childNodes.length - 1];
+    self._resetInput();
+    // }
 
     self._changeHandler = self._options.changeHandler || function(){};
 
@@ -499,62 +500,31 @@
     self.initValues();
     self.hookEvents();
 
-  };
+  }
 
-  ImageEditor.prototype.initValues = function(){
+  ImageEditor.prototype._resetInput = function(){
     var self = this;
-    self._isRepeat = true;
-    self._values = {};
-    Object.defineProperty(self._values, "background-repeat", {
-      get:function(){ return this._br || 'initial'; },
-      set:function(v){
-        if(v == 'no-repeat'){
-          $(self.repeatEl.childNodes[0]).html(self._options.noRepeatText);
-          self._isRepeat = false;
-        }else{
-          v = 'initial';
-          $(self.repeatEl.childNodes[0]).html(self._options.repeatText);
-          self._isRepeat = true;
-        }
-        this._br = v;
-      }
-    });
-    Object.defineProperty(self._values, "background-image", {
-      get: function(){ return this._bi || ""; },
-      set: function(v){
-        var rg = RegExp("url\\((.*)\\)");
-        if(v && rg.test(v)){
-          var item = v.match(rg)[1];
-          this._bi = v;
-          self._imageSource = item;
-          $(self.uploadEl.childNodes[0]).html(self._options.removeText);
-        }else{
-          this._bi = '';
-          self._imageSource = null;
-          $(self.uploadEl.childNodes[0]).html(self._options.uploadText);
-        }
-      }
-    });
-    Object.defineProperty(self._values, "background-size", {
-      get: function(){ return this._bs || '100% auto'; },
-      set: function(v){
-        this._bs = v;
-      }
-    });
+    if(self._fileEl) $(self._fileEl).remove();
+    $(self._el).append('<input style="display:none;" type="file" />');
+    self._fileEl = self._el.childNodes[self._el.childNodes.length - 1];
+    self._fileEl.setAttribute("accept","image/*");
   };
 
-  // when uploaded and refresh?
-  // delete upload?
-
-  ImageEditor.prototype.hookEvents = function(){
+  ImageEditor.prototype._hookInputEvent = function(){
     var self = this;
     self._fileEl.addEventListener('change', (function(scope){
       return function(e){
         var el = e.target;
-        if(el.files.length){
+        if(el.files.length == 0) {
+          scope._uploadAction = null;
+          return;
+        }
+        
+        var fileBlob = el.files[0];
+
+        if(scope._options.lazyUpload !== true){
           // create
           var f = new FormData();
-          var fileBlob = el.files[0];
           var params = scope._options.uploadParams;
           f.append(scope._options.inputName || el.name, fileBlob, 
             scope._options.filenameGenFn.call(scope, fileBlob.name) );
@@ -598,9 +568,78 @@
             //   console.error(title + ": " + content + "\n Details: " + o.responseText);
             // }
           });
+        }else{
+
+          // var preview = document.querySelector('img');
+          // var file    = document.querySelector('input[type=file]').files[0];
+          var reader  = new FileReader();
+
+          reader.onloadend = function () {
+            scope._values["background-image"] = "url(" + reader.result + ")";
+            scope._changeHandler(scope._imageSource);
+          }
+          scope._uploadAction = {
+            file: fileBlob
+          };
+          reader.readAsDataURL(fileBlob);
         }
       };
     })(this));
+  };
+
+  ImageEditor.prototype.initValues = function(){
+    var self = this;
+    self._isRepeat = true;
+    self._values = {};
+    Object.defineProperty(self._values, "background-repeat", {
+      get:function(){ return this._br || 'initial'; },
+      set:function(v){
+        if(v == 'no-repeat'){
+          $(self.repeatEl.childNodes[0]).html(self._options.noRepeatText);
+          self._isRepeat = false;
+        }else{
+          v = 'initial';
+          $(self.repeatEl.childNodes[0]).html(self._options.repeatText);
+          self._isRepeat = true;
+        }
+        this._br = v;
+      }
+    });
+    Object.defineProperty(self._values, "background-image", {
+      get: function(){ return this._bi || ""; },
+      set: function(v){
+        var rg = new RegExp("url\\((.*)\\)");
+        if(v && rg.test(v)){
+          var item = v.match(rg)[1];
+          var dataUriRE = new RegExp("^data:");
+          this._bi = v;
+          self._imageSource = item;
+          self._sourceIsURI = dataUriRE.test(item);
+          $(self.uploadEl.childNodes[0]).html(self._options.removeText);
+        }else{
+          this._bi = '';
+          self._imageSource = null;
+          $(self.uploadEl.childNodes[0]).html(self._options.uploadText);
+        }
+      }
+    });
+    Object.defineProperty(self._values, "background-size", {
+      get: function(){ return this._bs || '100% auto'; },
+      set: function(v){
+        this._bs = v;
+      }
+    });
+  };
+
+  // when uploaded and refresh?
+  // delete upload?
+
+  ImageEditor.prototype.hookEvents = function(){
+    var self = this;
+    // for reset $("#file").replaceWith($("#file").clone());
+    // 1. press choose and 
+
+    self._hookInputEvent();
 
     var uploadTextNode = self.uploadEl.childNodes[0];
     var repeatTextNode = self.repeatEl.childNodes[0];
@@ -650,6 +689,17 @@
           //   //   console.error(title + ": " + content + "\n Details: " + o.responseText);
           //   // }
           // });
+          
+          if(!scope._sourceIsURI){
+            scope._deleteAction = {
+              path: scope._imageSource
+            };
+          }
+
+          scope._uploadAction = null;
+          // reset file input for clear file object
+          scope._resetInput();
+          scope._hookInputEvent();
 
           scope._values["background-image"] = "";
           // scope._options.removeComplete.call(scope, o);
@@ -709,6 +759,112 @@
     for(var i in names){
       this.setValue(names[i], styles[names[i]]);
     }
+  };
+
+  ImageEditor.prototype.doTransactions = function(){
+    // remove
+    var self = this;
+    var res = [];
+    // params: 
+    // path {String}
+    if(self._deleteAction){
+      var f = new FormData();
+      var path = self._deleteAction.path;
+      var params = self._options.removeParams;
+      for(var k in params){
+        f.append(k, params[k]); 
+      }
+      f.append("_im_action", "remove");
+      f.append("_im_source", path);
+
+      // for doing
+      // $(self._el).css('cursor', 'wait');
+      // $(self.uploadEl).css('opacity', 0.3);
+      // $(self.repeatEl).css('opacity', 0.3);
+
+      res.push($.ajax({
+        type: "POST",
+        url: self._options.url.remove,
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: f,
+        success: function(o){
+          // self._isUploading = false;
+          // alert(JSON.stringify(o));
+          // scope._imageSource = "";
+          if(o.success){
+            self._values["background-image"] = "";
+            self._options.removeComplete.call(self, o);
+            // $(scope.uploadEl.childNodes[0]).html(scope._options.uploadText);
+            // $(self._el).css('cursor', '');
+            // $(self.uploadEl).css('opacity', 1);
+            // $(self.repeatEl).css('opacity', 1);
+            self._changeHandler();
+          }
+        }
+      }));
+    }
+
+    // params:
+    // file: {FileObject}
+    if(self._uploadAction){
+      // var el = e.target;
+
+      // if(el.files.length){
+      // create
+      var f = new FormData();
+      var fileBlob = self._uploadAction.file;
+      var params = self._options.uploadParams;
+      // f.append(scope._options.inputName || el.name, fileBlob, 
+      //   scope._options.filenameGenFn.call(scope, fileBlob.name) );
+      f.append("_im_upload", fileBlob, 
+        self._options.filenameGenFn.call(self, fileBlob.name) );
+      
+      for(var k in params){
+        f.append(k, params[k]); 
+      }
+      f.append("_im_action", "create");
+      // f.append("authenticity_token", $('[name=csrf-token]').attr('content'));
+      // f.append("img_url", '');
+
+      // for uploading
+      // $(scope._el).css('cursor', 'wait');
+      // $(scope.uploadEl).css('opacity', 0.3);
+      // $(scope.repeatEl).css('opacity', 0.3);
+
+      res.push($.ajax({
+        type: "POST",
+        url: self._options.url.create,
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: f,
+        success: function(o){
+          // self._isUploading = false;
+          // alert(JSON.stringify(o));
+          //scope._imageSource = ;
+          if(o.success){
+            self._options.uploadComplete.call(self, o);
+            if(o['_im_res_url']){
+              //$(scope.uploadEl).addClass('');  
+              self._values["background-image"] = "url(" + o['_im_res_url'] + ")";
+            }
+            // $(scope._el).css('cursor', '');
+            // $(scope.uploadEl).css('opacity', 1);
+            // $(scope.repeatEl).css('opacity', 1);
+            self._changeHandler(self._imageSource);
+          }
+        }
+        // ,
+        // error:function(o, title, content){
+        //   console.error(title + ": " + content + "\n Details: " + o.responseText);
+        // }
+      }));
+      // }
+    }
+    console.log(res.length);
+    return res;
   };
 
   ImageEditor.acceptStyleNames = ["background-repeat","background-size","background-image"];
@@ -801,6 +957,18 @@
             for(var i = 0, len = es.length; i < len; i++){
               es[i].syncValueByElement(referDom);
             }
+          },
+          // return xhr array
+          uploadFiles:function(){
+            var es = this.editors;
+            var xhrs = [];
+            for(var i = 0, len = es.length; i < len; i++){
+              var item = es[i];
+              if(item.constructor.name == "ImageEditor"){
+                xhrs = xhrs.concat(item.doTransactions());
+              }
+            }
+            return xhrs;  
           }
         };
     };
@@ -936,6 +1104,26 @@
         var item = self._editElements[i];
         item.editor.syncBy(item.targetEl);
       }
+    };
+
+    // for upload image files when save pressed.
+    StyleEditor.prototype.uploadFiles = function(callback){
+      var self = this;
+      var notCompile = [];
+      var promises =  [];
+      for(var i = 0, len = self._editElements.length; i < len; i++){
+        notCompile = notCompile.concat(self._editElements[i].editor.uploadFiles());
+      }
+
+
+      notCompile.forEach(function(item){
+        var nativePromise = Promise.resolve(item);
+        promises.push(nativePromise);
+      });
+
+      Promise.all(promises).then(function() {
+        if(typeof callback == 'function') callback.call(self);
+      });
     };
 
     StyleEditor.prototype.add = function(element){

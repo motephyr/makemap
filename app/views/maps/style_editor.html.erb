@@ -39,6 +39,8 @@ $(window).load(function(){
         create: '<%= map_style_img_path(@map) %>',
         remove: '<%= map_style_img_path(@map) %>'  
       },
+      lazyUpload: true,
+      uploadText: 'Choose...',
       uploadParams:{ "authenticity_token" : $('[name=csrf-token]').attr('content') },
       removeParams:{ "authenticity_token" : $('[name=csrf-token]').attr('content') },
       filenameGenFn: function(name){
@@ -61,8 +63,10 @@ $(window).load(function(){
       //   },
       //   dataType: 'json'
       // });
-      $('#style_string').text(JSON.stringify(StyleDropper.suck("se-id")));
-      document.getElementById('style_submit_id').click();
+      editor.uploadFiles(function(){
+        $('#style_string').text(JSON.stringify(StyleDropper.suck("se-id")));
+        document.getElementById('style_submit_id').click();
+      });
     }
   });
 
