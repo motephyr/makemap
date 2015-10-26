@@ -32,14 +32,16 @@
     var _getMaxZindex = function(dom){
         dom = dom || document.body;
         var maxZindex = -1;
-        $(dom).find('*').each(function(){
-            var zIndex = $(this).css("z-index"); 
+        var items = dom.querySelectorAll('*');
+        for(var i = 0, len = items.length; i< len; i++){
+            var item = items[i];
+            var styles = getComputedStyle(item);
+            var zIndex = styles["zIndex"]; 
             var getIt = zIndex != 'auto';
             if(getIt){
                 maxZindex = Math.max(parseInt(zIndex), maxZindex);
             }
-            return getIt;
-        });
+        }
         return maxZindex;
     };
 
